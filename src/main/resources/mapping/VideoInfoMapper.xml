@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kuncms.videoinfo.dao.VideoInfoDao" >
+
+    <select id="serachvideo"  parameterType="com.kuncms.videoinfo.model.Videoinfo"  resultType="com.kuncms.videoinfo.model.Videoinfo">
+        SELECT*FROM video_info u where u.flag=1
+        <if test="videocode != null and videocode !=''" >
+        	and u.videocode=#{videocode}
+      	</if>
+      	
+    </select>
+  
+
+</mapper>

@@ -1,0 +1,68 @@
+package com.kuncms.user.controller;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
+
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.alibaba.fastjson.JSONObject;
+import com.kuncms.user.model.User;
+import com.kuncms.user.service.UserService;
+@Controller
+public class UserController {
+	@Autowired
+	UserService userService;
+	@RequestMapping("/hello")
+    public String hello() {
+        return "hello!";
+    }
+	
+	@ResponseBody
+	@RequestMapping("/get_user")
+    public User get_user(Map<String,Object> map,User user,Model model,HttpServletRequest request){
+	   //ArrayList<Coverphoto> list=thumbnailService.queryCoverPhoto();
+	   //com.alibaba.fastjson.JSONArray array= com.alibaba.fastjson.JSONArray.parseArray(JSON.toJSONString(list));
+	   //model.addAttribute("data", array.toJSONString());
+		
+		ArrayList<User> userl=(ArrayList<User>) userService.check_username(user);
+		User loginuser=null;
+		if(userl.size()>0){
+			 loginuser=userl.get(0);
+		}
+		
+		return loginuser;
+	
+	
+    }
+	
+	
+	@RequestMapping("/insertuserinfo")
+    public String insertuserinfo() {
+        return "hello!";
+    }
+	
+	//查出用户数据，在页面展示
+    @RequestMapping("/success")
+    public String success(Map<String,Object> map){
+        map.put("hello","<h1>你好</h1>");
+        map.put("users",Arrays.asList("zhangsan","lisi","wangwu"));
+        return "success";
+    }
+    
+  //新用户注册
+    
+    @RequestMapping("/newsignup")
+    public String newsignup(Map<String,Object> map,User user,Model model){
+    	userService.newsignup(user);
+    	model.addAttribute("username",user.getUser_name());
+    	model.addAttribute("password",user.getPassword());
+    	return "success";
+    }
+}

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>详情页</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js"></script>    
+
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+	<style>
+	body { width:80%; margin:50px auto; }
+	ul {
+    display: block;
+    overflow: hidden;
+    white-space:nowrap;
+	}
+	li{
+    list-style: none;
+    display: inline-block;
+    margin-left: 15px;
+    width: 130px;
+	}
+	.cp{
+
+	width: 1050px;
+	height: 870px;
+	overflow: hidden;
+	display: table-cell;
+	vertical-align: middle;
+	border:3px solid #000;
+	text-align: center;
+	
+	
+	}
+	.cpimg{
+	
+	max-width: 100%;
+	max-height: 100%;（或者max-height: 100%;）
+	display: block;
+	margin: 0 auto;
+	
+	}
+	
+	</style>
+	<script type="text/javascript">
+	
+	  $(document).ready(function () {
+		  var user_name=$("#user_name").val();
+		  var baiduyun_address=$("#baiduyun_address").val();
+		  //$('#download').attr('href',baiduyun_address);
+          //alert(user_name)
+          if(user_name!=null&&user_name!==''){
+        	  $("#login").html("你好   "+user_name);
+          }
+          // prepare the data
+          var data=null
+          $.ajaxSetup({
+
+          	async:false
+
+          });
+          //根据coverid查询详情图
+          var id=$("#coverid").val();
+          $.ajax({
+              type: "post",
+              url: "/queryThumbnail",
+              data: {id,id},
+              dataType: "json",
+              success: function(data){
+            	var thumbnailArr = data;
+            	var thumbnailGroup="";
+            	for(var i=0;i<thumbnailArr.length;i++){
+            		　　//alert(coverphotoArr[i].coverphotoid);
+            		var tableContent="";
+            		var thumbnailid="/images/"+thumbnailArr[i].thumbnailid.substring(24);
+                 	//tableContent += '<div id="img" class="cp"><img class="img-responsive"  src="' + thumbnailArr[i].thumbnailid+ '"/><div>';
+                 	
+                 	tableContent += '<img src="'+thumbnailid+'" class="img-responsive"  width="95%" height="100%"><br>';
+                 	thumbnailGroup+=tableContent;
+            	}
+              	
+                
+                $("#thumbnail").append(thumbnailGroup);
+              	
+             }
+              
+              
+          });
+          
+          
+      });
+        
+	  /* function download(){
+    	  //var baiduyun_pass=$("#baiduyun_pass").val();
+    	  var id=$("#id").val();
+    	  //alert(baiduyun_pass)
+    	  var baiduyun_pass=document.getElementById("baiduyun_pass");  
+    	  baiduyun_pass.select(); // 选择对象  
+    	  document.execCommand("Copy"); // 执行浏览器复制命令  
+  		  //alert(baiduyun_address)
+    	  //window.location.href=baiduyun_address; 
+    	  //window.open(baiduyun_address);  
+    	  var form=$("<form>");//定义一个form表单
+			form.attr("style","display:none");
+			form.attr("target","");
+			form.attr("method","post");
+			form.attr("action","/download");
+			var input1=$("<input>");
+			input1.attr("type","hidden");
+			input1.attr("name","id");
+			input1.attr("value",id);
+			$("body").append(form);//将表单放置在web中
+			form.append(input1);  
+			form.submit();//表单提交   
+	 } */
+      
+	 
+	  function getlogin_info(){
+		  $.ajax({
+	            type : "get",
+	            url : "/getlogin_info",
+	            dataType : "text",
+	            success : function(result) {
+	               alert()
+	            },
+	            error : function() {
+	                alert("請求登陆信息失败");
+	            }
+	            });
+	 }
+	</script>
+  </head>
+  <body>
+
+    <div th:include="header :: header"></div> 
+	<p>
+	<div  style="margin-top: 130px">
+	 	<div id="app1">
+				<input id="id" th:value="${id}" name="id" type="text" style="display: none">
+				<input id="baiduyun_address"  name="baiduyun_address" type="text" style="display: none" v-model="baiduyun_address" >
+				<input id="baiduyun_pass" th:value="${baiduyun_pass}" name="baiduyun_pass" type="text">
+				<!--  
+				<a onclick="download()" href="" id="download">点我下载 </a>
+				-->
+		
+		 				
+				<input type="button" @click="download()" value="点我下载 ">
+				
+					
+		 </div>
+		
+			
+   </div>
+	
+	<div class="row">
+		<div class="col-md-8" id="thumbnail" style="margin-top: 10px">
+					
+		</div>
+		<div class="col-md-4">
+		</div>
+</div>
+<div th:include="footer :: footer"></div> 
+	<input id="coverid" th:value="${id}" name="coverid" type="text" style="display: none"> 
+	<input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none"> 
+	
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+    
+    <script type="text/javascript">
+    
+        var user_name=$("#user_name").val();
+		var app=new Vue({
+			  el: '#app',
+			  data: {
+				  
+					  content: user_name,
+					  plays:true
+			  },
+			  methods:{
+				  islogin: function () {
+					  
+					  if(user_name!=null&&user_name!=''){
+						  
+						  this.plays=false;
+					  }
+				  }
+			    }
+			
+			})
+		  
+		  app.islogin();
+		
+		
+		new Vue({
+			  el: '#app1',
+			  data: {
+				  
+				  baiduyun_address:""
+			  },
+			  methods:{
+				 
+				  download: function (event) {
+				       //alert(this.user_name)
+				        var id=$("#id").val();
+				    	//alert(baiduyun_pass)
+				    	var baiduyun_pass=document.getElementById("baiduyun_pass");  
+				    	baiduyun_pass.select(); // 选择对象  
+				    	document.execCommand("Copy"); // 执行浏览器复制命令  
+				    	
+				    	//手机端
+				    	var clipboard = new Clipboard('#baiduyun_pass')
+				        clipboard.on('success', e => {
+				          console.log('复制成功')
+				          // 释放内存
+				          clipboard.destroy()
+				        })
+				        clipboard.on('error', e => {
+				          // 不支持复制
+				          console.log('该浏览器不支持自动复制')
+				          // 释放内存
+				          clipboard.destroy()
+				        })
+				
+				    	
+				    	/* var form=$("<form>");//定义一个form表单
+						form.attr("style","display:none");
+						form.attr("target","");
+						form.attr("method","post");
+						form.attr("action","/download");
+						var input1=$("<input>");
+						input1.attr("type","hidden");
+						input1.attr("name","id");
+						input1.attr("value",id);
+						$("body").append(form);//将表单放置在web中
+						form.append(input1);  
+						form.submit();//表单提交    */
+				     	//发送 post 请求
+				     	    var newWin=window.open();
+						
+		                    this.$http.post('/download',{id:id},{emulateJSON:true}).then(function(res){
+		                    	
+		                	if(res.body.result=='login'){
+		                		//window.open(res.body.url);
+		                		 // 打开页面，此处最好使用提示页面  
+		                		
+		        					//location.href=res.body.url;
+		                		 //alert(res.body.url)
+		                		 this.baiduyun_address=res.body.url;
+		        					//window.open(res.data); 
+		        				// 重定向到目标页面  
+                                  newWin.location.href = "/todown";  
+		                		//window.open("/todown");
+		                	}else{
+		                		newWin.close();
+		                		alert("请先登陆");
+		                	};    
+		                },function(res){
+		                    console.log(res.data);
+		                }); 
+				       
+				   },
+				   downloads: function (event) {
+				       //alert(this.user_name)
+				        /* var url=$("#baiduyun_address").val();
+				        var form = document.createElement("form");
+				        form.action = this.baiduyun_address;
+				        form.target = '_blank';
+
+				        form.method = 'POST';
+
+				        document.body.appendChild(form);
+				        form.submit(); */
+				        
+				       //window.open("/todown");
+				        
+				   }
+			    }
+			
+			})
+		  
+	
+  </script>
+  </body>
+</html>

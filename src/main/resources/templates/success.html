@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+    	<link href="css/style.css" rel="stylesheet">
+    	<link href="css/button.css" rel="stylesheet">
+		<title>登陆</title>
+		 <script type="text/javascript" src="/scripts/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript">
+		 $(document).ready(function () {
+	          alert("注册成功");
+	          var user_name=$("#user_name").val();
+	         
+	          });
+		
+		</script>
+		
+	</head>
+	<body class="text-center">
+		<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-12">
+				<center style="margin-top: 200px">
+					<form role="form" action="/login_operate">
+						<div class="form-group"  >
+							 
+							<label>
+								账户名称
+							</label>
+							<input type="text" class="form-control" id="user_name" name="user_name" style="width: 200px" th:value="${username}"/>
+						</div>
+						<div class="form-group">
+							 
+							<label>
+								密码
+							</label>
+							<input type="text" class="form-control" id="password" name="password" style="width: 200px" th:value="${password}"/>
+						</div>
+						
+						<div class="checkbox">
+							 
+							<label>
+								<input type="checkbox" /> 记住我
+							</label>
+						</div> 
+						<button type="submit" class="btn btn-primary">
+							确定
+						</button>
+					</form>
+					</center>
+				</div>
+			</div>
+			<div class="jumbotron">
+				<h2>
+					其他方式登陆
+				</h2>
+				<p>
+					这里是其他登陆
+				</p>
+				
+			</div>
+		</div>
+	</div>
+</div>
+	</body>
+
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+    	<link href="css/style.css" rel="stylesheet">
+    	<link href="css/button.css" rel="stylesheet">
+		<title>注册</title>
+		<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+		<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+		
+	</head>
+	<body class="text-center">
+		<div class="container-fluid"  >
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-12" >
+				<center style="margin-top: 200px">
+				<div id="app">
+					<form role="form" action="/newsignup"  id="app" @submit="checkForm"  method="post">
+					    
+					 	<p v-if="errors.length">
+						   <ul>
+						      <li v-for="error in errors">{{ error }}</li>
+						    </ul>
+					  	</p>
+						
+						<div class="form-group"  >
+							 
+							<label>
+								账户名称
+							</label>
+							<input type="text" class="form-control"  id="user_name" name="user_name" style="width: 200px" v-model="user_name" v-on:change ="inputFunc"/><span>{{message}}</span>
+						</div>
+						<div class="form-group">
+							 
+							<label>
+								密码
+							</label>
+							<input type="text" class="form-control"  id="password"   name="password" style="width: 200px" v-model="password" /><span>{{message1}}</span>
+						</div>
+						
+						
+						<div id="box">
+    							 <input type="submit" value="注册">
+						</div>
+					</form>
+				</div>
+				</center>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+		<script>
+			new Vue({
+			  el: '#app',
+			  data: {
+				  errors: [],
+				  user_name:'',
+				  password:'',
+				  spassword:'',
+				  message: '',
+				  message1:''
+			  },
+			  methods:{
+				  checkForm: function (e) {
+				      if (this.user_name && this.password) {
+				        return true;
+				      }
+
+				      this.errors = [];
+
+				      if (!this.user_name) {
+				        this.errors.push('用户名不能为空');
+				      }
+				      if (!this.password) {
+				        this.errors.push('密码不能为空');
+				      }
+
+				      e.preventDefault();
+				    },
+				    inputFunc: function (event) {
+				       //alert(this.user_name)
+				     //发送 post 请求
+		                this.$http.post('/check_username',{user_name:this.user_name},{emulateJSON:true}).then(function(res){
+		                	this.message=res.body.result;    
+		                },function(res){
+		                    console.log(res.data);
+		                });
+				       
+				   }
+			    
+			   
+			    }
+			})
+		</script>
+	</body>
+
+</html>

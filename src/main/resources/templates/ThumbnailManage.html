@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title id='Description'>视频缩略图管理</title>
+   
+    <link rel="stylesheet" href="/jqwidgets/styles/jqx.base.css" type="text/css" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta http-equiv="Content-Type"  content="multipart/form-data; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1" />
+    <script type="text/javascript" src="/scripts/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxcore.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxdata.js"></script> 
+    <script type="text/javascript" src="/jqwidgets/jqxbuttons.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxmenu.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxcheckbox.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxlistbox.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxdropdownlist.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxgrid.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxgrid.selection.js"></script> 
+    <script type="text/javascript" src="/scripts/demos.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxwindow.js"></script>
+    <script type="text/javascript">
+   
+        $(document).ready(function () {
+            // prepare the data
+            var data=null
+            $.ajaxSetup({
+
+            	async:false
+
+            });
+            var id=$("#id").val();
+           alert(id)
+            $.ajax({
+                type: "post",
+                url: "/queryThumbnail",
+                data: {id:id},
+                dataType: "json",
+                success: function(data){
+                	//alert(data)
+                	var source =
+                    {
+                        localdata: data,
+                        datatype: "local",
+                        datafields:
+                        [
+                            { name: 'id', type: 'string' },
+                            { name: 'coverid', type: 'string' },
+                          
+                        ],
+                        addrow: function (rowid, rowdata, position, commit) {
+                            // synchronize with the server - send insert command
+                            // call commit with parameter true if the synchronization with the server is successful 
+                            //and with parameter false if the synchronization failed.
+                            // you can pass additional argument to the commit callback which represents the new ID if it is generated from a DB.
+                            commit(true);
+                        },
+                        deleterow: function (rowid, commit) {
+                            // synchronize with the server - send delete command
+                            // call commit with parameter true if the synchronization with the server is successful 
+                            //and with parameter false if the synchronization failed.
+                            commit(true);
+                        },
+                        updaterow: function (rowid, newdata, commit) {
+                            // synchronize with the server - send update command
+                            // call commit with parameter true if the synchronization with the server is successful 
+                            // and with parameter false if the synchronization failed.
+                            commit(true);
+                        }
+                    };
+                    var dataAdapter = new $.jqx.dataAdapter(source);
+                    // initialize jqxGrid
+                    $("#grid").jqxGrid(
+                    {
+                        width: getWidth('Grid'),
+                        height: 350,
+                     	source: dataAdapter,
+                        showtoolbar: true,
+                        rendertoolbar: function (toolbar) {
+                            var me = this;
+                            var container = $("<div style='margin: 5px;'></div>");
+                            toolbar.append(container);
+                            container.append('<input id="addrowbutton" type="button" value="Add Video" />');
+                            container.append('<input style="margin-left: 5px;" id="addmultiplerowsbutton" type="button" value="Add Multiple New Rows" />');
+                            container.append('<input style="margin-left: 5px;" id="deleterowbutton" type="button" value="Delete Selected Row" />');
+                            container.append('<input style="margin-left: 5px;" id="updaterowbutton" type="button" value="Update Selected Row" />');
+                            $("#addrowbutton").jqxButton();
+                            $("#addmultiplerowsbutton").jqxButton();
+                            $("#deleterowbutton").jqxButton();
+                            $("#updaterowbutton").jqxButton();
+                            // update row.
+                            $("#updaterowbutton").on('click', function () {
+                                var datarow = generaterow();
+                                var selectedrowindex = $("#grid").jqxGrid('getselectedrowindex');
+                                var rowscount = $("#grid").jqxGrid('getdatainformation').rowscount;
+                                if (selectedrowindex >= 0 && selectedrowindex < rowscount) {
+                                    var id = $("#grid").jqxGrid('getrowid', selectedrowindex);
+                                    var commit = $("#grid").jqxGrid('updaterow', id, datarow);
+                                    $("#grid").jqxGrid('ensurerowvisible', selectedrowindex);
+                                }
+                            });
+                            // create new row.
+                            $("#addrowbutton").on('click', function () {
+                                //var datarow = generaterow();
+                                //var commit = $("#grid").jqxGrid('addrow', null, datarow);
+                               	createWindow();
+                                $("#ww").css("display","show");
+                                $('#window1').jqxWindow('open');
+                               
+                                
+                            });
+                            // create new rows.
+                            $("#addmultiplerowsbutton").on('click', function () {
+                                $("#grid").jqxGrid('beginupdate');
+                                for (var i = 0; i < 10; i++) {
+                                    var datarow = generaterow();
+                                    var commit = $("#grid").jqxGrid('addrow', null, datarow);
+                                }
+                                $("#grid").jqxGrid('endupdate');
+                            });
+                            // delete row.
+                            $("#deleterowbutton").on('click', function () {
+                                var selectedrowindex = $("#grid").jqxGrid('getselectedrowindex');
+                                var rowscount = $("#grid").jqxGrid('getdatainformation').rowscount;
+                                if (selectedrowindex >= 0 && selectedrowindex < rowscount) {
+                                    var id = $("#grid").jqxGrid('getrowid', selectedrowindex);
+                                    var commit = $("#grid").jqxGrid('deleterow', id);
+                                }
+                            });
+                        },
+                        columns: [
+                          { text: 'id', datafield: 'id', width: 200 },
+                          { text: 'coverid', datafield: 'coverid', width: 200 },
+                          { text: 'thumbnail', datafield: 'thumbnail', columntype: 'button',width: 200 ,cellsrenderer: function () {
+                              return "缩略图";
+                           }, buttonclick: function (row) {
+                             
+                          }
+                          }
+                        ]
+                    });    
+                         }
+            });
+          
+        
+            
+        });
+     	
+        
+        function createWindow() {
+            var jqxWidget = $('#jqxWidget');
+            var offset = jqxWidget.offset();
+            $('#window1').jqxWindow({
+                position: { x: offset.left + 1150, y: offset.top + 150} ,
+                showCollapseButton: true, height: 250, width:400,
+                initContent: function () {
+                   
+                    $('#window1').jqxWindow('focus');
+                }
+            });
+        };
+        
+        function uploadFile() {
+            var fileName = $('#fileName').val();
+            
+            $.ajax({
+                type: "post",
+                url: "fileUpload",
+                data: {fileName:fileName},
+                dataType: "json",
+                success: function(data){
+                           alert(data);
+                         }
+            });
+            
+        };
+    </script>
+</head>
+<body class='default'>
+
+
+ <div id="jqxWidget" align="center">
+ 	缩略图管理
+ 	<input id="id" th:value="${id}"> 
+    <div id="grid">
+    </div>
+    <div style="display:none" id="ww">
+    <div style="width: 100%; height: 650px; margin-top: 250px;" id="mainDemoContainer">
+            <div id="window1">
+                <div id="windowHeader">文件上传</div>
+                <div style="overflow: hidden;" id="windowContent">
+                    
+					    <form action="thumbnailFileUpload" method="post" enctype="multipart/form-data" >
+					        <p>选择文件1: <input type="file" name="fileName"/></p>
+					        <p>选择文件2: <input type="file" name="fileName"/></p>
+					        <p>选择文件3: <input type="file" name="fileName"/></p>
+					        <input id="coverid" th:value="${id}" name="coverid" type="text"> 
+					        <p><input type="submit" value="提交"/></p>
+					    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+ </div>  
+ 
+ 	
+</body>
+</html>

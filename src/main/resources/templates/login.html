@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+    	<link href="css/style.css" rel="stylesheet">
+    	<link href="css/button.css" rel="stylesheet">
+		<title>登陆</title>
+		<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+		<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+		 <script type="text/javascript" src="/js/jquery.js"></script>
+	</head>
+	<body class="text-center">
+		<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-12">
+				<center style="margin-top: 200px">
+					<div id="app">
+						<form role="form" action="/login_operate" id="form">
+							<p v-if="errors.length">
+							   <ul>
+							      <li v-for="error in errors">{{ error }}</li>
+							    </ul>
+					  		</p>
+								<div class="form-group"  >
+									 
+									<label>
+										账户名称
+									</label>
+									<input type="text" class="form-control" id="user_name" name="user_name" style="width: 200px" v-model="user_name"/>
+								</div>
+								<div class="form-group">
+									 
+									<label>
+										密码
+									</label>
+									<input type="text" class="form-control" id="password" name="password" style="width: 200px" v-model="password"/>
+								</div>
+								 <p v-if="logerror">登陆失败:账户名或密码错误!</p>
+								<div class="checkbox">
+									 
+									<label>
+										<input type="checkbox" /> 记住我
+									</label>
+								</div> 
+								<div id="box">
+									<input type="button" @click="login_check()" value="确定">
+								</div>
+							</form>
+						</div>
+					
+				</center>
+				</div>
+			</div>
+			<div class="jumbotron">
+				<h2>
+					其他方式登陆
+				</h2>
+				<p>
+					这里是其他登陆
+				</p>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+	<script type="text/javascript">
+    
+        var user_name=$("#user_name").val();
+		var app=new Vue({
+			  el: '#app',
+			  data: {
+				      user_name:"",
+					  password:"",
+					  content: user_name,
+					  errors: [],
+					  plays:true,
+					  logerror: false
+			  },
+			  methods:{ 
+				 
+			  	login_check: function (event) {
+				       //alert(this.user_name)
+				       if (this.user_name && this.password) {
+				    	   //发送 post 请求
+			                this.$http.post('/login_check',{user_name:this.user_name,password:this.password},{emulateJSON:true}).then(function(res){
+			                	 
+			                	if(res.body.msg=='ok'){
+			                		alert(res.body.result);
+			                		var form=$("form");
+			                		form.submit();
+			                	}else{
+			                		//alert(res.body.result);
+			                		this.logerror=true;
+			                	}
+			                },function(res){
+			                    console.log(res.data);
+			                });
+				      }else{
+				    	  this.errors = [];
+
+					      if (!this.user_name) {
+					        this.errors.push('用户名不能为空');
+					       
+					      }
+					      if (!this.password) {
+					        this.errors.push('密码不能为空');
+					       
+					      }
+					      
+					      event.preventDefault();
+				      }
+
+				   }
+			    }
+			
+			})
+		
+		  
+	
+	</script>
+
+	</body>
+
+</html>

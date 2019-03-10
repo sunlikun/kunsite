@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title id='Description'>视频管理
+    </title>
+   
+    <link rel="stylesheet" href="/jqwidgets/styles/jqx.base.css" type="text/css" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta http-equiv="Content-Type"  content="multipart/form-data; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1" />
+    <script type="text/javascript" src="/scripts/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxcore.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxdata.js"></script> 
+    <script type="text/javascript" src="/jqwidgets/jqxbuttons.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxmenu.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxcheckbox.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxlistbox.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxdropdownlist.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxgrid.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxgrid.selection.js"></script> 
+    <script type="text/javascript" src="/scripts/demos.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxwindow.js"></script>
+    <script type="text/javascript">
+   
+        $(document).ready(function () {
+            // prepare the data
+            var data=null
+            $.ajaxSetup({
+
+            	async:false
+
+            });
+            $.ajax({
+                type: "post",
+                url: "/queryCoverPhoto",
+                data: {},
+                dataType: "json",
+                success: function(data){
+                	//alert(data)
+                	var source =
+                    {
+                        localdata: data,
+                        datatype: "local",
+                        datafields:
+                        [
+                            { name: 'id', type: 'string' },
+                            { name: 'coverphotoid', type: 'string' },
+                            { name: 'create_time', type: 'string' },
+                            { name: 'createby', type: 'string' },
+                            { name: 'updateby', type: 'string' },
+                            { name: 'video_name', type: 'string' },
+                            { name: 'flag', type: 'string' },
+                            { name: 'baiduyun_address', type: 'string' },
+                            { name: 'baiduyun_pass', type: 'string' },
+                            
+                           
+                          
+                        ],
+                        addrow: function (rowid, rowdata, position, commit) {
+                            // synchronize with the server - send insert command
+                            // call commit with parameter true if the synchronization with the server is successful 
+                            //and with parameter false if the synchronization failed.
+                            // you can pass additional argument to the commit callback which represents the new ID if it is generated from a DB.
+                            commit(true);
+                        },
+                        deleterow: function (rowid, commit) {
+                            // synchronize with the server - send delete command
+                            // call commit with parameter true if the synchronization with the server is successful 
+                            //and with parameter false if the synchronization failed.
+                            commit(true);
+                        },
+                        updaterow: function (rowid, newdata, commit) {
+                            // synchronize with the server - send update command
+                            // call commit with parameter true if the synchronization with the server is successful 
+                            // and with parameter false if the synchronization failed.
+                            commit(true);
+                        }
+                    };
+                    var dataAdapter = new $.jqx.dataAdapter(source);
+                    // initialize jqxGrid
+                    var cellsrenderer = function (row, column, value) {
+                    	
+                    	var data = $('#grid').jqxGrid('getrowdata', row);
+                		return  '<a href="/thumbnailManage?id='+data.id+'" target="_blank" style="color:black;text-decoration:none;">'+"缩略图"+'</a>';
+            		}
+                    $("#grid").jqxGrid(
+                    {
+                        width: 1500,
+                        height: 550,
+                        source: dataAdapter,
+                        showtoolbar: true,
+                        rendertoolbar: function (toolbar) {
+                            var me = this;
+                            var container = $("<div style='margin: 5px;'></div>");
+                            toolbar.append(container);
+                            container.append('<input id="addrowbutton" type="button" value="添加视频" />');
+                           	container.append('<input style="margin-left: 5px;" id="deleterowbutton" type="button" value="删除视频" />');
+                            container.append('<input style="margin-left: 5px;" id="updaterowbutton" type="button" value="更新视频" />');
+                            $("#addrowbutton").jqxButton();
+                          
+                            $("#deleterowbutton").jqxButton();
+                            $("#updaterowbutton").jqxButton();
+                            // update row.
+                            $("#updaterowbutton").on('click', function () {
+                                var datarow = generaterow();
+                                var selectedrowindex = $("#grid").jqxGrid('getselectedrowindex');
+                                var rowscount = $("#grid").jqxGrid('getdatainformation').rowscount;
+                                if (selectedrowindex >= 0 && selectedrowindex < rowscount) {
+                                    var id = $("#grid").jqxGrid('getrowid', selectedrowindex);
+                                    var commit = $("#grid").jqxGrid('updaterow', id, datarow);
+                                    $("#grid").jqxGrid('ensurerowvisible', selectedrowindex);
+                                }
+                            });
+                            // create new row.
+                            $("#addrowbutton").on('click', function () {
+                                //var datarow = generaterow();
+                                //var commit = $("#grid").jqxGrid('addrow', null, datarow);
+                               	createWindow();
+                                $("#ww").css("display","show");
+                                $('#window').jqxWindow('open');
+                               
+                                
+                            });
+                          
+                            // delete row.
+                            $("#deleterowbutton").on('click', function () {
+                                var selectedrowindex = $("#grid").jqxGrid('getselectedrowindex');
+                                var rowscount = $("#grid").jqxGrid('getdatainformation').rowscount;
+                                if (selectedrowindex >= 0 && selectedrowindex < rowscount) {
+                                    var id = $("#grid").jqxGrid('getrowid', selectedrowindex);
+                                    var commit = $("#grid").jqxGrid('deleterow', id);
+                                }
+                            });
+                        },
+                        columns: [
+                          { text: 'id', datafield: 'id', width: 200 },
+                          { text: 'coverphotoid', datafield: 'coverphotoid', width: 200 },
+                          { text: 'video_name', datafield: 'video_name', width: 200},
+                          { text: 'baiduyun_address', datafield: 'baiduyun_address', width: 200},
+                          { text: 'baiduyun_pass', datafield: 'baiduyun_pass', width: 200},
+                          { text: 'create_time', datafield: 'create_time', width: 200},
+                          { text: 'thumbnail', cellsrenderer:cellsrenderer, width: 200}
+                        ]
+                    });
+                   // $("#popupWindow").jqxWindow({
+                   //     width: 1500, resizable: true,  isModal: true, autoOpen: false, cancelButton: $("#Cancel"), modalOpacity: 0.01           
+                   // });
+                         }
+            });
+          
+           
+            
+        });
+     	
+        
+        function createWindow() {
+            var jqxWidget = $('#jqxWidget');
+            var offset = jqxWidget.offset();
+            $('#window').jqxWindow({
+                position: { x: offset.left + 550, y: offset.top + 50} ,
+                showCollapseButton: true,  height: 650, width: 1800,
+                initContent: function () {
+                   
+                    $('#window').jqxWindow('focus');
+                }
+            });
+        };
+        
+        function uploadFile() {
+            var fileName = $('#fileName').val();
+            
+            $.ajax({
+                type: "post",
+                url: "fileUpload",
+                data: {fileName:fileName},
+                dataType: "json",
+                success: function(data){
+                          // alert(data);
+                         }
+            });
+            
+        };
+    </script>
+</head>
+<body class='default'>
+视频管理
+ <div id="jqxWidget">
+    <div id="grid">
+    </div>
+    <div style="display:none" id="ww">
+    <div style="width: 80%; height: 450px; margin-top: 50px;" id="mainDemoContainer">
+            <div id="window">
+                <div id="windowHeader">基本信息上传</div>
+                <div style="overflow: hidden;" id="windowContent">
+                    <form action="fileUpload" method="post" enctype="multipart/form-data">
+        					<p>请选择视频的封面: <input type="file" name="fileName" id="fileName"/></p>
+        					<p>请输入视频的名称: <input type="text" name="video_name" id="video_name"/></p>
+        					<p>请输入视频的地址: <input type="text" name="baiduyun_address" id="baiduyun_address"/></p>
+        					<p>请输入视频分享码: <input type="text" name="baiduyun_pass" id="baiduyun_pass"/></p>
+        					<p><button type="submit">提交</button></p>
+    				</form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+    <!-- 
+    <div id="popupWindow">
+            <div>缩略图管理</div>
+            <div style="overflow: hidden;" id="frame">
+           
+			<iframe width='1300' height='600' src='/thumbnailManage' scrolling='no' hspace='-100' vspace='-150'></iframe>
+
+            </div>
+       </div>
+     -->
+ </div>   
+</body>
+</html>

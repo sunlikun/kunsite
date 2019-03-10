@@ -1,0 +1,201 @@
+package com.kuncms.thumbnail.controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.kuncms.coverphoto.dao.CoverphotoDao;
+import com.kuncms.coverphoto.model.Coverphoto;
+import com.kuncms.coverphoto.service.CoverphotoService;
+import com.kuncms.thumbnail.service.ThumbnailService;
+import com.kuncms.user.model.User;
+import com.kuncms.videoinfo.model.Videoinfo;
+import com.kuncms.videoinfo.service.VideoInfoService;
+
+import net.sf.json.JSONArray;
+import sun.misc.BASE64Decoder;
+@Controller
+public class ThumbnailController {
+	
+	@Autowired
+	ThumbnailService thumbnailService;
+	@Autowired
+	CoverphotoService coverphotoService;
+	
+	@RequestMapping("/todown")
+    public String todown(Map<String,Object> map,String id,User user,Model model,HttpServletRequest request){
+	   
+		Coverphoto coverphoto=new Coverphoto();
+	    coverphoto.setId(id);
+	    ArrayList<Coverphoto> list=coverphotoService.queryCoverPhotoById(coverphoto);
+	    if(list.size()>0){
+ 		   String url=list.get(0).getBaiduyun_address();
+ 		   model.addAttribute("url",url);
+			   
+ 	   };
+		
+		return "download";
+	
+	
+    }
+	
+	
+	
+	
+	@ResponseBody
+	@RequestMapping("/download")
+    public String details(Map<String,Object> map,String id,Model model,HttpServletRequest request){
+		
+	  //判断用户是否登陆，如果没有则禁止登陆
+		HttpSession session=request.getSession();
+		String user_name=(String) session.getAttribute("loginName");
+		String result="";
+		JSONObject resultj = new JSONObject();
+		if(user_name!=null&&!user_name.equals("")){
+			 //根据id查询出对应的封面信息
+			   Coverphoto coverphoto=new Coverphoto();
+			   coverphoto.setId(id);
+			   ArrayList<Coverphoto> list=coverphotoService.queryCoverPhotoById(coverphoto);
+			   
+		      System.out.println(id+"id");
+		       try {
+		    	   if(list.size()>0){
+		    		   String url=list.get(0).getBaiduyun_address();
+		    		   //browse(url);
+		    		   resultj.put("url",url);
+		   			   
+		    	   };
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    result="login";
+		}else{
+			result="nologin";
+		}
+		resultj.put("result", result);
+	 
+		return resultj.toJSONString();
+    }
+	
+	private static void browse(String url) throws Exception {
+        //获取操作系统的名字
+//        String osName = System.getProperty("os.name", "");
+//        if (osName.startsWith("Mac OS")) {
+//            //苹果的打开方式
+//            Class fileMgr = Class.forName("com.apple.eio.FileManager");
+//            Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] { String.class });
+//            openURL.invoke(null, new Object[] { url });
+        //} else if (osName.startsWith("Windows")) {
+            //windows的打开方式。
+            System.out.println("111");
+            Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
+//        } else {
+//            // Unix or Linux的打开方式
+//            String[] browsers = { "firefox", "opera", "konqueror", "epiphany", "mozilla", "netscape","chrome" };
+//            String browser = null;
+//            for (int count = 0; count < browsers.length && browser == null; count++)
+//                //执行代码，在brower有值后跳出，
+//                //这里是如果进程创建成功了，==0是表示正常结束。
+//                if (Runtime.getRuntime().exec(new String[] { "which", browsers[count] }).waitFor() == 0)
+//                    browser = browsers[count];
+//            if (browser == null)
+//                throw new Exception("Could not find web browser");
+//            else
+//                //这个值在上面已经成功的得到了一个进程。
+//                Runtime.getRuntime().exec(new String[] { browser, url });
+//        }
+    }
+
+	
+	
+	/**
+	 * 跳转到缩略图管理页面
+	 * @param map
+	 * @param request
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/thumbnailManage")
+    public String thumbnailManage(Map<String,Object> map,@RequestParam("id")String id,Model model){
+	   //ArrayList<Coverphoto> list=thumbnailService.queryCoverPhoto();
+	   //com.alibaba.fastjson.JSONArray array= com.alibaba.fastjson.JSONArray.parseArray(JSON.toJSONString(list));
+	   //model.addAttribute("data", array.toJSONString());
+		System.out.println(id);
+		model.addAttribute("id",id);
+       return "ThumbnailManage";
+    }
+	
+	
+	
+	@RequestMapping("/details")
+    public String details(Map<String,Object> map,String id,String baiduyun_pass,String baiduyun_address,Model model,HttpServletRequest request){
+	   //ArrayList<Coverphoto> list=thumbnailService.queryCoverPhoto();
+	   //com.alibaba.fastjson.JSONArray array= com.alibaba.fastjson.JSONArray.parseArray(JSON.toJSONString(list));
+	   //model.addAttribute("data", array.toJSONString());
+		model.addAttribute("id",id);
+//		BASE64Decoder decoder = new BASE64Decoder();
+//		byte[] b;
+//		try {
+//			b = decoder.decodeBuffer(baiduyun_address);
+//			 baiduyun_address=new  String(b,"UTF-8");
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//       
+		HttpSession session=request.getSession();
+		String user_name=(String) session.getAttribute("loginName");
+		System.out.println(user_name+"6666666666");
+		model.addAttribute("baiduyun_pass",baiduyun_pass);
+		model.addAttribute("user_name",user_name);
+		model.addAttribute("baiduyun_address",baiduyun_address);
+       return "details";
+    }
+	
+	
+	
+	
+	@RequestMapping("/queryThumbnail")
+	
+	public void queryThumbnail(HttpServletResponse response,String id) throws IOException {
+		
+		ArrayList<Coverphoto> list=thumbnailService.queryThumbnail(id);
+		System.out.println(id);
+		
+		 response.setContentType("application/json");
+	        response.setHeader("Pragma", "No-cache");
+	        response.setHeader("Cache-Control", "no-cache");
+	        response.setCharacterEncoding("UTF-8");
+	        
+	        JSONArray listArray=JSONArray.fromObject(list);     
+	        PrintWriter out= null;
+	        out = response.getWriter();
+	        out.print(listArray.toString());
+	        System.out.println(listArray.toString());
+	        out.flush();
+	        out.close();
+		
+		
+	}
+}

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>会员中心</title>
+
+	<link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/button.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../jqwidgets/styles/jqx.base.css" type="text/css" />
+    <script type="text/javascript" src="/scripts/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/js/jqthumb.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+</head>
+<body>
+<div th:include="header :: header"></div> 
+
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-8">
+		<center>
+		<div id="app1">
+			<h3>
+				基本信息
+			</h3>
+			
+				<p>账户名称：{{ user_name }}</p>
+			  	<p>账户状态：{{ user_status }}</p>
+			  	<p>账户类型：{{ user_class }}</p>
+			  	<p>注册日期：{{ create_time }}</p>
+			
+			<h3>
+				我的资产
+				
+			</h3>
+			<p>我的金币：{{ gold_coin }}</p>
+			<h3>
+				成长经验
+				
+			</h3>
+			<p>我的经验：{{ empirical_value }}(每消耗1金币经验值加1)</p>
+			<h3>
+				安全中心
+			</h3>
+				<p>电子邮箱：{{ email }}</p>
+				<p>账户密码：{{ password }}</p>
+		</div>
+		</center>
+		</div>
+		<div class="col-md-4">
+			<img alt="Bootstrap Image Preview" src="https://www.layoutit.com/img/sports-q-c-140-140-3.jpg" /> 
+			<address>
+				待开发
+			</address>
+		</div>
+	</div>
+	
+</div>
+
+ <div th:include="footer :: footer"></div> 
+ <input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none"> 
+<script>
+var user_name=$("#user_name").val();
+var app=new Vue({
+	  el: '#app',
+	  data: {
+		  
+			  content: user_name,
+			  plays:true
+			 
+	  },
+	  methods:{
+		  islogin: function () {
+			  
+			  if(user_name!=null&&user_name!=''){
+				  
+				  this.plays=false;
+			  }
+		  }
+	    }
+	
+	})
+
+  app.islogin();
+  
+  
+	var app1=new Vue({
+	  el: '#app1',
+	  data: {
+		  
+		  	  user_name:"",
+		  	  user_status:"",
+		  	  user_class:"",
+		  	  create_time:"",
+		      gold_coin:"fsfgsd",
+		      empirical_value:"",
+		      email:"",
+		      password:""
+			  
+	  },
+	  methods:{
+		  membership: function () {
+			  
+			  if(user_name!=null&&user_name!=''){
+				  
+					//发送 post 请求
+	                this.$http.post('/get_user',{user_name:user_name},{emulateJSON:true}).then(function(res){
+	                	 
+	                	
+	                		//alert(res.body.user_name);
+	                		
+	                	  this.user_name=res.body.user_name,
+	                	  this.user_status=res.body.user_status,
+	                	  this.user_class=res.body.user_class,
+	                	  this.create_time=res.body.create_time,
+	                	  this.gold_coin=res.body.gold_coin,
+	                	  this.empirical_value=res.body.empirical_value,
+	                	  this.email=res.body.email,
+	                	  this.password=res.body.password
+	                		
+	                	
+	                },function(res){
+	                    console.log(res.data);
+	                });
+			  }
+		  }
+	    }
+	
+	})
+	
+	app1.membership();
+</script>
+</body>
+</html>
