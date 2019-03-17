@@ -2,7 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.kuncms.user.dao.UserDao" >
 
-
+ 	<update id="update"  parameterType="com.kuncms.user.model.User">
+		update user_info  set gold_coin=#{gold_coin} where user_name=#{user_name}
+ 	</update>
 
  	<select id="check_username"  parameterType="com.kuncms.user.model.User"  resultType="com.kuncms.user.model.User">
         SELECT*FROM user_info u where flag='1'
@@ -25,8 +27,8 @@
     
     
     <insert id="newsignup"  parameterType="com.kuncms.user.model.User">
-		insert into user_info(id,user_name,password,create_time,update_time,flag) 
-		   values(#{id},#{user_name},#{password},#{create_time},#{update_time},#{flag})
+		insert into user_info(id,user_name,password,create_time,update_time,flag,gold_coin,user_status,user_class,empirical_value) 
+		   values(#{id},#{user_name},#{password},#{create_time},#{update_time},#{flag},#{gold_coin},#{user_status},#{user_class},#{empirical_value})
  	</insert>
   
 

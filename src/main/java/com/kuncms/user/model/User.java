@@ -6,8 +6,52 @@ private String user_name;
 private String password;
 private String create_time;
 private String update_time;
-
+private String integral;
+private String gold_coin;        //金币值
+private String empirical_value;  //经验值
+private String email;            //邮箱地址
+private String user_class;       //用户类型
+private String user_status;      //用户状态
 private String flag;
+
+
+
+public String getIntegral() {
+	return integral;
+}
+public void setIntegral(String integral) {
+	this.integral = integral;
+}
+public String getGold_coin() {
+	return gold_coin;
+}
+public void setGold_coin(String gold_coin) {
+	this.gold_coin = gold_coin;
+}
+public String getEmpirical_value() {
+	return empirical_value;
+}
+public void setEmpirical_value(String empirical_value) {
+	this.empirical_value = empirical_value;
+}
+public String getEmail() {
+	return email;
+}
+public void setEmail(String email) {
+	this.email = email;
+}
+public String getUser_class() {
+	return user_class;
+}
+public void setUser_class(String user_class) {
+	this.user_class = user_class;
+}
+public String getUser_status() {
+	return user_status;
+}
+public void setUser_status(String user_status) {
+	this.user_status = user_status;
+}
 
 
 public String getId() {

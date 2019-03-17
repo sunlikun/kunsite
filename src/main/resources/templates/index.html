@@ -68,6 +68,13 @@
 	margin: 0 auto;
 	
 	}
+	.gimg{
+	
+	max-width: 10%;
+	max-height: 10%;
+	margin: 0 auto;
+	
+	}
 	.cdiv{ border:3px solid #000} 
 	</style>
 	
@@ -113,8 +120,9 @@
                     tableContent += '</a>';
                     
                     tableContent += '<div class="caption">';
-                  	tableContent += '<p>"' + coverphotoArr[i].video_name+ '"</p>';
-                    tableContent += ' <p><a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'" class="btn btn-primary" role="button"> 查看</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'" class="btn btn-default" role="button">  下载</a></p> ';
+                  	tableContent += '<p>' + coverphotoArr[i].video_name+ '</p>';
+                  	tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币</p>';
+                    tableContent += ' <p><a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'" class="btn btn-primary" role="button"> 查看</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default" role="button">  下载</a></p> ';
                   
                     tableContent += '</p>';
                     tableContent += '<div>';

@@ -20,22 +20,24 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-8">
-		<center>
-		<div id="app1">
+		
+		<div id="app1" style="margin-left: 40%">
 			<h3>
 				基本信息
 			</h3>
 			
 				<p>账户名称：{{ user_name }}</p>
+				<!--  
 			  	<p>账户状态：{{ user_status }}</p>
 			  	<p>账户类型：{{ user_class }}</p>
+			  	-->
 			  	<p>注册日期：{{ create_time }}</p>
 			
 			<h3>
 				我的资产
 				
 			</h3>
-			<p>我的金币：{{ gold_coin }}</p>
+			<p>我的金币：{{ gold_coin }}个                             <a href="recharge">金币充值</a></p>
 			<h3>
 				成长经验
 				
@@ -47,12 +49,12 @@
 				<p>电子邮箱：{{ email }}</p>
 				<p>账户密码：{{ password }}</p>
 		</div>
-		</center>
+		
 		</div>
 		<div class="col-md-4">
 			<img alt="Bootstrap Image Preview" src="https://www.layoutit.com/img/sports-q-c-140-140-3.jpg" /> 
 			<address>
-				待开发
+				头像
 			</address>
 		</div>
 	</div>
@@ -94,7 +96,7 @@ var app=new Vue({
 		  	  user_status:"",
 		  	  user_class:"",
 		  	  create_time:"",
-		      gold_coin:"fsfgsd",
+		      gold_coin:"",
 		      empirical_value:"",
 		      email:"",
 		      password:""

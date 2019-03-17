@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
  	<meta name="baidu-site-verification" content="EuNPeTHGFx" />
-    <title>首页</title>
+    <title>充值</title>
 
     <meta name="description" content="Source code generated using layoutit.com">
     <meta name="author" content="LayoutIt!">
@@ -14,6 +14,7 @@
     <link href="/css/style.css" rel="stylesheet">
     <link href="/css/button.css" rel="stylesheet">
      <link rel="stylesheet" href="../../jqwidgets/styles/jqx.base.css" type="text/css" />
+      <link rel="stylesheet" href="/css/pay.css">
     <script type="text/javascript" src="/scripts/jquery-1.11.1.min.js"></script>
     
     <script type="text/javascript" src="/js/jqthumb.min.js"></script>
@@ -176,8 +177,8 @@
 				    
 				    <div>
 				        <ul class="nav navbar-nav">
-				            <li> <a href="http://www.bootcss.com/" class="navbar-brand">今日热门</a></li>
-				            <li><a href="http://www.bootcss.com/" class="navbar-brand">推荐更多饭拍</a></li>
+				            <li> <a href="" class="navbar-brand">秘书台</a></li>
+				            <li><a href="index" class="navbar-brand">高贝首页</a></li>
 				         </ul>
 				    </div>
 				    </div>
@@ -188,9 +189,99 @@
 		<p></p><p></p>
 		<div class="row">
 				<div class="col-md-8">
-					<div class="row" id="coverphoto">
-					
-					</div>
+					 <div class="charge-form-container">
+
+					    <div class="charge-form">
+					      <form action="">
+					        <div>
+					          <p>请选择充值金额</p>
+					          <div class="charge-group">
+					            <div class="charge-group__inner">
+					              <label class="charge-item">
+					                <input type="radio" name="amount">
+					                <div class="charge-item__inner">
+					                  <p>100元</p>
+					                  <span>100金币</span>
+					                </div>
+					              </label>
+					              <label class="charge-item">
+					                <input type="radio" name="amount">
+					                <div class="charge-item__inner">
+					                  <p>100元</p>
+					                  <span>100金币</span>
+					                </div>
+					              </label>
+					              <label class="charge-item">
+					                <input type="radio" name="amount">
+					                <div class="charge-item__inner">
+					                  <p>100元</p>
+					                  <span>100金币</span>
+					                </div>
+					              </label>
+					              <label class="charge-item">
+					                <input type="radio" name="amount">
+					                <div class="charge-item__inner">
+					                  <p>100元</p>
+					                  <span>100金币</span>
+					                </div>
+					              </label>
+					              <label class="charge-item">
+					                <input type="radio" name="amount">
+					                <div class="charge-item__inner">
+					                  <p>100元</p>
+					                  <span>100金币</span>
+					                </div>
+					              </label>
+					              <label class="charge-item">
+					                <input type="radio" name="amount">
+					                <div class="charge-item__inner">
+					                  <p>100元</p>
+					                  <span>100金币</span>
+					                </div>
+					              </label>
+					              <label class="charge-item">
+					                <input type="radio" name="amount">
+					                <div class="charge-item__inner">
+					                  <p>100元</p>
+					                  <span>100金币</span>
+					                </div>
+					              </label>
+					              <label class="charge-item">
+					                <input type="radio" name="amount">
+					                <div class="charge-item__inner">
+					                  <p>100元</p>
+					                  <span>100金币</span>
+					                </div>
+					              </label>
+					            </div>
+					          </div>
+					          <p>请选择充值方式</p>
+					          <div class="charge-group">
+					            <div class="charge-group__inner">
+					              <label class="charge-item">
+					                <input type="radio" name="payType">
+					                <div class="charge-item__inner">
+					                  <div class="wechat-label">
+					                  </div>
+					                </div>
+					              </label>
+					            </div>
+					          </div>
+					          <p>需要支付金额</p>
+					          <div class="charge-group">
+					            <div class="charge-group__inner">
+					              <label class="charge-item">
+					                <input type="radio" name="payType">
+					                <div class="charge-item__inner">
+					                  <button type="button" class="btn btn-info btn-lg">去支付</button>
+					                </div>
+					              </label>
+					            </div>
+					          </div>
+					        </div>
+					      </form>
+					    </div>
+					  </div>
 				</div>
 	  	
 				<div class="col-md-4">
@@ -207,14 +298,15 @@
 				</div>
 		</div>
 		
-		<div class="row">
-			<div class="col-md-8">
-				
-				<div align="center"><a href="/more"><font size="5">查看更多饭拍</font></a></div>
-				
-			</div>
-		</div>
+		
    </div>
+   
+   
+   
+   
+   
+   
+   
    <div th:include="footer :: footer"></div> 
    <input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none"> 
     <script src="js/jquery.min.js"></script>

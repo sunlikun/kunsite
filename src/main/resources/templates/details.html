@@ -88,10 +88,12 @@
                  	
                  	tableContent += '<img src="'+thumbnailid+'" class="img-responsive"  width="95%" height="100%"><br>';
                  	thumbnailGroup+=tableContent;
+                 	
             	}
               	
                 
                 $("#thumbnail").append(thumbnailGroup);
+               
               	
              }
               
@@ -139,6 +141,12 @@
 	            }
 	            });
 	 }
+	 
+	
+
+	
+
+	  
 	</script>
   </head>
   <body>
@@ -173,6 +181,8 @@
 <div th:include="footer :: footer"></div> 
 	<input id="coverid" th:value="${id}" name="coverid" type="text" style="display: none"> 
 	<input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none"> 
+	<input id="gold_coin" th:value="${gold_coin}" name="gold_coin" type="text" style="display: none">
+	<input id="t_gold_coin"  th:value="${t_gold_coin}"  name="t_gold_coin" type="text" style="display: none">  
 	
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -203,7 +213,7 @@
 		  app.islogin();
 		
 		
-		new Vue({
+		var app1=new Vue({
 			  el: '#app1',
 			  data: {
 				  
@@ -212,84 +222,108 @@
 			  methods:{
 				 
 				  download: function (event) {
-				       //alert(this.user_name)
-				        var id=$("#id").val();
-				    	//alert(baiduyun_pass)
-				    	var baiduyun_pass=document.getElementById("baiduyun_pass");  
-				    	baiduyun_pass.select(); // 选择对象  
-				    	document.execCommand("Copy"); // 执行浏览器复制命令  
-				    	
-				    	//手机端
-				    	var clipboard = new Clipboard('#baiduyun_pass')
-				        clipboard.on('success', e => {
-				          console.log('复制成功')
-				          // 释放内存
-				          clipboard.destroy()
-				        })
-				        clipboard.on('error', e => {
-				          // 不支持复制
-				          console.log('该浏览器不支持自动复制')
-				          // 释放内存
-				          clipboard.destroy()
-				        })
-				
-				    	
-				    	/* var form=$("<form>");//定义一个form表单
-						form.attr("style","display:none");
-						form.attr("target","");
-						form.attr("method","post");
-						form.attr("action","/download");
-						var input1=$("<input>");
-						input1.attr("type","hidden");
-						input1.attr("name","id");
-						input1.attr("value",id);
-						$("body").append(form);//将表单放置在web中
-						form.append(input1);  
-						form.submit();//表单提交    */
-				     	//发送 post 请求
-				     	    var newWin=window.open();
-						
-		                    this.$http.post('/download',{id:id},{emulateJSON:true}).then(function(res){
-		                    	
-		                	if(res.body.result=='login'){
-		                		//window.open(res.body.url);
-		                		 // 打开页面，此处最好使用提示页面  
-		                		
-		        					//location.href=res.body.url;
-		                		 //alert(res.body.url)
-		                		 this.baiduyun_address=res.body.url;
-		        					//window.open(res.data); 
-		        				// 重定向到目标页面  
-                                  newWin.location.href = "/todown";  
-		                		//window.open("/todown");
-		                	}else{
-		                		newWin.close();
-		                		alert("请先登陆");
-		                	};    
-		                },function(res){
-		                    console.log(res.data);
-		                }); 
+					  
+					     //验证当前用户的金币数是否足够
+					     var gold_coin=$("#gold_coin").val();//用户金币数
+				    	 var t_gold_coin=$("#t_gold_coin").val();//下载所需金币
+					    
+
+						    	//alert(this.user_name)
+							        var id=$("#id").val();
+							    	//alert(baiduyun_pass)
+							    	var baiduyun_pass=document.getElementById("baiduyun_pass");  
+							    	baiduyun_pass.select(); // 选择对象  
+							    	document.execCommand("Copy"); // 执行浏览器复制命令  
+							    	
+							    	//手机端
+							    	var clipboard = new Clipboard('#baiduyun_pass')
+							        clipboard.on('success', e => {
+							          console.log('复制成功')
+							          // 释放内存
+							          clipboard.destroy()
+							        })
+							        clipboard.on('error', e => {
+							          // 不支持复制
+							          console.log('该浏览器不支持自动复制')
+							          // 释放内存
+							          clipboard.destroy()
+							        })
+							
+							    	
+							    	/* var form=$("<form>");//定义一个form表单
+									form.attr("style","display:none");
+									form.attr("target","");
+									form.attr("method","post");
+									form.attr("action","/download");
+									var input1=$("<input>");
+									input1.attr("type","hidden");
+									input1.attr("name","id");
+									input1.attr("value",id);
+									$("body").append(form);//将表单放置在web中
+									form.append(input1);  
+									form.submit();//表单提交    */
+							     	//发送 post 请求
+						     	   
+								
+				                    this.$http.post('/download',{id:id},{emulateJSON:true}).then(function(res){
+				                    	
+						                	if(res.body.result=='login'){
+						                		//window.open(res.body.url);
+						                		 // 打开页面，此处最好使用提示页面  
+						                		//location.href=res.body.url;
+						                		 //alert(res.body.url)
+						                		  if(gold_coin>=t_gold_coin){//用户金币数足够
+						    	 						var msg=confirm("当前拥有"+gold_coin+"金币，下载需要"+t_gold_coin+"金币");
+		
+								    					if(msg==true)
+		
+								     					{ 
+								    						 this.baiduyun_address=res.body.url;
+									        					//window.open(res.data); 
+									        				// 重定向到目标页面  
+									        				 var newWin=window.open();
+							                                 newWin.location.href = "/todown?t_gold_coin="+t_gold_coin;  
+							                                 location.reload()
+									                		//window.open("/todown");
+								     					}
+								    					
+						                		  }else{//用户金币数不足
+						 					    	 alert("当前拥有"+gold_coin+"金币，下载需要"+t_gold_coin+"金币，金币不足请前往充值！");
+						 					     	}	
+										  }else{
+											  				var newWin=window.open();
+									                		newWin.close();
+									                		alert("请先登陆");
+						                	};    
+				                },function(res){
+				                    console.log(res.data);
+				                }); 
+
+						    
+					    
+					     
+					  
+					  	
+					  
+					  
+				       
 				       
 				   },
-				   downloads: function (event) {
-				       //alert(this.user_name)
-				        /* var url=$("#baiduyun_address").val();
-				        var form = document.createElement("form");
-				        form.action = this.baiduyun_address;
-				        form.target = '_blank';
-
-				        form.method = 'POST';
-
-				        document.body.appendChild(form);
-				        form.submit(); */
-				        
-				       //window.open("/todown");
-				        
+				   getUser: function () {
+				       
+					 
+					     this.$http.post('/get_user',{user_name:user_name},{emulateJSON:true}).then(function(res){//查询当前用户的金币数
+					    	        var gold_coin=res.body.gold_coin;
+					    	        $("#gold_coin").val(gold_coin);
+					                	
+					     },function(res){
+					                    console.log(res.data);
+					     }); 
 				   }
 			    }
 			
 			})
-		  
+		 app1.getUser();
 	
   </script>
   </body>

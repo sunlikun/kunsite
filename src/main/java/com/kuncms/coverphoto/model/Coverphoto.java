@@ -13,7 +13,16 @@ private String updateby;
 private String video_name;
 private String flag;
 private String baiduyun_address;
+private int gold_coin;
+
+public int getGold_coin() {
+	return gold_coin;
+}
+public void setGold_coin(int gold_coin) {
+	this.gold_coin = gold_coin;
+}
 private String baiduyun_pass;
+
 
 public String getBaiduyun_address() {
 	return baiduyun_address;

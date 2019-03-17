@@ -15,4 +15,6 @@ public interface UserDao {
 
 	public ArrayList<User> check_username(User user);
 
+	public void update(User loginuser);
+
 }

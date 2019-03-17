@@ -28,6 +28,7 @@ import com.kuncms.coverphoto.model.Coverphoto;
 import com.kuncms.coverphoto.service.CoverphotoService;
 import com.kuncms.thumbnail.service.ThumbnailService;
 import com.kuncms.user.model.User;
+import com.kuncms.user.service.UserService;
 import com.kuncms.videoinfo.model.Videoinfo;
 import com.kuncms.videoinfo.service.VideoInfoService;
 
@@ -40,9 +41,11 @@ public class ThumbnailController {
 	ThumbnailService thumbnailService;
 	@Autowired
 	CoverphotoService coverphotoService;
+	@Autowired
+	UserService userService;
 	
 	@RequestMapping("/todown")
-    public String todown(Map<String,Object> map,String id,User user,Model model,HttpServletRequest request){
+    public String todown(Map<String,Object> map,String id,User user,Model model,HttpServletRequest request,int t_gold_coin){
 	   
 		Coverphoto coverphoto=new Coverphoto();
 	    coverphoto.setId(id);
@@ -52,6 +55,20 @@ public class ThumbnailController {
  		   model.addAttribute("url",url);
 			   
  	   };
+ 	   
+ 	   //扣除用户对应的金币
+ 	   HttpSession session=request.getSession();
+ 	   String user_name=(String) session.getAttribute("loginName");
+ 	   user.setUser_name(user_name);
+ 	   ArrayList<User> userl=(ArrayList<User>) userService.check_username(user);
+		User loginuser=null;
+		if(userl.size()>0){
+			 loginuser=userl.get(0);
+		}
+		int  goldCoin=Integer.parseInt(loginuser.getGold_coin());
+		int  rgoldCoin=goldCoin-t_gold_coin;
+		loginuser.setGold_coin(String.valueOf(rgoldCoin));
+		userService.update(loginuser);
 		
 		return "download";
 	
@@ -149,11 +166,12 @@ public class ThumbnailController {
 	
 	
 	@RequestMapping("/details")
-    public String details(Map<String,Object> map,String id,String baiduyun_pass,String baiduyun_address,Model model,HttpServletRequest request){
+    public String details(Map<String,Object> map,String id,String baiduyun_pass,String baiduyun_address,String t_gold_coin,Model model,HttpServletRequest request){
 	   //ArrayList<Coverphoto> list=thumbnailService.queryCoverPhoto();
 	   //com.alibaba.fastjson.JSONArray array= com.alibaba.fastjson.JSONArray.parseArray(JSON.toJSONString(list));
 	   //model.addAttribute("data", array.toJSONString());
 		model.addAttribute("id",id);
+		model.addAttribute("t_gold_coin",t_gold_coin);
 //		BASE64Decoder decoder = new BASE64Decoder();
 //		byte[] b;
 //		try {
@@ -166,9 +184,12 @@ public class ThumbnailController {
 //       
 		HttpSession session=request.getSession();
 		String user_name=(String) session.getAttribute("loginName");
-		System.out.println(user_name+"6666666666");
+		String gold_coin=(String) session.getAttribute("gold_coin");
+		//User loginuser=(User) session.getAttribute("loginuser");
+		System.out.println(t_gold_coin+"6666666666");
 		model.addAttribute("baiduyun_pass",baiduyun_pass);
 		model.addAttribute("user_name",user_name);
+		model.addAttribute("gold_coin",gold_coin);
 		model.addAttribute("baiduyun_address",baiduyun_address);
        return "details";
     }

@@ -35,6 +35,26 @@ public class CoreController {
 	
 	
 	/**
+	 * 跳转到充值页面
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping("/recharge")
+    public String recharge(Map<String,Object> map,Model model,HttpServletRequest request){
+	   //ArrayList<Coverphoto> list=thumbnailService.queryCoverPhoto();
+	   //com.alibaba.fastjson.JSONArray array= com.alibaba.fastjson.JSONArray.parseArray(JSON.toJSONString(list));
+	   //model.addAttribute("data", array.toJSONString());
+		HttpSession session=request.getSession();
+		String user_name=(String) session.getAttribute("loginName");
+		model.addAttribute("user_name",user_name);
+		
+       return "recharge";
+    }
+	
+	
+	
+	
+	/**
 	 * 跳转到会员中心
 	 * @param map
 	 * @return
@@ -127,6 +147,7 @@ public class CoreController {
 			model.addAttribute("user_name",loginuser.getUser_name());
 			HttpSession session = request.getSession();
 	        session.setAttribute("loginName",loginuser.getUser_name());
+	        session.setAttribute("gold_coin",loginuser.getGold_coin());
 		}else{
 			flag=false;
 		}
