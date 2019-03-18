@@ -225,6 +225,7 @@
    </div>
    <div th:include="footer :: footer"></div> 
    <input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none"> 
+   <input id="code" th:value="${code}" name="code" type="text" style="display: show"> 
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/scripts.js"></script>
@@ -232,6 +233,8 @@
     <script type="text/javascript">
     
         var user_name=$("#user_name").val();
+        var code=$("#code").val();
+        alert(code)
 		var app=new Vue({
 			  el: '#app',
 			  data: {
@@ -245,6 +248,31 @@
 					  if(user_name!=null&&user_name!=''){
 						  
 						  this.plays=false;
+					  }
+				  },
+				  wechat_login: function () {
+					  
+					  if(code!=null&&code!=''){
+						  var url="https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx91f183b1c7308950&secret=71615504670090&code="+code+"&grant_type=authorization_code";
+						  
+						  this.$http.post(url,{},{emulateJSON:true}).then(function(res){
+			                	 
+			                	if(res.body.errcode=='40029'){
+			                		
+			                		alert("登陆有误!");
+			                		
+			                	}else{
+			                		var access_token=res.body.access_token;
+			                		var expires_in=res.body.expires_in;
+			                		var refresh_token=res.body.refresh_token;
+			                		var openid=res.body.openid;
+			                		var scope=res.body.scope;
+			                		var unionid=res.body.unionid;
+			                		
+			                	}
+			                },function(res){
+			                    console.log(res.data);
+			                });
 					  }
 				  }
 			    }

@@ -32,13 +32,14 @@ public class VideoInfoController {
     
     
     @RequestMapping("/index")
-    public String index(Map<String,Object> map,HttpServletRequest request,Model model){
+    public String index(Map<String,Object> map,HttpServletRequest request,Model model,String code){
        String videocode=request.getParameter("videocode");
        //Videoinfo  videoinfo=videoInfoService.serachvideo("videocode");
        System.out.println("首页");
        HttpSession session=request.getSession();
-		String user_name=(String) session.getAttribute("loginName");
-		model.addAttribute("user_name",user_name);
+       String user_name=(String) session.getAttribute("loginName");
+	   model.addAttribute("user_name",user_name);
+	   model.addAttribute("code",code);
        //map.put("hello",videoinfo);
        return "index";
     }

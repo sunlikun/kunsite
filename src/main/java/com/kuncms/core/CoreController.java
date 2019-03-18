@@ -31,6 +31,22 @@ public class CoreController {
        return "bootstrap";
     }
 	
+	/**
+	 * 跳转到微信登陆
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping("wechat_login")
+    public String wechat_login(Map<String,Object> map,Model model,HttpServletRequest request){
+	   //ArrayList<Coverphoto> list=thumbnailService.queryCoverPhoto();
+	   //com.alibaba.fastjson.JSONArray array= com.alibaba.fastjson.JSONArray.parseArray(JSON.toJSONString(list));
+	   //model.addAttribute("data", array.toJSONString());
+		//HttpSession session=request.getSession();
+		//String user_name=(String) session.getAttribute("loginName");
+		//model.addAttribute("user_name",user_name);
+		
+       return "wechat_login";
+    }
 	
 	
 	
