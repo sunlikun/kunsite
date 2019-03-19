@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -20,7 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
-
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.kuncms.coverphoto.dao.CoverphotoDao;
 import com.kuncms.coverphoto.model.Coverphoto;
 import com.kuncms.coverphoto.service.CoverphotoService;
@@ -34,6 +36,56 @@ public class CoverphotoController {
 	private CoverphotoDao coverphotoDao;
 	@Autowired
 	CoverphotoService coverphotoService;
+	
+	
+	
+	
+	@RequestMapping("queryAllCoverPhoto")
+	public void queryAllCoverPhoto(HttpServletResponse response) throws IOException {
+		
+		ArrayList<Coverphoto> list=coverphotoService.queryCoverPhoto();
+		
+		 response.setContentType("application/json");
+	        response.setHeader("Pragma", "No-cache");
+	        response.setHeader("Cache-Control", "no-cache");
+	        response.setCharacterEncoding("UTF-8");
+	        
+	        JSONArray listArray=JSONArray.fromObject(list);     
+	        PrintWriter out= null;
+	        out = response.getWriter();
+	        out.print(listArray.toString());
+	        System.out.println(listArray.toString());
+	        out.flush();
+	        out.close();
+	
+		
+		
+	}
+	
+	
+	
+	@RequestMapping("/queryMoreCoverPhoto")
+	
+	public void queryMoreCoverPhoto(HttpServletResponse response,int currentPage, int pageSize) throws IOException {
+		
+			PageHelper.startPage(currentPage , pageSize);
+		 	ArrayList<Coverphoto> list=coverphotoService.queryCoverPhoto();
+	        //得到分页的结果对象
+	        PageInfo<Coverphoto> personPageInfo = new PageInfo<>(list);
+	        //得到分页中的person条目对象
+	        List<Coverphoto> pageList = personPageInfo.getList();
+	       
+	        JSONArray listArray=JSONArray.fromObject(pageList);     
+	        PrintWriter out= null;
+	        out = response.getWriter();
+	        out.print(listArray.toString());
+	        System.out.println(listArray.toString());
+	        out.flush();
+	        out.close();
+	
+		
+		
+	}
 	
 	
 	@RequestMapping("/videomanage")
