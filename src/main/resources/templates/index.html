@@ -234,7 +234,7 @@
     
         var user_name=$("#user_name").val();
         var code=$("#code").val();
-        alert(code)
+        //alert(code)
 		var app=new Vue({
 			  el: '#app',
 			  data: {
@@ -254,8 +254,8 @@
 					  
 					  if(code!=null&&code!=''){
 						  var url="https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx91f183b1c7308950&secret=71615504670090&code="+code+"&grant_type=authorization_code";
-						  
-						  this.$http.post(url,{},{emulateJSON:true}).then(function(res){
+						  Vue.prototype.$http = axios;
+						  this.$http.get(url,{emulateJSON:true}).then(function(res){
 			                	 
 			                	if(res.body.errcode=='40029'){
 			                		
@@ -269,6 +269,8 @@
 			                		var scope=res.body.scope;
 			                		var unionid=res.body.unionid;
 			                		
+			                		alert(access_token);
+			                		
 			                	}
 			                },function(res){
 			                    console.log(res.data);
@@ -280,6 +282,7 @@
 			})
 		
 		  app.islogin();
+		  app.wechat_login();
 	
 	</script>
   </body>

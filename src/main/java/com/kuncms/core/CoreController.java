@@ -22,6 +22,28 @@ public class CoreController {
 	
 	@Autowired
 	UserService userService;
+	
+	
+	
+	
+	
+	@RequestMapping("/getcode")
+    public String getcode(Map<String,Object> map,HttpServletRequest request,Model model,String code,String state){
+     
+       System.out.println(code+"  "+state);
+      
+	   model.addAttribute("state",state);
+	   model.addAttribute("code",code);
+       
+       return "index";
+    }
+	
+	
+	
+	
+	
+	
+	
 	@RequestMapping("/bootstrap")
     public String bootstrap(Map<String,Object> map){
 	   //ArrayList<Coverphoto> list=thumbnailService.queryCoverPhoto();
