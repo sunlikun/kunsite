@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>更多饭拍</title>
+    <title>更多内容</title>
 
     <meta name="description" content="Source code generated using layoutit.com">
     <meta name="author" content="LayoutIt!">
@@ -13,16 +13,19 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/button.css" rel="stylesheet">
-     <link rel="stylesheet" href="../../jqwidgets/styles/jqx.base.css" type="text/css" />
+    <link rel="stylesheet" href="../../jqwidgets/styles/jqx.base.css" type="text/css" />
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
     <script type="text/javascript" src="/scripts/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="/js/jquery.js"></script>
     <script type="text/javascript" src="/js/jqthumb.min.js"></script>
-    
+    <script type="text/javascript" src="/js/jqthumb.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
    
   
      
 	<style>
-	body { width:1700px; margin:50px auto; }
+	body { width:80%; margin:50px auto; }
 	ul {
     display: block;
     overflow: hidden;
@@ -196,6 +199,13 @@
             background-color: #58acf4 !important;
             color: #fff !important;
         }
+        .gimg{
+	
+			max-width: 10%;
+			max-height: 10%;
+			margin: 0 auto;
+	
+		}
    
 	</style>
 	
@@ -204,8 +214,10 @@
   <body bgcolor="#DDDDDD">
 	<div th:include="header :: header"></div> 
 	
-	<div style="margin-top: 250px">
-	<a href="http://www.bootcss.com/" class="button button-rounded button-tiny">今日热门</a>&nbsp;&nbsp;&nbsp;<a href="http://www.bootcss.com/" class="button button-rounded button-tiny">推荐更多饭拍</a>
+	<div style="margin-top: 10%">
+	<!-- 
+	<a href="http://www.bootcss.com/" class="button button-rounded button-tiny">今日热门</a>&nbsp;&nbsp;&nbsp;<a href="http://www.bootcss.com/" class="button button-rounded button-tiny">更多推荐</a>
+	 -->
 	</div>
 	<p></p><p></p>
 	<div class="row">
@@ -236,17 +248,19 @@
 	
 </div>
 
-			  <div id="ele">
-	        		<div class="Pagination">
-	          </div>
 <div class="row">
-		<div class="col-md-8">
-			<div class="row" >
-			<div align="center"><a><font size="5">查看更多饭拍</font></a></div>
-			</div>
-		
+	<div class="col-md-12">
+				
+						<div align="center"> 
+							<div id="ele">
+				        		<div class="Pagination">
+				          	</div>
+				        </div>
+				
+			
 	</div>
 </div>
+
  <div th:include="footer :: footer"></div> 
    <input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none"> 
     <script src="js/jquery.min.js"></script>
@@ -255,6 +269,59 @@
   </body>
 </html>
 <script>
+	
+	
+	/*============================是否登陆验证模块===============================*/
+	
+		var user_name=$("#user_name").val();
+		var code=$("#code").val();
+		var app=new Vue({
+			  el: '#app',
+			  data: {
+				  
+					  content: user_name,
+					  plays:true
+			  },
+			  methods:{
+				  islogin: function () {
+					  
+					  if(user_name!=null&&user_name!=''){
+						  
+						  this.plays=false;
+					  }
+				  },
+				  wechat_login: function () {
+					  
+					  if(code!=null&&code!=''){
+						  var url="https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx91f183b1c7308950&secret=71615504670090&code="+code+"&grant_type=authorization_code";
+						  
+						  this.$http.post(url,{},{emulateJSON:true}).then(function(res){
+			                	 
+			                	if(res.body.errcode=='40029'){
+			                		
+			                		alert("登陆有误!");
+			                		
+			                	}else{
+			                		var access_token=res.body.access_token;
+			                		var expires_in=res.body.expires_in;
+			                		var refresh_token=res.body.refresh_token;
+			                		var openid=res.body.openid;
+			                		var scope=res.body.scope;
+			                		var unionid=res.body.unionid;
+			                		
+			                	}
+			                },function(res){
+			                    console.log(res.data);
+			                });
+					  }
+				  }
+			    }
+			
+			})
+		
+		  app.islogin();
+	
+	/* =================================================================================================================================== */
 	
 	    // prepare the data
 	    var user_name=$("#user_name").val();
@@ -279,7 +346,7 @@
 	        success: function(data){
 	      	var coverphotoArr = data;
 	      	totalCount=coverphotoArr.length;
-	    	totalPage=parseInt(totalCount/12);
+	    	totalPage=Math.ceil(totalCount/12);
 	      	
 	      
 	      	
@@ -297,35 +364,43 @@
         	
         	 $.ajax({
      	        type: "post",
-     	        url: "/queryIndexCoverPhoto",
-     	        data: {},
+     	        url: "/queryMoreCoverPhoto",
+     	        data: {currentPage:page,pageSize:12},
      	        dataType: "json",
-     	        success: function(data){
-     	      	var coverphotoArr = data;
-     	      	var converGroup="";
-     	      	for(var i=0;i<coverphotoArr.length;i++){
-     	      		　　//alert(coverphotoArr[i].coverphotoid);
-     	      		var id=coverphotoArr[i].id;
-     	      		var baiduyun_pass=coverphotoArr[i].baiduyun_pass;
-     	      		//alert(baiduyun_pass)
-     	      		//alert(coverphotoArr[i].coverphotoid)
-     	      		var tableContent="";
-     	            	tableContent += '<div class="col-md-3">';
-     	              tableContent += '<div class="card">';
-     	              tableContent +='<div class="cp">';
-     	              tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'">';
-     	              tableContent += '<img     class="cpimg" src="' + coverphotoArr[i].coverphotoid+ '" >';
-     	              tableContent += '</a>';
-     	              tableContent += '</div>';
-     	              tableContent += '	<div class="card-block">';
-     	              tableContent += '<div style="font-size:24px">"' + coverphotoArr[i].video_name+ '"</div> ';
-     	              tableContent += '</h5>';
-     	              tableContent += '</p>';
-     	              tableContent += '</div></div></div></div>';
-     	            
-     	              converGroup+=tableContent;
-     	              
-     	      	}
+     	       	success: function(data){
+               	var coverphotoArr = data;
+               	var converGroup="";
+               	for(var i=0;i<coverphotoArr.length;i++){
+               		　　//alert(coverphotoArr[i].coverphotoid);
+               		var id=coverphotoArr[i].id;
+               		var baiduyun_pass=coverphotoArr[i].baiduyun_pass;
+               		var baiduyun_address=coverphotoArr[i].baiduyun_address;
+               		//alert(baiduyun_address)
+               		//alert(coverphotoArr[i].coverphotoid)
+               		var tableContent="";
+                     	tableContent += '<div class="col-sm-6 col-md-4">';
+                       tableContent += '<div class="thumbnail">';
+                     
+                       tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'">';
+                       var coverid="/images/"+coverphotoArr[i].coverphotoid.substring(30);
+                      // alert(coverid)
+                       tableContent += '<img  class="img-responsive"   src="' + coverid+ '" >';
+                       tableContent += '</a>';
+                       
+                       tableContent += '<div class="caption">';
+                     	tableContent += '<p>' + coverphotoArr[i].video_name+ '</p>';
+                     	tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币</p>';
+                       tableContent += ' <p><a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'" class="btn btn-primary" role="button"> 查看</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default" role="button">  下载</a></p> ';
+                     
+                       tableContent += '</p>';
+                       tableContent += '<div>';
+                       tableContent += '</div></div></div></div>';
+                       
+                      
+                     
+                       converGroup+=tableContent;
+                       
+               	}
      	   		$("#coverphoto").empty();
      	      	$("#coverphoto").append(converGroup);
      	     	   

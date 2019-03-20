@@ -16,7 +16,7 @@
 
 
     <select id="queryCoverPhoto"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
-        SELECT*FROM coverphoto;
+        SELECT*FROM coverphoto
      </select>
      
      <select id="queryIndexCoverPhoto"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">

@@ -64,10 +64,17 @@ public class CoverphotoController {
 	
 	
 	
+	/**
+	 * @param response
+	 * @param currentPage
+	 * @param pageSize
+	 * @throws IOException
+	 * 更多页面进行分页
+	 */
 	@RequestMapping("/queryMoreCoverPhoto")
 	
 	public void queryMoreCoverPhoto(HttpServletResponse response,int currentPage, int pageSize) throws IOException {
-		
+		//System.out.println(currentPage+"   "+pageSize);
 			PageHelper.startPage(currentPage , pageSize);
 		 	ArrayList<Coverphoto> list=coverphotoService.queryCoverPhoto();
 	        //得到分页的结果对象
@@ -82,9 +89,6 @@ public class CoverphotoController {
 	        System.out.println(listArray.toString());
 	        out.flush();
 	        out.close();
-	
-		
-		
 	}
 	
 	
