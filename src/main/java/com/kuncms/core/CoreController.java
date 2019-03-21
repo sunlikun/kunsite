@@ -1,9 +1,11 @@
 package com.kuncms.core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
@@ -16,6 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONObject;
 import com.kuncms.user.model.User;
 import com.kuncms.user.service.UserService;
+import com.kuncms.util.HttpClientUtils;
+
+
+
 
 @Controller
 public class CoreController {
@@ -23,10 +29,85 @@ public class CoreController {
 	@Autowired
 	UserService userService;
 	
+	/**
+	 * @param request
+	 * @param model
+	 * @param access_token
+	 * @param openid
+	 * @return
+	 * 获取微信登陆信息并完成网站登陆
+	 */
+	@RequestMapping("get_user_info")
+	public String get_user_info(HttpServletRequest request,Model model,String access_token,String openid){
+     
+	   String str="";
+       String url="https://api.weixin.qq.com/sns/userinfo";
+       Map<String, Object> map=new HashMap<>();
+       map.put("access_token", access_token);
+       map.put("openid", openid);
+       HttpClientUtils httpAPIService=new HttpClientUtils();
+ 		try {
+			str = httpAPIService.sendGet(url, map);
+			JSONObject userobj = JSONObject.parseObject(str);
+			if(userobj!=null){
+				model.addAttribute("user_name",userobj.get("nickname"));
+				HttpSession session = request.getSession();
+		        session.setAttribute("loginName",userobj.get("nickname"));
+		        session.setAttribute("sex",userobj.get("nickname"));
+		        session.setAttribute("gold_coin",0);
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    
+	  return "index";
+    }
+	
+	
+	/**
+	 * @param request
+	 * @param model
+	 * @param code
+	 * @return
+	 * 获取access_token
+	 */
+	@RequestMapping("get_access_token")
+	@ResponseBody
+    public String get_access_token(HttpServletRequest request,Model model,String code){
+     
+       System.out.println("微信请求code"+code);
+       String str="";
+       String url="https://api.weixin.qq.com/sns/oauth2/access_token";
+       Map<String, Object> map=new HashMap<>();
+       map.put("appid", "wx91f183b1c7308950");
+       map.put("secret", "9d92e6d3dd3674d70dcfc3f1b0d157af");
+       map.put("code", code);
+       map.put("grant_type", "authorization_code");
+       HttpClientUtils httpAPIService=new HttpClientUtils();
+ 		try {
+			str = httpAPIService.sendGet(url, map);
+			System.out.println(str);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    
+	  return str;
+    }
 	
 	
 	
-	
+	/**
+	 * @param map
+	 * @param request
+	 * @param model
+	 * @param code
+	 * @param state
+	 * @return
+	 * 获取微信登陆的code
+	 */
 	@RequestMapping("/getcode")
     public String getcode(Map<String,Object> map,HttpServletRequest request,Model model,String code,String state){
      
