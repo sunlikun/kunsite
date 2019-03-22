@@ -30,6 +30,7 @@ public class UserService {
 		String time=format.format(date);
 		user.setCreate_time(time);
 		user.setUpdate_time(time);
+		user.setGold_coin("0");
 		userDao.newsignup(user);
 	}
 	public List<User> login_operate(User user) {
@@ -43,6 +44,11 @@ public class UserService {
 	public void update(User loginuser) {
 		// TODO Auto-generated method stub
 		userDao.update(loginuser);
+	}
+	
+	public ArrayList<User> isRegister(User user) {
+		// TODO Auto-generated method stub
+		return userDao.isRegister(user);
 	}
 
 }

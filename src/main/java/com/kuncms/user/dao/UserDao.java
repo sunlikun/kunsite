@@ -17,4 +17,6 @@ public interface UserDao {
 
 	public void update(User loginuser);
 
+	public ArrayList<User> isRegister(User user);
+
 }

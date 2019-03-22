@@ -1,0 +1,60 @@
+.charge-form-container {
+  width: 700px;
+  margin:0 auto;
+}
+
+.charge-form {
+
+}
+.charge-group {
+}
+
+.charge-group__inner {
+  flex-wrap: wrap;
+  display: flex;
+  margin: 0 -10px;
+  flex-direction: row;
+}
+
+.charge-item {
+  position: relative;
+  margin: 0 1% 10px;
+  box-sizing: border-box;
+  width: 31.33333%;
+  cursor: pointer;
+}
+.charge-item > input[type=radio] {
+  visibility: hidden;
+  position: absolute;
+}
+
+.charge-item__inner {
+  text-align: center;
+  border: 1px solid #eee;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.charge-item__inner > p {
+  margin: 0;
+}
+
+.charge-item__inner > span {
+
+}
+
+.charge-item input[type=radio]:checked ~ .charge-item__inner {
+  color: lightblue;
+  border-color: lightblue;
+}
+
+.wechat-label {
+  background: url("/img/wechat_pay_bg.jpg") center center no-repeat;
+  background-size: contain;
+  width: 100%;
+  height: 40px;
+}
+

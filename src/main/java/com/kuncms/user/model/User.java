@@ -13,9 +13,30 @@ private String email;            //邮箱地址
 private String user_class;       //用户类型
 private String user_status;      //用户状态
 private String flag;
+private String openid;       //普通用户的标识(wecaht)
+private String headimgurl;      //用户头像
+private String is_wechat;	 //是否是微信用户
 
 
 
+public String getOpenid() {
+	return openid;
+}
+public void setOpenid(String openid) {
+	this.openid = openid;
+}
+public String getHeadimgurl() {
+	return headimgurl;
+}
+public void setHeadimgurl(String headimgurl) {
+	this.headimgurl = headimgurl;
+}
+public String getIs_wechat() {
+	return is_wechat;
+}
+public void setIs_wechat(String is_wechat) {
+	this.is_wechat = is_wechat;
+}
 public String getIntegral() {
 	return integral;
 }

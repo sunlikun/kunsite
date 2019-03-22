@@ -177,8 +177,8 @@
 				    
 				    <div>
 				        <ul class="nav navbar-nav">
-				            <li> <a href="" class="navbar-brand">秘书台</a></li>
-				            <li><a href="index" class="navbar-brand">高贝首页</a></li>
+				            <li> <a href="" class="navbar-brand">充值中心</a></li>
+				          
 				         </ul>
 				    </div>
 				    </div>
@@ -188,10 +188,10 @@
 	</div>
 		<p></p><p></p>
 		<div class="row">
-				<div class="col-md-8">
-					 <div class="charge-form-container">
+				<div class="col-md-8" >
+					 <div class="charge-form-container" style="margin-left: 15%" id="app1">
 
-					    <div class="charge-form">
+					    <div class="charge-form" >
 					      <form action="">
 					        <div>
 					          <p>请选择充值金额</p>
@@ -273,7 +273,7 @@
 					              <label class="charge-item">
 					                <input type="radio" name="payType">
 					                <div class="charge-item__inner">
-					                  <button type="button" class="btn btn-info btn-lg">去支付</button>
+					                  <button type="button" class="btn btn-info btn-lg" @click="pay()">去支付</button>
 					                </div>
 					              </label>
 					            </div>
@@ -288,7 +288,7 @@
 					
 						<div align="center"><div id='calendar' style="width: 100%;height: 100%;border:4px solid black">
 								<h2>
-									欢迎访问极品女孩
+									欢迎访问普格娱乐
 								</h2>
 								<p>
 									内容持续更新中
@@ -336,6 +336,23 @@
 			})
 		
 		  app.islogin();
+		
+		
+		var app1=new Vue({
+			  el: '#app1',
+			  data: {
+				  
+				  	 
+					  
+			  },
+			  methods:{
+				  
+				  pay: function () {
+					  
+					  alert("支付功能尚未开放!");
+				  }
+			  }
+			})
 	
 	</script>
   </body>

@@ -1,5 +1,6 @@
 package com.kuncms.user.controller;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
@@ -59,7 +60,7 @@ public class UserController {
   //新用户注册
     
     @RequestMapping("/newsignup")
-    public String newsignup(Map<String,Object> map,User user,Model model){
+    public String newsignup(Map<String,Object> map,User user,Model model) throws ParseException{
     	userService.newsignup(user);
     	model.addAttribute("username",user.getUser_name());
     	model.addAttribute("password",user.getPassword());

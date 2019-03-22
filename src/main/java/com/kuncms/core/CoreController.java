@@ -29,6 +29,27 @@ public class CoreController {
 	@Autowired
 	UserService userService;
 	
+	
+	
+	
+	/**
+	 * @param request
+	 * @param model
+	 * @param code
+	 * @return
+	 * 用户退出登录
+	 */
+	@RequestMapping("exit")
+    public String exit(HttpServletRequest request,Model model,String code){
+		
+	  request.getSession().removeAttribute("loginName");
+	  request.getSession().invalidate();
+    
+	  return "index";
+    }
+	
+	
+	
 	/**
 	 * @param request
 	 * @param model
@@ -48,13 +69,32 @@ public class CoreController {
        HttpClientUtils httpAPIService=new HttpClientUtils();
  		try {
 			str = httpAPIService.sendGet(url, map);
+		
 			JSONObject userobj = JSONObject.parseObject(str);
-			if(userobj!=null){
+			if(userobj.get("nickname")!=null){
+				//返回前台的用户信息
 				model.addAttribute("user_name",userobj.get("nickname"));
+				
+				//将用户信息放入session
 				HttpSession session = request.getSession();
 		        session.setAttribute("loginName",userobj.get("nickname"));
-		        session.setAttribute("sex",userobj.get("nickname"));
+		    	System.out.println(userobj.get("nickname"));
+		        session.setAttribute("sex",userobj.get("sex"));
 		        session.setAttribute("gold_coin",0);
+		        
+		        //判断此微信用户是否是第一次登陆如果是则在用户表中插入一条新的记录
+		        User user=new User();
+		        user.setOpenid(openid);
+		        user.setIs_wechat("1");
+		        user.setUser_name((String) userobj.get("nickname"));
+		        ArrayList<User> userlis=userService.isRegister(user);
+		        if(userlis.size()>0){//已经注册
+		        	  session.setAttribute("gold_coin",userlis.get(0).getGold_coin());
+		        }else{//尚未注册
+		        	userService.newsignup(user);
+		        }
+		        
+		        
 			}
 			
 		} catch (Exception e) {
