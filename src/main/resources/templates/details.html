@@ -265,9 +265,9 @@
 							     	//发送 post 请求
 						     	   
 								
-				                    this.$http.post('/download',{id:id},{emulateJSON:true}).then(function(res){
+				                   // this.$http.post('/download',{id:id},{emulateJSON:true}).then(function(res){
 				                    	
-						                	if(res.body.result=='login'){
+						           if(user_name!=''&&user_name!=null){
 						                		//window.open(res.body.url);
 						                		 // 打开页面，此处最好使用提示页面  
 						                		//location.href=res.body.url;
@@ -278,7 +278,7 @@
 								    					if(msg==true)
 		
 								     					{ 
-								    						 this.baiduyun_address=res.body.url;
+								    						 //this.baiduyun_address=res.body.url;
 									        					//window.open(res.data); 
 									        				// 重定向到目标页面  
 									        				 var newWin=window.open();
@@ -290,14 +290,14 @@
 						                		  }else{//用户金币数不足
 						 					    	 alert("当前拥有"+gold_coin+"金币，下载需要"+t_gold_coin+"金币，金币不足请前往充值！");
 						 					     	}	
-										  }else{
-											  				var newWin=window.open();
-									                		newWin.close();
+									}else{
+											  				//var newWin=window.open();
+									                		//newWin.close();
 									                		alert("请先登陆");
-						                	};    
-				                },function(res){
-				                    console.log(res.data);
-				                }); 
+						            };    
+				               // },function(res){
+				               //     console.log(res.data);
+				               // }); 
 
 						    
 					    

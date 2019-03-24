@@ -82,7 +82,7 @@ public class ThumbnailController {
 	@RequestMapping("/download")
     public String details(Map<String,Object> map,String id,Model model,HttpServletRequest request){
 		
-	  //判断用户是否登陆，如果没有则禁止登陆
+	  //判断用户是否登陆，如果没有则禁止下载
 		HttpSession session=request.getSession();
 		String user_name=(String) session.getAttribute("loginName");
 		String result="";

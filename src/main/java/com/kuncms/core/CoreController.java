@@ -225,9 +225,15 @@ public class CoreController {
 	   //model.addAttribute("data", array.toJSONString());
 		HttpSession session=request.getSession();
 		String user_name=(String) session.getAttribute("loginName");
+		String result="";
+		if(user_name==null){
+			result="login";
+		}else{
+			result="membership";
+		}
 		model.addAttribute("user_name",user_name);
 		
-       return "membership";
+       return result;
     }
 	
 	
