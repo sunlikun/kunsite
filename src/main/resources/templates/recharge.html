@@ -198,59 +198,73 @@
 					          <div class="charge-group">
 					            <div class="charge-group__inner">
 					              <label class="charge-item">
-					                <input type="radio" name="amount">
+					                <input type="radio" name="amount" value="10">
 					                <div class="charge-item__inner">
-					                  <p>100元</p>
+					                  <p>10元</p>
 					                  <span>100金币</span>
 					                </div>
 					              </label>
 					              <label class="charge-item">
-					                <input type="radio" name="amount">
+					                <input type="radio" name="amount" value="20">
 					                <div class="charge-item__inner">
-					                  <p>100元</p>
-					                  <span>100金币</span>
+					                  <p>20元</p>
+					                  <span>200金币</span>
 					                </div>
 					              </label>
 					              <label class="charge-item">
-					                <input type="radio" name="amount">
+					                <input type="radio" name="amount" value="30">
 					                <div class="charge-item__inner">
-					                  <p>100元</p>
-					                  <span>100金币</span>
+					                  <p>30元</p>
+					                  <span>300金币</span>
 					                </div>
 					              </label>
 					              <label class="charge-item">
-					                <input type="radio" name="amount">
+					                <input type="radio" name="amount" value="40">
 					                <div class="charge-item__inner">
-					                  <p>100元</p>
-					                  <span>100金币</span>
+					                  <p>40元</p>
+					                  <span>400金币</span>
 					                </div>
 					              </label>
 					              <label class="charge-item">
-					                <input type="radio" name="amount">
+					                <input type="radio" name="amount" value="50">
 					                <div class="charge-item__inner">
-					                  <p>100元</p>
-					                  <span>100金币</span>
+					                  <p>50元</p>
+					                  <span>500金币</span>
 					                </div>
 					              </label>
 					              <label class="charge-item">
-					                <input type="radio" name="amount">
+					                <input type="radio" name="amount" value="60">
 					                <div class="charge-item__inner">
-					                  <p>100元</p>
-					                  <span>100金币</span>
+					                  <p>60元</p>
+					                  <span>600金币</span>
 					                </div>
 					              </label>
 					              <label class="charge-item">
-					                <input type="radio" name="amount">
+					                <input type="radio" name="amount" value="70">
 					                <div class="charge-item__inner">
-					                  <p>100元</p>
-					                  <span>100金币</span>
+					                  <p>70元</p>
+					                  <span>700金币</span>
 					                </div>
 					              </label>
 					              <label class="charge-item">
-					                <input type="radio" name="amount">
+					                <input type="radio" name="amount" value="80">
+					                <div class="charge-item__inner">
+					                  <p>80元</p>
+					                  <span>800金币</span>
+					                </div>
+					              </label>
+					              <label class="charge-item">
+					                <input type="radio" name="amount" value="90">
+					                <div class="charge-item__inner">
+					                  <p>90元</p>
+					                  <span>900金币</span>
+					                </div>
+					              </label>
+					              <label class="charge-item">
+					                <input type="radio" name="amount" value="100">
 					                <div class="charge-item__inner">
 					                  <p>100元</p>
-					                  <span>100金币</span>
+					                  <span>1000金币</span>
 					                </div>
 					              </label>
 					            </div>
@@ -348,8 +362,31 @@
 			  methods:{
 				  
 				  pay: function () {
-					  
-					  alert("支付功能尚未开放!");
+					
+					//获取当前选中值
+					var val = $('input[name="amount"]:checked').val();
+					if(val==undefined){
+						alert("请选择充值的金额");
+						return false;
+					}
+				
+					var form=$("<form>");//定义一个form表单
+          			form.attr("style","display:none");
+          			form.attr("target","");
+          			form.attr("method","post");
+          			form.attr("action","alipay");
+          			var input1=$("<input>");
+          			input1.attr("type","hidden");
+          			input1.attr("name","val");
+          			input1.attr("value",val);
+          			var input2=$("<input>");
+          			input2.attr("type","hidden");
+          			input2.attr("name","openid");
+          			input2.attr("value","");
+          			$("body").append(form);//将表单放置在web中
+          			form.append(input1);  
+          			form.append(input2);  
+          			form.submit();//表单提交 
 				  }
 			  }
 			})

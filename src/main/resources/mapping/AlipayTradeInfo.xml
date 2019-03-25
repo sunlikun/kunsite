@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kuncms.pay.dao.AlipayTradeInfoDao" >
+
+    <select id="queryThumbnail"  parameterType="com.kuncms.thumbnail.model.Thumbnail"  resultType="com.kuncms.thumbnail.model.Thumbnail">
+        SELECT*FROM thumbnail u where 1=1 
+         <if test="coverid != null and coverid !=''" >
+        	and u.coverid=#{coverid}
+      	</if>
+     </select>
+    
+    <insert id="insert"  parameterType="com.kuncms.pay.dao.AlipayTradeInfo">
+		insert into alipay_tradeinfo(id,user_name,trade_no,trade_status,notify_time,total_amount,subject,gmt_create,gmt_payment,gmt_close) values(#{id},
+		#{user_name},#{trade_no},#{trade_status},#{notify_time},#{total_amount},#{subject},#{gmt_create},#{gmt_payment},#{gmt_close})
+ 	</insert>
+  
+
+</mapper>

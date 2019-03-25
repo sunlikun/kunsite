@@ -27,8 +27,11 @@
 		<!-- thymeleaf2   layout1-->
 		<thymeleaf-layout-dialect.version>2.2.2</thymeleaf-layout-dialect.version>
 	</properties>
+	
 
 	<dependencies>
+	
+	
 		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -168,6 +171,13 @@
         </dependency>
         <!-- /数据解析所需包 -->  
         
+        <!-- https://mvnrepository.com/artifact/com.alipay.sdk/alipay-sdk-java -->
+		<dependency>
+		    <groupId>com.alipay.sdk</groupId>
+		    <artifactId>alipay-sdk-java</artifactId>
+		    <version>3.7.4.ALL</version>
+		</dependency>
+
       
 
 	</dependencies>
