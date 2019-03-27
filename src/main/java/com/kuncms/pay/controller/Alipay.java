@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -24,8 +25,13 @@ import com.alipay.api.request.AlipayOpenPublicTemplateMessageIndustryModifyReque
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.response.AlipayOpenPublicTemplateMessageIndustryModifyResponse;
 import com.kuncms.pay.AlipayConfig;
+import com.kuncms.pay.model.AlipayTradeInfo;
+import com.kuncms.pay.service.AlipayTradeInfoService;
+import com.kuncms.thumbnail.service.ThumbnailService;
 @Controller
 public class Alipay {
+	@Autowired
+	AlipayTradeInfoService alipayTradeInfoService;
 	
 	String ALIPAY_PUBLIC_KEY="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAq1YFDOCdntE9FZIQdb+R\r\n" + 
 			"qSwTiD93M+VzrYhB9S6cOQr3c83IMWNSlt5sQusm1gtlj4QGaQFd6xsDp1eYuUCj\r\n" + 
@@ -98,13 +104,14 @@ public class Alipay {
 			AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do", APP_ID, APP_PRIVATE_KEY, FORMAT, CHARSET, ALIPAY_PUBLIC_KEY, SIGN_TYPE); //获得初始化的AlipayClient
 			AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
 			String url=httpRequest.getScheme()+"://"+httpRequest.getServerName()+":"+httpRequest.getServerPort();
-			alipayRequest.setReturnUrl("http://"+url+"/index");
-			alipayRequest.setNotifyUrl("http://"+url+"/notify");//在公共参数中设置回跳和通知地址
+			System.out.println(url);
+			alipayRequest.setReturnUrl(url+"/index");
+			alipayRequest.setNotifyUrl(url+"/notify");//在公共参数中设置回跳和通知地址
 			String out_trade_no=UUID.randomUUID().toString();
 			alipayRequest.setBizContent("{" +
 			"    \"out_trade_no\":\""+out_trade_no+"\"," +
 			"    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
-			"    \"total_amount\":\""+val+"\"," +
+			"    \"total_amount\":\"0.01\"," +
 			"    \"subject\":\"普格娱乐金币充值\"," +
 			"    \"body\":\"普格娱乐金币充值\"," +
 			"    \"passback_params\":\"merchantBizType%3d3C%26merchantBizNo%3d2016010101111\"," +
@@ -125,10 +132,13 @@ public class Alipay {
 	}
 	
 	
-	@RequestMapping("notify")
-	public void notify(HttpServletRequest request, HttpServletResponse response,String val) throws ServletException, IOException, AlipayApiException {
+	
+	@RequestMapping(value = "/notify", produces = "application/json; charset=utf-8")
+	public void notify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, AlipayApiException {
+		System.out.println("支付宝交易异步通知");
+		
 		//获取支付宝POST过来反馈信息
-		PrintWriter out = response.getWriter();
+		
 		Map<String,String> params = new HashMap<String,String>();
 		Map<String,String[]> requestParams = request.getParameterMap();
 		for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext();) {
@@ -140,12 +150,12 @@ public class Alipay {
 						: valueStr + values[i] + ",";
 			}
 			//乱码解决，这段代码在出现乱码时使用
-			valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+			//valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
 			params.put(name, valueStr);
 		}
 		
-		boolean signVerified = AlipaySignature.rsaCheckV1(params, AlipayConfig.alipay_public_key, AlipayConfig.charset, AlipayConfig.sign_type); //调用SDK验证签名
-
+		boolean signVerified = AlipaySignature.rsaCheckV1(params,ALIPAY_PUBLIC_KEY, CHARSET, SIGN_TYPE); //调用SDK验证签名
+		
 		//——请在这里编写您的程序（以下代码仅作参考）——
 		
 		/* 实际验证过程建议商户务必添加以下校验：
@@ -154,7 +164,9 @@ public class Alipay {
 		3、校验通知中的seller_id（或者seller_email) 是否为out_trade_no这笔单据的对应的操作方（有的时候，一个商户可能有多个seller_id/seller_email）
 		4、验证app_id是否为该商户本身。
 		*/
+		System.out.println("signVerified:"+signVerified);
 		if(signVerified) {//验证成功
+			System.out.println("验证成功");
 			//商户订单号
 			String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
 		
@@ -187,6 +199,7 @@ public class Alipay {
 			String passback_params = new String(request.getParameter("passback_params").getBytes("ISO-8859-1"),"UTF-8");
 			
 			
+			AlipayTradeInfo alipayTradeInfo=new AlipayTradeInfo();
 			
 			if(trade_status.equals("TRADE_FINISHED")){
 				//判断该笔订单是否在商户网站中已经做过处理
@@ -195,20 +208,32 @@ public class Alipay {
 					
 				//注意：
 				//退款日期超过可退款期限后（如三个月可退款），支付宝系统发送该交易状态通知
+				System.out.println("支付宝交易失败");
 			}else if (trade_status.equals("TRADE_SUCCESS")){
 				//判断该笔订单是否在商户网站中已经做过处理
 				//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 				//如果有做过处理，不执行商户的业务程序
-				
+				System.out.println("支付宝交易成功");
 				//注意：
 				//付款完成后，支付宝系统发送该交易状态通知
+				alipayTradeInfo.setId(out_trade_no);
+				alipayTradeInfo.setGmt_close(gmt_close);
+				alipayTradeInfo.setGmt_create(gmt_create);
+				alipayTradeInfo.setGmt_payment(gmt_payment);
+				alipayTradeInfo.setNotify_time(notify_time);
+				alipayTradeInfo.setSubject(subject);
+				alipayTradeInfo.setTotal_amount(total_amount);
+				alipayTradeInfo.setTrade_no(trade_no);
+				alipayTradeInfo.setTrade_status(trade_status);
+				alipayTradeInfo.setUser_name(passback_params);
+				alipayTradeInfoService.insert(alipayTradeInfo);
 			}
 			
-			out.println("success");
 			
+			  response.getOutputStream().print("success");
 		}else {//验证失败
-			out.println("fail");
-		
+			
+			  response.getOutputStream().print("fail");
 			//调试用，写文本函数记录程序运行情况是否正常
 			//String sWord = AlipaySignature.getSignCheckContentV1(params);
 			//AlipayConfig.logResult(sWord);
@@ -216,4 +241,12 @@ public class Alipay {
 		
 		//——请在这里编写您的程序（以上代码仅作参考）——
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

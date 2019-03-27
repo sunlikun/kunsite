@@ -49,14 +49,13 @@ public class AlipayConfig {
     		"n0KMECgnjknDLns0Pnx8oQ==";
 	
 	// 支付宝公钥,查看地址：https://openhome.alipay.com/platform/keyManage.htm 对应APPID下的支付宝公钥。
-    public static String alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAq1YFDOCdntE9FZIQdb+R\\r\\n\" + \r\n" + 
-    		"			\"qSwTiD93M+VzrYhB9S6cOQr3c83IMWNSlt5sQusm1gtlj4QGaQFd6xsDp1eYuUCj\\r\\n\" + \r\n" + 
-    		"			\"laEHZdEvb0FFKvj0gm4wUAKWPc2pf8SLLdLYz5bwktq0tr7gMKKocVbWSN/8a1dD\\r\\n\" + \r\n" + 
-    		"			\"rE++p4dW7TKwYDuYEHSjxwnQDRq3Ft80CPPrxiTJ+fqDuoTihL7GiT715a7JlNFV\\r\\n\" + \r\n" + 
-    		"			\"ffiRv4EYhbCjXe9CFFvu8ZIgthzcZCwiqh1RB4B2/XHXo4L0xAGMXBizhx17aupV\\r\\n\" + \r\n" + 
-    		"			\"CXXdFW8pFzr7RJTp7+1DGPI+QyGbmKY7Lwuhs6WWaMDmwrCHP5aa/VFbJEMi7WMB\\r\\n\" + \r\n" + 
-    		"			\"gQIDAQAB";
-
+    public static String alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAq1YFDOCdntE9FZIQdb+R\r\n" + 
+											"qSwTiD93M+VzrYhB9S6cOQr3c83IMWNSlt5sQusm1gtlj4QGaQFd6xsDp1eYuUCj\r\n" + 
+											"laEHZdEvb0FFKvj0gm4wUAKWPc2pf8SLLdLYz5bwktq0tr7gMKKocVbWSN/8a1dD\r\n" + 
+											"rE++p4dW7TKwYDuYEHSjxwnQDRq3Ft80CPPrxiTJ+fqDuoTihL7GiT715a7JlNFV\r\n" + 
+											"ffiRv4EYhbCjXe9CFFvu8ZIgthzcZCwiqh1RB4B2/XHXo4L0xAGMXBizhx17aupV\r\n" + 
+											"CXXdFW8pFzr7RJTp7+1DGPI+QyGbmKY7Lwuhs6WWaMDmwrCHP5aa/VFbJEMi7WMB\r\n" + 
+											"gQIDAQAB";
 	// 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
 	public static String notify_url = "http://localhost:8080/alipay.trade.page.pay-JAVA-UTF-8/notify_url.jsp";
 
@@ -67,7 +66,7 @@ public class AlipayConfig {
 	public static String sign_type = "RSA2";
 	
 	// 字符编码格式
-	public static String charset = "utf-8";
+	public static String charset = "UTF-8";
 	
 	// 支付宝网关
 	public static String gatewayUrl = "https://openapi.alipay.com/gateway.do";

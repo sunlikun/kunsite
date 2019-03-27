@@ -281,6 +281,17 @@
 					              </label>
 					            </div>
 					          </div>
+					           <div class="charge-group">
+					            <div class="charge-group__inner">
+					              <label class="charge-item">
+					                <input type="radio" name="payType">
+					                <div class="charge-item__inner">
+					                  <div class="wechat-label">
+					                  </div>
+					                </div>
+					              </label>
+					            </div>
+					          </div>
 					          <p>需要支付金额</p>
 					          <div class="charge-group">
 					            <div class="charge-group__inner">
@@ -288,6 +299,7 @@
 					                <input type="radio" name="payType">
 					                <div class="charge-item__inner">
 					                  <button type="button" class="btn btn-info btn-lg" @click="pay()">去支付</button>
+					                  <button type="button" class="btn btn-info btn-lg" @click="pay1()">去支付1</button>
 					                </div>
 					              </label>
 					            </div>
@@ -387,7 +399,34 @@
           			form.append(input1);  
           			form.append(input2);  
           			form.submit();//表单提交 
-				  }
+				  },
+				  pay1: function () {
+						
+						//获取当前选中值
+						var val = $('input[name="amount"]:checked').val();
+						if(val==undefined){
+							alert("请选择充值的金额");
+							return false;
+						}
+					
+						var form=$("<form>");//定义一个form表单
+	          			form.attr("style","display:none");
+	          			form.attr("target","");
+	          			form.attr("method","post");
+	          			form.attr("action","wechat_pay");
+	          			var input1=$("<input>");
+	          			input1.attr("type","hidden");
+	          			input1.attr("name","val");
+	          			input1.attr("value",val);
+	          			var input2=$("<input>");
+	          			input2.attr("type","hidden");
+	          			input2.attr("name","openid");
+	          			input2.attr("value","");
+	          			$("body").append(form);//将表单放置在web中
+	          			form.append(input1);  
+	          			form.append(input2);  
+	          			form.submit();//表单提交 
+					  }
 			  }
 			})
 	

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.kuncms.coverphoto.dao.CoverphotoDao;
 import com.kuncms.coverphoto.model.Coverphoto;
+import com.kuncms.pay.dao.AlipayTradeInfoDao;
+import com.kuncms.pay.model.AlipayTradeInfo;
 import com.kuncms.thumbnail.dao.ThumbnailDao;
 import com.kuncms.thumbnail.model.Thumbnail;
 import com.kuncms.videoinfo.dao.VideoInfoDao;
@@ -17,34 +19,13 @@ import com.kuncms.videoinfo.model.Videoinfo;
 public class AlipayTradeInfoService {
 
 	@Autowired
-	ThumbnailDao thumbnailDao;
+	AlipayTradeInfoDao alipayTradeInfoDao;
 	
 	
 
-	/**
-	 * 插入封面图片
-	 * @param filepath
-	 * @param fileName
-	 */
-	public void insert(String filepath, String fileName,Thumbnail thumbnail) {
+	public void insert(AlipayTradeInfo alipayTradeInfo) {
 		// TODO Auto-generated method stub
-		
-		
-		String id=UUID.randomUUID().toString().replace("-", "").toLowerCase();
-		thumbnail.setId(id);
-		
-		thumbnail.setFlag("1");
-		thumbnail.setThumbnailid(filepath);
-		thumbnailDao.insert(thumbnail);
-	}
-
-
-
-	public ArrayList<Coverphoto> queryThumbnail(String id) {
-		// TODO Auto-generated method stub
-		Thumbnail thumbnail=new Thumbnail();
-		thumbnail.setCoverid(id);
-		return thumbnailDao.queryThumbnail(thumbnail);
+		alipayTradeInfoDao.insert(alipayTradeInfo);
 	}
 
 
