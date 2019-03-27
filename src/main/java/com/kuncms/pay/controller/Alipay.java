@@ -24,7 +24,7 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayOpenPublicTemplateMessageIndustryModifyRequest;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.response.AlipayOpenPublicTemplateMessageIndustryModifyResponse;
-import com.kuncms.pay.AlipayConfig;
+
 import com.kuncms.pay.model.AlipayTradeInfo;
 import com.kuncms.pay.service.AlipayTradeInfoService;
 import com.kuncms.thumbnail.service.ThumbnailService;
@@ -133,7 +133,7 @@ public class Alipay {
 	
 	
 	
-	@RequestMapping(value = "/notify", produces = "application/json; charset=utf-8")
+	@RequestMapping(value = "/notify")
 	public void notify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, AlipayApiException {
 		System.out.println("支付宝交易异步通知");
 		

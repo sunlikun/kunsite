@@ -1,51 +1,111 @@
 package com.kuncms.config.interceptors;
 
+
+
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.kuncms.user.model.User;
 
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
  
-@Component
-public class LoginInterceptor implements HandlerInterceptor {
- 
-    //这个方法是在访问接口之前执行的，我们只需要在这里写验证登陆状态的业务逻辑，就可以在用户调用指定接口之前验证登陆状态了
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        //每一个项目对于登陆的实现逻辑都有所区别，我这里使用最简单的Session提取User来验证登陆。
-        HttpSession session = request.getSession();
-        //这里的User是登陆时放入session的
-        User user = (User) session.getAttribute("user");
-        //如果session中没有user，表示没登陆
-        String result="";
-        if (user == null){
-            //这个方法返回false表示忽略当前请求，如果一个用户调用了需要登陆才能使用的接口，如果他没有登陆这里会直接忽略掉
-            //当然你可以利用response给用户返回一些提示信息，告诉他没登陆
-        	response.setCharacterEncoding("utf-8");
-        	response.setContentType("application/json; charset=utf-8");
-        	PrintWriter writer = response.getWriter();
-        	//Map<String, String> map = new HashMap<>();
-        	//map.put("status", "success");
-        	writer.write("请登陆");
-        	
-            return false;
-        }else {
-            return true;    //如果session里有user，表示该用户已经登陆，放行，用户即可继续调用自己需要的接口
-        }
-        
-    }
- 
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
-    }
- 
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
-    }
-}
+@Controller  
+@Component  
+public class LoginInterceptor extends HandlerInterceptorAdapter {  
+      
+    //Logger log = Logger.getLogger(LoginInterceptor.class);  
+      
+    /*@Autowired 
+    UserService userService;*/  
+      
+    /*@Value("${IGNORE_LOGIN}") 
+    Boolean IGNORE_LOGIN;*/  
+  
+    @Override  
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)  
+            throws Exception {  
+        String basePath = request.getContextPath();  
+        String path = request.getRequestURI();  
+//      log.info("basePath:"+basePath);  
+//      log.info("path:"+path);  
+          
+        if(doLoginInterceptor(path, basePath) ){//是否进行登陆拦截  
+            return true;  
+        }  
+          
+//      HttpSession session = request.getSession();  
+//      int userID = 2;  
+//      UserInfo userInfo = sysUserService.getUserInfoByUserID(userID);  
+//      System.out.println(JsonUtil.toJson(userInfo));  
+//      session.setAttribute(Constants.SessionKey.USER, userInfo);  
+          
+        //如果登录了，会把用户信息存进session  
+        HttpSession session = request.getSession();  
+        List<User> users =  (List<User>) session.getAttribute("userList");  
+        /*User userInfo = new User(); 
+        userInfo.setId(users.get(0).getId()); 
+        userInfo.setName(users.get(0).getName()); 
+        userInfo.setPassword(users.get(0).getPassword());*/  
+        //开发环节的设置，不登录的情况下自动登录  
+        /*if(userInfo==null && IGNORE_LOGIN){ 
+            userInfo = sysUserService.getUserInfoByUserID(2); 
+            session.setAttribute(Constants.SessionKey.USER, userInfo); 
+        }*/  
+        if(users==null){  
+            /*log.info("尚未登录，跳转到登录界面"); 
+            response.sendRedirect(request.getContextPath()+"signin");*/  
+              
+            String requestType = request.getHeader("X-Requested-With");  
+//          System.out.println(requestType);  
+            if(requestType!=null && requestType.equals("XMLHttpRequest")){  
+                response.setHeader("sessionstatus","timeout");  
+//              response.setHeader("basePath",request.getContextPath());  
+                response.getWriter().print("LoginTimeout");  
+                return false;  
+            } else {  
+                //log.info("尚未登录，跳转到登录界面");  
+                response.sendRedirect(request.getContextPath()+"login");  
+            }  
+            return false;  
+        }  
+//      log.info("用户已登录,userName:"+userInfo.getSysUser().getUserName());  
+        return true;  
+    }  
+      
+    /** 
+     * 是否进行登陆过滤 
+     * @param path 
+     * @param basePath 
+     * @return 
+     */  
+    private boolean doLoginInterceptor(String path,String basePath){  
+        path = path.substring(basePath.length());  
+        Set<String> notLoginPaths = new HashSet<>();  
+        //设置不进行登录拦截的路径：登录注册和验证码  
+        //notLoginPaths.add("/");  
+        notLoginPaths.add("index");  
+        notLoginPaths.add("signin");  
+        notLoginPaths.add("login");  
+        notLoginPaths.add("register");  
+        notLoginPaths.add("/frame");  
+        //notLoginPaths.add("/sys/logout");  
+        //notLoginPaths.add("/loginTimeout");  
+          
+        if(notLoginPaths.contains(path)) return false;  
+        return true;  
+    }  
+}  
