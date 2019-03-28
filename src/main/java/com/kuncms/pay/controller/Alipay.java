@@ -25,7 +25,7 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayOpenPublicTemplateMessageIndustryModifyRequest;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.response.AlipayOpenPublicTemplateMessageIndustryModifyResponse;
-
+import com.kuncms.core.CoreController;
 import com.kuncms.pay.model.AlipayTradeInfo;
 import com.kuncms.pay.service.AlipayTradeInfoService;
 import com.kuncms.thumbnail.service.ThumbnailService;
@@ -194,7 +194,7 @@ public class Alipay {
 			
 			//公共回传参数，如果请求时传递了该参数，则返回给商户时会在异步通知时将该参数原样返回。本参数必须进行UrlEncode之后才可以发送给支付宝
 			String passback_params = new String(request.getParameter("passback_params").getBytes("ISO-8859-1"),"UTF-8");
-			
+			//int gold_coin=Integer.parseInt(total_amount)*10;
 			
 			AlipayTradeInfo alipayTradeInfo=new AlipayTradeInfo();
 			
@@ -224,6 +224,10 @@ public class Alipay {
 				alipayTradeInfo.setTrade_status(trade_status);
 				alipayTradeInfo.setUser_name(passback_params);
 				alipayTradeInfoService.insert(alipayTradeInfo);
+				
+				CoreController  con=new CoreController();
+				
+				con.addUserGoldCoin(response, request, 10);
 			}
 			
 			

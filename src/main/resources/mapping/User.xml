@@ -3,6 +3,12 @@
 <mapper namespace="com.kuncms.user.dao.UserDao" >
 
 
+	
+ 	<update id="addUserGoldCoin"  parameterType="com.kuncms.user.model.User">
+		update user_info  set gold_coin=#{gold_coin} where user_name=#{user_name}
+ 	</update>
+
+
  	<select id="isRegister"  parameterType="com.kuncms.user.model.User"  resultType="com.kuncms.user.model.User">
         SELECT*FROM user_info u where flag='1'
          <if test="openid != null and openid !=''">

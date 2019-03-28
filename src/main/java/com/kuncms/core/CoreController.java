@@ -1,11 +1,14 @@
 package com.kuncms.core;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
@@ -16,9 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
+import com.kuncms.coverphoto.model.Coverphoto;
 import com.kuncms.user.model.User;
 import com.kuncms.user.service.UserService;
 import com.kuncms.util.HttpClientUtils;
+
+import net.sf.json.JSONArray;
 
 
 
@@ -29,7 +35,27 @@ public class CoreController {
 	@Autowired
 	UserService userService;
 	
+	@RequestMapping("/addUserGoldCoin")
 	
+	public void addUserGoldCoin(HttpServletResponse response,javax.servlet.http.HttpServletRequest request,int gold_coin) throws IOException {
+			HttpSession session = request.getSession();
+	        String user_name=(String) session.getAttribute("loginName");
+			userService.addUserGoldCoin(user_name,gold_coin);
+//			response.setContentType("application/json");
+//	        response.setHeader("Pragma", "No-cache");
+//	        response.setHeader("Cache-Control", "no-cache");
+//	        response.setCharacterEncoding("UTF-8");
+	        
+//	        JSONArray listArray=JSONArray.fromObject(list);     
+//	        PrintWriter out= null;
+//	        out = response.getWriter();
+//	        out.print(listArray.toString());
+//	        System.out.println(listArray.toString());
+//	        out.flush();
+//	        out.close();
+		
+		
+	}
 	
 	
 	/**

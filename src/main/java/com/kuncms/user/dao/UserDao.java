@@ -19,4 +19,8 @@ public interface UserDao {
 
 	public ArrayList<User> isRegister(User user);
 
+	public void addUserGoldCoin(String user_name, int gold_coin);
+
+	public void addUserGoldCoin(User user);
+
 }

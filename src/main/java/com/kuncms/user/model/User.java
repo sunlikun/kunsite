@@ -7,8 +7,8 @@ private String password;
 private String create_time;
 private String update_time;
 private String integral;
-private String gold_coin;        //金币值
-private String empirical_value;  //经验值
+private int gold_coin;        //金币值
+private int empirical_value;  //经验值
 private String email;            //邮箱地址
 private String user_class;       //用户类型
 private String user_status;      //用户状态
@@ -24,6 +24,18 @@ public String getOpenid() {
 }
 public void setOpenid(String openid) {
 	this.openid = openid;
+}
+public int getGold_coin() {
+	return gold_coin;
+}
+public void setGold_coin(int gold_coin) {
+	this.gold_coin = gold_coin;
+}
+public int getEmpirical_value() {
+	return empirical_value;
+}
+public void setEmpirical_value(int empirical_value) {
+	this.empirical_value = empirical_value;
 }
 public String getHeadimgurl() {
 	return headimgurl;
@@ -43,18 +55,7 @@ public String getIntegral() {
 public void setIntegral(String integral) {
 	this.integral = integral;
 }
-public String getGold_coin() {
-	return gold_coin;
-}
-public void setGold_coin(String gold_coin) {
-	this.gold_coin = gold_coin;
-}
-public String getEmpirical_value() {
-	return empirical_value;
-}
-public void setEmpirical_value(String empirical_value) {
-	this.empirical_value = empirical_value;
-}
+
 public String getEmail() {
 	return email;
 }
