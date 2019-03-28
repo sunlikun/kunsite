@@ -97,11 +97,11 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         Set<String> notLoginPaths = new HashSet<>();  
         //设置不进行登录拦截的路径：登录注册和验证码  
         //notLoginPaths.add("/");  
-        notLoginPaths.add("index");  
-        notLoginPaths.add("signin");  
-        notLoginPaths.add("login");  
-        notLoginPaths.add("register");  
-        notLoginPaths.add("/frame");  
+        //notLoginPaths.add("index");  
+        //notLoginPaths.add("signin");  
+        //notLoginPaths.add("login");  
+        //notLoginPaths.add("register");  
+        //notLoginPaths.add("/frame");  
         //notLoginPaths.add("/sys/logout");  
         //notLoginPaths.add("/loginTimeout");  
           

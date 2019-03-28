@@ -11,6 +11,7 @@ import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,13 +34,7 @@ public class Alipay {
 	@Autowired
 	AlipayTradeInfoService alipayTradeInfoService;
 	
-	String ALIPAY_PUBLIC_KEY="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAq1YFDOCdntE9FZIQdb+R\r\n" + 
-			"qSwTiD93M+VzrYhB9S6cOQr3c83IMWNSlt5sQusm1gtlj4QGaQFd6xsDp1eYuUCj\r\n" + 
-			"laEHZdEvb0FFKvj0gm4wUAKWPc2pf8SLLdLYz5bwktq0tr7gMKKocVbWSN/8a1dD\r\n" + 
-			"rE++p4dW7TKwYDuYEHSjxwnQDRq3Ft80CPPrxiTJ+fqDuoTihL7GiT715a7JlNFV\r\n" + 
-			"ffiRv4EYhbCjXe9CFFvu8ZIgthzcZCwiqh1RB4B2/XHXo4L0xAGMXBizhx17aupV\r\n" + 
-			"CXXdFW8pFzr7RJTp7+1DGPI+QyGbmKY7Lwuhs6WWaMDmwrCHP5aa/VFbJEMi7WMB\r\n" + 
-			"gQIDAQAB";
+	String ALIPAY_PUBLIC_KEY="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsLg3MWFpxoS35S5belVylSjbsWTYqwMlCyvyLJA7eyRHYWlpoQkMGW3KHk4I2qSNqejI5Ky1HhHsju0Ka+O9Y3uCI97/Of9oVTLhjImvjkZMCUi/dVdTQ4lUMrERHZcaRXxbieB9lV1YMttJDKYXVBTHTxVHc6RgwQQZ5pzNRXZAxLzmEl9tYQn2ZI7qRSIdGAwbQlI8ups+IhwAviEGI0RfaQA6MKyEQtEZC1h4ulNUsWXulj1CresYSbqSXm3zC/siwNNFOCTrfbxg2/c7f3wa6QHhiky+thP1X/dDRUrN07YFtYHVXoH9ko/teBTZZrw1cbXkK4lgdxwnkqkF4QIDAQAB";
 	String APP_PRIVATE_KEY="MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCrVgUM4J2e0T0V\r\n" + 
 			"khB1v5GpLBOIP3cz5XOtiEH1Lpw5CvdzzcgxY1KW3mxC6ybWC2WPhAZpAV3rGwOn\r\n" + 
 			"V5i5QKOVoQdl0S9vQUUq+PSCbjBQApY9zal/xIst0tjPlvCS2rS2vuAwoqhxVtZI\r\n" + 
@@ -108,13 +103,14 @@ public class Alipay {
 			alipayRequest.setReturnUrl(url+"/index");
 			alipayRequest.setNotifyUrl(url+"/notify");//在公共参数中设置回跳和通知地址
 			String out_trade_no=UUID.randomUUID().toString();
+			HttpSession session=httpRequest.getSession();
 			alipayRequest.setBizContent("{" +
 			"    \"out_trade_no\":\""+out_trade_no+"\"," +
 			"    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
 			"    \"total_amount\":\"0.01\"," +
 			"    \"subject\":\"普格娱乐金币充值\"," +
 			"    \"body\":\"普格娱乐金币充值\"," +
-			"    \"passback_params\":\"merchantBizType%3d3C%26merchantBizNo%3d2016010101111\"," +
+			"    \"passback_params\":\""+session.getAttribute("loginName")+"\"," +
 			"    \"extend_params\":{" +
 			"    \"sys_service_provider_id\":\"2088511833207846\"" +
 			"    }"+
@@ -150,6 +146,7 @@ public class Alipay {
 						: valueStr + values[i] + ",";
 			}
 			//乱码解决，这段代码在出现乱码时使用
+			System.out.println(valueStr);
 			//valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
 			params.put(name, valueStr);
 		}
@@ -185,7 +182,7 @@ public class Alipay {
 			//String receipt_amount = new String(request.getParameter("receipt_amount").getBytes("ISO-8859-1"),"UTF-8");
 			
 			//订单标题
-			String subject = new String(request.getParameter("subject").getBytes("ISO-8859-1"),"UTF-8");
+			String subject = new String(request.getParameter("subject"));
 			
 			//交易创建时间
 			String gmt_create = new String(request.getParameter("gmt_create").getBytes("ISO-8859-1"),"UTF-8");
@@ -193,7 +190,7 @@ public class Alipay {
 			//交易付款时间
 			String gmt_payment = new String(request.getParameter("gmt_payment").getBytes("ISO-8859-1"),"UTF-8");
 			//交易结束时间
-			String gmt_close = new String(request.getParameter("gmt_close").getBytes("ISO-8859-1"),"UTF-8");
+			//String gmt_close = new String(request.getParameter("gmt_close").getBytes("ISO-8859-1"),"UTF-8");
 			
 			//公共回传参数，如果请求时传递了该参数，则返回给商户时会在异步通知时将该参数原样返回。本参数必须进行UrlEncode之后才可以发送给支付宝
 			String passback_params = new String(request.getParameter("passback_params").getBytes("ISO-8859-1"),"UTF-8");
@@ -217,7 +214,7 @@ public class Alipay {
 				//注意：
 				//付款完成后，支付宝系统发送该交易状态通知
 				alipayTradeInfo.setId(out_trade_no);
-				alipayTradeInfo.setGmt_close(gmt_close);
+				//alipayTradeInfo.setGmt_close(gmt_close);
 				alipayTradeInfo.setGmt_create(gmt_create);
 				alipayTradeInfo.setGmt_payment(gmt_payment);
 				alipayTradeInfo.setNotify_time(notify_time);
