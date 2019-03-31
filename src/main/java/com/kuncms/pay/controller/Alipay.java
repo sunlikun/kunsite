@@ -3,6 +3,7 @@ package com.kuncms.pay.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -29,10 +30,14 @@ import com.kuncms.core.CoreController;
 import com.kuncms.pay.model.AlipayTradeInfo;
 import com.kuncms.pay.service.AlipayTradeInfoService;
 import com.kuncms.thumbnail.service.ThumbnailService;
+import com.kuncms.user.model.User;
+import com.kuncms.user.service.UserService;
 @Controller
 public class Alipay {
 	@Autowired
 	AlipayTradeInfoService alipayTradeInfoService;
+	@Autowired
+	UserService userService;
 	
 	String ALIPAY_PUBLIC_KEY="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsLg3MWFpxoS35S5belVylSjbsWTYqwMlCyvyLJA7eyRHYWlpoQkMGW3KHk4I2qSNqejI5Ky1HhHsju0Ka+O9Y3uCI97/Of9oVTLhjImvjkZMCUi/dVdTQ4lUMrERHZcaRXxbieB9lV1YMttJDKYXVBTHTxVHc6RgwQQZ5pzNRXZAxLzmEl9tYQn2ZI7qRSIdGAwbQlI8ups+IhwAviEGI0RfaQA6MKyEQtEZC1h4ulNUsWXulj1CresYSbqSXm3zC/siwNNFOCTrfbxg2/c7f3wa6QHhiky+thP1X/dDRUrN07YFtYHVXoH9ko/teBTZZrw1cbXkK4lgdxwnkqkF4QIDAQAB";
 	String APP_PRIVATE_KEY="MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCrVgUM4J2e0T0V\r\n" + 
@@ -98,16 +103,16 @@ public class Alipay {
 			PKCS8EncodedKeySpec priPKCS8    = new PKCS8EncodedKeySpec( Base64.decodeFast(APP_PRIVATE_KEY) );
 			AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do", APP_ID, APP_PRIVATE_KEY, FORMAT, CHARSET, ALIPAY_PUBLIC_KEY, SIGN_TYPE); //获得初始化的AlipayClient
 			AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
-			String url=httpRequest.getScheme()+"://"+httpRequest.getServerName()+":"+httpRequest.getServerPort();
-			System.out.println(url);
-			alipayRequest.setReturnUrl(url+"/index");
-			alipayRequest.setNotifyUrl(url+"/notify");//在公共参数中设置回跳和通知地址
+			//String url=httpRequest.getScheme()+"://"+httpRequest.getServerName()+":"+httpRequest.getServerPort();
+			//System.out.println(url);
+			alipayRequest.setReturnUrl("http://www.pergirls.com/membership");
+			alipayRequest.setNotifyUrl("http://www.pergirls.com/notify");//在公共参数中设置回跳和通知地址
 			String out_trade_no=UUID.randomUUID().toString();
 			HttpSession session=httpRequest.getSession();
 			alipayRequest.setBizContent("{" +
 			"    \"out_trade_no\":\""+out_trade_no+"\"," +
 			"    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
-			"    \"total_amount\":\"0.01\"," +
+			"    \"total_amount\":\""+val+"\"," +
 			"    \"subject\":\"普格娱乐金币充值\"," +
 			"    \"body\":\"普格娱乐金币充值\"," +
 			"    \"passback_params\":\""+session.getAttribute("loginName")+"\"," +
@@ -226,8 +231,20 @@ public class Alipay {
 				alipayTradeInfoService.insert(alipayTradeInfo);
 				
 				CoreController  con=new CoreController();
-				
-				con.addUserGoldCoin(response, request, 10);
+				//查询用户现有金币数并增加
+				User user=new User();
+				user.setUser_name(passback_params);
+				ArrayList<User> userl=(ArrayList<User>) userService.check_username(user);
+				User loginuser=null;
+				if(userl.size()>0){
+					 loginuser=userl.get(0);
+				}
+				int now_gold_coin=loginuser.getGold_coin();
+				System.out.println("now_gold_coin"+now_gold_coin);
+				int gold_coin=(int) (Double.parseDouble(total_amount)*10);
+				gold_coin=gold_coin+now_gold_coin;
+				System.out.println("gold_coin"+gold_coin);
+				userService.addUserGoldCoin(passback_params,gold_coin);
 			}
 			
 			

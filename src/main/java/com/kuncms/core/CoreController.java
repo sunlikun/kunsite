@@ -37,9 +37,8 @@ public class CoreController {
 	
 	@RequestMapping("/addUserGoldCoin")
 	
-	public void addUserGoldCoin(HttpServletResponse response,javax.servlet.http.HttpServletRequest request,int gold_coin) throws IOException {
-			HttpSession session = request.getSession();
-	        String user_name=(String) session.getAttribute("loginName");
+	public void addUserGoldCoin(int gold_coin,String user_name) throws IOException {
+			
 			userService.addUserGoldCoin(user_name,gold_coin);
 //			response.setContentType("application/json");
 //	        response.setHeader("Pragma", "No-cache");
@@ -339,6 +338,7 @@ public class CoreController {
 			HttpSession session = request.getSession();
 	        session.setAttribute("loginName",loginuser.getUser_name());
 	        session.setAttribute("gold_coin",loginuser.getGold_coin());
+	        session.setAttribute("userList",userl);
 		}else{
 			flag=false;
 		}

@@ -100,9 +100,9 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         //notLoginPaths.add("index");  
         //notLoginPaths.add("signin");  
         //notLoginPaths.add("login");  
-        //notLoginPaths.add("register");  
+        notLoginPaths.add("/membership");  
         //notLoginPaths.add("/frame");  
-        //notLoginPaths.add("/sys/logout");  
+        notLoginPaths.add("/recharge");  
         //notLoginPaths.add("/loginTimeout");  
           
         if(notLoginPaths.contains(path)) return false;  

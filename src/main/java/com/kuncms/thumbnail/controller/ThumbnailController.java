@@ -65,9 +65,9 @@ public class ThumbnailController {
 		if(userl.size()>0){
 			 loginuser=userl.get(0);
 		}
-		int  goldCoin=Integer.parseInt(loginuser.getGold_coin());
+		int  goldCoin=loginuser.getGold_coin();
 		int  rgoldCoin=goldCoin-t_gold_coin;
-		loginuser.setGold_coin(String.valueOf(rgoldCoin));
+		loginuser.setGold_coin(rgoldCoin);
 		userService.update(loginuser);
 		
 		return "download";
@@ -183,13 +183,17 @@ public class ThumbnailController {
 //		}
 //       
 		HttpSession session=request.getSession();
-		String user_name=(String) session.getAttribute("loginName");
-		String gold_coin=(String) session.getAttribute("gold_coin");
+		if(session.getAttribute("loginName")!=null){
+			String user_name=(String) session.getAttribute("loginName");
+			int gold_coin=(int) session.getAttribute("gold_coin");
+			model.addAttribute("user_name",user_name);
+			model.addAttribute("gold_coin",gold_coin);
+		}
+		
 		//User loginuser=(User) session.getAttribute("loginuser");
 		System.out.println(t_gold_coin+"6666666666");
 		model.addAttribute("baiduyun_pass",baiduyun_pass);
-		model.addAttribute("user_name",user_name);
-		model.addAttribute("gold_coin",gold_coin);
+		
 		model.addAttribute("baiduyun_address",baiduyun_address);
        return "details";
     }
