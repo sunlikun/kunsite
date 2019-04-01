@@ -33,7 +33,7 @@ import com.kuncms.videoinfo.model.Videoinfo;
 import com.kuncms.videoinfo.service.VideoInfoService;
 
 import net.sf.json.JSONArray;
-import sun.misc.BASE64Decoder;
+
 @Controller
 public class ThumbnailController {
 	

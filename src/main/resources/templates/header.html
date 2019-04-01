@@ -18,7 +18,6 @@
     <script type="text/javascript" src="/js/jqthumb.min.js"></script>
     <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
 	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
-	<link rel="icon" type="image/x-icon" href="/img/favicon.ico">
     <script type="text/javascript">
     
     
@@ -60,20 +59,22 @@
   </head>
   <body bgcolor="#DDDDDD">
 	<div style="margin-top: -25px" th:fragment="header">
+	
 	    <div  class="container-fluid" >
 			<div class="row">
 				<div class="col-sm-8">
-						
+						<!--  
 						 	<img  src="/ico/1543757222_447195.png" class="img-responsive">
+						 	-->
 						
 				</div>	
 				
 				
 				<div class="col-sm-4" align="right">	
-				     <div  id="app">
+				     <div  id="app" >
+				      <div v-if="content" style="float: right;width:12%">|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="exit">退出</a></div>    
+				      <div v-if="content" style="float: right;width:16%">欢迎{{ content }}</div>
 				     
-				      <div v-if="content">欢迎{{ content }}</div>
-				      <div v-if="content"><a href="exit">退出</a></div>
 				      <div v-if="plays">
 				     
 				     		 <a  href="/login">
@@ -115,12 +116,14 @@
 								<li >
 									<a class="navbar-brand active" href="/index">首页</a>
 								</li>
+								<!--  
 								<li >
 									<a class="navbar-brand" href="#">饭拍下载</a>
 								</li>
 								<li >
 									<a class="navbar-brand  disabled" href="#">高清图片</a>
 								</li>
+								-->
 								<li >
 									<a class="navbar-brand  disabled" href="/membership">会员中心</a>
 								</li>
@@ -140,7 +143,9 @@
 	<p></p>
 		<div class="row">
 			<div class="col-md-12">
+			<!-- 
 				<img alt="Bootstrap Image Preview" src="/img/111.jpg" width="100%" height="10%" class="img-responsive"/>
+				 -->
 			</div>
 		</div>
 	</div>
