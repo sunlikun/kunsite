@@ -47,8 +47,14 @@ pagehelper:
     supportMethodsArguments: true
     params: count=countSql
     
-
-  
+#微信支付的相关配置
+WXPAY:
+    APPID: wxa1f4e7957d869f53
+    MCHID: 1529797251
+    KEY: kungedeapimiyaoKg123456789056321
+    APPSECRET: 396e3058561fd53fa8120faf57ced10a  
+    NOTIFY_URL: http://39.98.164.226:8082/wxpay/we_notify
+    CREATE_IP: 39.98.164.226
  
    
     
