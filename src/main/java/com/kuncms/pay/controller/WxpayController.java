@@ -5,15 +5,18 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.kuncms.core.CoreController;
 import com.kuncms.pay.HttpUtil;
 import com.kuncms.pay.PayConfigUtil;
 import com.kuncms.pay.PayToolUtil;
 import com.kuncms.pay.QRUtil;
 import com.kuncms.pay.XMLUtil4jdom;
 import com.kuncms.pay.model.WxpayVo;
-
+import com.kuncms.user.model.User;
+import com.kuncms.user.service.UserService;
 
 import org.jdom.JDOMException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,13 +35,14 @@ import java.util.*;
 @RestController
 @RequestMapping(value = "/wxpay")
 public class WxpayController extends PayBaseController {
- 
+	@Autowired
+	UserService userService;
     /**
      * 微信支付->扫码支付(模式二)->统一下单->微信二维码
      * @return
      */
     @GetMapping("/qrcode")
-    public void wxpayPay(HttpServletResponse response) {
+    public void wxpayPay(HttpServletResponse response,String val) {
         String urlCode = null;
         // 获取订单信息
         WxpayVo vo = new WxpayVo();
@@ -59,14 +63,15 @@ public class WxpayController extends PayBaseController {
         vo.setSpbill_create_ip(CREATE_IP);
         vo.setNotify_url(NOTIFY_URL);
         vo.setTrade_type("NATIVE");
-        String total_fee = "1";
+        String total_fee = "0.01";
+        System.out.println("val："+val);
         vo.setTotal_fee(total_fee);//价格的单位为分
  
         SortedMap<Object,Object> packageParams = new TreeMap<Object,Object>();
         packageParams.put("appid", APPID);//公众账号ID
         packageParams.put("mch_id", MCHID);//商户号
         packageParams.put("nonce_str", nonce_str);//随机字符串
-        packageParams.put("body", "资源");  //商品描述
+        packageParams.put("body", "普格娱乐充值");  //商品描述
         packageParams.put("out_trade_no", out_trade_no);//商户订单号
         packageParams.put("total_fee", total_fee); //标价金额 订单总金额，单位为分
         packageParams.put("spbill_create_ip", CREATE_IP);//终端IP APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP
@@ -179,13 +184,31 @@ public class WxpayController extends PayBaseController {
                 String openid = (String)packageParams.get("openid");
                 String is_subscribe = (String)packageParams.get("is_subscribe");
                 String out_trade_no = (String)packageParams.get("out_trade_no");
- 
                 String total_fee = (String)packageParams.get("total_fee");
  
                 //////////执行自己的业务逻辑////////////////
                 //暂时使用最简单的业务逻辑来处理：只是将业务处理结果保存到session中
                 //（根据自己的实际业务逻辑来调整，很多时候，我们会操作业务表，将返回成功的状态保留下来）
                 request.getSession().setAttribute("_PAY_RESULT", "OK");
+                
+                
+                //将交易信息插入交易明细表并增加用户的金币值
+                CoreController  con=new CoreController();
+				//查询用户现有金币数并增加
+				User user=new User();
+				user.setUser_name(passback_params);
+				ArrayList<User> userl=(ArrayList<User>) userService.check_username(user);
+				User loginuser=null;
+				if(userl.size()>0){
+					 loginuser=userl.get(0);
+				}
+				int now_gold_coin=loginuser.getGold_coin();
+				System.out.println("now_gold_coin"+now_gold_coin);
+				int gold_coin=(int) (Double.parseDouble(total_fee)*10);
+				gold_coin=gold_coin+now_gold_coin;
+				System.out.println("gold_coin"+gold_coin);
+				userService.addUserGoldCoin(passback_params,gold_coin);
+                
  
                 //logger.info("支付成功");
                 System.out.println("微信支付成功");
