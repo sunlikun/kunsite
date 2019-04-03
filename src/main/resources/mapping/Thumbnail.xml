@@ -10,7 +10,7 @@
      </select>
     
     <insert id="insert"  parameterType="com.kuncms.thumbnail.model.Thumbnail">
-		insert into thumbnail(id,coverid,thumbnailid,flag) values(#{id},#{coverid},#{thumbnailid},#{flag})
+		insert into thumbnail(id,coverid,thumbnailid,flag,create_time,createby,update_time,updateby) values(#{id},#{coverid},#{thumbnailid},#{flag},#{create_time},#{createby},#{update_time},#{updateby})
  	</insert>
   
 

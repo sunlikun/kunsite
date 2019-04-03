@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <title id='Description'>视频缩略图管理</title>
+    <title id='Description'>视频相关上传内容</title>
    
     <link rel="stylesheet" href="/jqwidgets/styles/jqx.base.css" type="text/css" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -30,12 +30,10 @@
             	async:false
 
             });
-            var id=$("#id").val();
-           alert(id)
             $.ajax({
                 type: "post",
-                url: "/queryThumbnail",
-                data: {id:id},
+                url: "/queryCoverPhoto",
+                data: {},
                 dataType: "json",
                 success: function(data){
                 	//alert(data)
@@ -46,7 +44,16 @@
                         datafields:
                         [
                             { name: 'id', type: 'string' },
-                            { name: 'coverid', type: 'string' },
+                            { name: 'coverphotoid', type: 'string' },
+                            { name: 'create_time', type: 'string' },
+                            { name: 'createby', type: 'string' },
+                            { name: 'updateby', type: 'string' },
+                            { name: 'video_name', type: 'string' },
+                            { name: 'flag', type: 'string' },
+                            { name: 'baiduyun_address', type: 'string' },
+                            { name: 'baiduyun_pass', type: 'string' },
+                            
+                           
                           
                         ],
                         addrow: function (rowid, rowdata, position, commit) {
@@ -71,22 +78,26 @@
                     };
                     var dataAdapter = new $.jqx.dataAdapter(source);
                     // initialize jqxGrid
+                    var cellsrenderer = function (row, column, value) {
+                    	
+                    	var data = $('#grid').jqxGrid('getrowdata', row);
+                		return  '<a href="/thumbnailManage?id='+data.id+'" target="_blank" style="color:black;text-decoration:none;">'+"缩略图"+'</a>';
+            		}
                     $("#grid").jqxGrid(
                     {
-                        width: getWidth('Grid'),
-                        height: 350,
-                     	source: dataAdapter,
+                        width: 1500,
+                        height: 550,
+                        source: dataAdapter,
                         showtoolbar: true,
                         rendertoolbar: function (toolbar) {
                             var me = this;
                             var container = $("<div style='margin: 5px;'></div>");
                             toolbar.append(container);
-                            container.append('<input id="addrowbutton" type="button" value="Add Video" />');
-                            container.append('<input style="margin-left: 5px;" id="addmultiplerowsbutton" type="button" value="Add Multiple New Rows" />');
-                            container.append('<input style="margin-left: 5px;" id="deleterowbutton" type="button" value="Delete Selected Row" />');
-                            container.append('<input style="margin-left: 5px;" id="updaterowbutton" type="button" value="Update Selected Row" />');
+                            container.append('<input id="addrowbutton" type="button" value="添加视频" />');
+                           	container.append('<input style="margin-left: 5px;" id="deleterowbutton" type="button" value="删除视频" />');
+                            container.append('<input style="margin-left: 5px;" id="updaterowbutton" type="button" value="更新视频" />');
                             $("#addrowbutton").jqxButton();
-                            $("#addmultiplerowsbutton").jqxButton();
+                          
                             $("#deleterowbutton").jqxButton();
                             $("#updaterowbutton").jqxButton();
                             // update row.
@@ -106,19 +117,11 @@
                                 //var commit = $("#grid").jqxGrid('addrow', null, datarow);
                                	createWindow();
                                 $("#ww").css("display","show");
-                                $('#window1').jqxWindow('open');
+                                $('#window').jqxWindow('open');
                                
                                 
                             });
-                            // create new rows.
-                            $("#addmultiplerowsbutton").on('click', function () {
-                                $("#grid").jqxGrid('beginupdate');
-                                for (var i = 0; i < 10; i++) {
-                                    var datarow = generaterow();
-                                    var commit = $("#grid").jqxGrid('addrow', null, datarow);
-                                }
-                                $("#grid").jqxGrid('endupdate');
-                            });
+                          
                             // delete row.
                             $("#deleterowbutton").on('click', function () {
                                 var selectedrowindex = $("#grid").jqxGrid('getselectedrowindex');
@@ -131,19 +134,21 @@
                         },
                         columns: [
                           { text: 'id', datafield: 'id', width: 200 },
-                          { text: 'coverid', datafield: 'coverid', width: 200 },
-                          { text: 'thumbnail', datafield: 'thumbnail', columntype: 'button',width: 200 ,cellsrenderer: function () {
-                              return "缩略图";
-                           }, buttonclick: function (row) {
-                             
-                          }
-                          }
+                          { text: 'coverphotoid', datafield: 'coverphotoid', width: 200 },
+                          { text: 'video_name', datafield: 'video_name', width: 200},
+                          { text: 'baiduyun_address', datafield: 'baiduyun_address', width: 200},
+                          { text: 'baiduyun_pass', datafield: 'baiduyun_pass', width: 200},
+                          { text: 'create_time', datafield: 'create_time', width: 200},
+                          { text: 'thumbnail', cellsrenderer:cellsrenderer, width: 200}
                         ]
-                    });    
+                    });
+                   // $("#popupWindow").jqxWindow({
+                   //     width: 1500, resizable: true,  isModal: true, autoOpen: false, cancelButton: $("#Cancel"), modalOpacity: 0.01           
+                   // });
                          }
             });
           
-        
+           
             
         });
      	
@@ -151,12 +156,12 @@
         function createWindow() {
             var jqxWidget = $('#jqxWidget');
             var offset = jqxWidget.offset();
-            $('#window1').jqxWindow({
-                position: { x: offset.left + 1150, y: offset.top + 150} ,
-                showCollapseButton: true, height: 250, width:400,
+            $('#window').jqxWindow({
+                position: { x: offset.left + 550, y: offset.top + 50} ,
+                showCollapseButton: true,  height: 650, width: 1800,
                 initContent: function () {
                    
-                    $('#window1').jqxWindow('focus');
+                    $('#window').jqxWindow('focus');
                 }
             });
         };
@@ -170,7 +175,7 @@
                 data: {fileName:fileName},
                 dataType: "json",
                 success: function(data){
-                           alert(data);
+                          // alert(data);
                          }
             });
             
@@ -178,34 +183,18 @@
     </script>
 </head>
 <body class='default'>
-
-
- <div id="jqxWidget" align="center">
- 	缩略图管理
- 	<input id="id" th:value="${id}"> 
-    <div id="grid">
-    </div>
-    <div style="display:none" id="ww">
-    <div style="width: 100%; height: 650px; margin-top: 250px;" id="mainDemoContainer">
-            <div id="window1">
-                <div id="windowHeader">文件上传</div>
+<center>
+                <div id="windowHeader">基本信息上传</div>
                 <div style="overflow: hidden;" id="windowContent">
-                    
-					    <form action="picturesUpload" method="post" enctype="multipart/form-data" >
-					        <p>选择文件1: <input type="file" name="fileName"/></p>
-					        <p>选择文件2: <input type="file" name="fileName"/></p>
-					        <p>选择文件3: <input type="file" name="fileName"/></p>
-					        <input id="coverid" th:value="${id}" name="coverid" type="text"> 
-					        <p><input type="submit" value="提交"/></p>
-					    </form>
+                    <form action="fileUpload" method="post" enctype="multipart/form-data">
+        					<p>请选择视频的封面: <input type="file" name="fileName" id="fileName"/></p>
+        					<p>请输入视频的名称: <input type="text" name="video_name" id="video_name"/></p>
+        					<p>请输入视频的地址: <input type="text" name="baiduyun_address" id="baiduyun_address"/></p>
+        					<p>请输入视频分享码: <input type="text" name="baiduyun_pass" id="baiduyun_pass"/></p>
+        					<p><button type="submit">提交</button></p>
+    				</form>
                 </div>
             </div>
-        </div>
-    </div>
-    </div>
-    
- </div>  
- 
- 	
+</center>      
 </body>
 </html>

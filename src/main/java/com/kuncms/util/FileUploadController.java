@@ -25,7 +25,96 @@ public class FileUploadController {
 	@Autowired
 	private ThumbnailService thumbnailService;
 	
-	
+	/**
+     * 多图上传（windows使用）
+     * */
+//    @RequestMapping("picturesUpload")
+//     
+//    public String picturesUpload(@RequestParam("fileName") MultipartFile[] fileArr,HttpServletRequest request,Thumbnail thumbnail){
+//        
+//        String result="";
+//        for(int i=0;i<fileArr.length;i++) {
+//        	if(!(fileArr[i].isEmpty())){
+//        		 String fileName = fileArr[i].getOriginalFilename();
+//                 int size = (int) fileArr[i].getSize();
+//                 System.out.println(fileName + "-->" + size);
+//                 String filePath = ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/img/";
+//                 String path = "/img/"+fileName ;
+//                 File dest = new File(filePath + "/" + fileName);
+//                 String filepath=filePath + "/" + fileName;
+//                 if(!dest.getParentFile().exists()){ //判断文件父目录是否存在
+//                     dest.getParentFile().mkdir();
+//                 }
+//                 try {
+//               	  fileArr[i].transferTo(dest); //保存文件
+//                     //保存文件进入数据库
+//                     thumbnailService.insert(path,fileName,thumbnail,request);
+//                     result="frame";
+//                 } catch (IllegalStateException e) {
+//                     // TODO Auto-generated catch block
+//                     e.printStackTrace();
+//                     result="false";
+//                 } catch (IOException e) {
+//                     // TODO Auto-generated catch block
+//                     e.printStackTrace();
+//                     result="false";
+//                 }
+//        		
+//               
+//            }
+//        	 
+//        }
+//		return result;
+//      
+//       
+//    }
+    
+    /**
+     * 缩略图上传（centos使用）
+     * */
+    @RequestMapping("picturesUpload")
+     
+    public String picturesUpload(@RequestParam("fileName") MultipartFile[] fileArr,HttpServletRequest request,Thumbnail thumbnail){
+        if(fileArr[0].isEmpty()){
+            return "false";
+        }
+        String result="";
+        for(int i=0;i<fileArr.length;i++) {
+        	if(!(fileArr[i].isEmpty())){
+        		String fileName = fileArr[i].getOriginalFilename();
+                int size = (int) fileArr[i].getSize();
+                System.out.println(fileName + "-->" + size);
+                String filePath = ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/img/";
+                //String path = "/img/"+fileName ;
+                String path = "/usr/local/kun_cms/thun/"+fileName ;
+                File dest = new File(path + "/" + fileName);
+                //File dest = new File(filePath + "/" + fileName);
+                String filepath=filePath + "/" + fileName;
+                if(!dest.getParentFile().exists()){ //判断文件父目录是否存在
+                    dest.getParentFile().mkdir();
+                }
+                try {
+               	 fileArr[i].transferTo(dest); //保存文件
+                    //保存文件进入数据库
+                    thumbnailService.insert(path+"/"+fileName,fileName,thumbnail,request);
+                    result="frame";
+                } catch (IllegalStateException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    result="false";
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    result="false";
+                }
+        	}
+        	 
+        }
+		return result;
+       
+    }
+    
+    
 	
 	
 	
@@ -132,7 +221,7 @@ public class FileUploadController {
         try {
             file.transferTo(dest); //保存文件
             //保存文件进入数据库
-            thumbnailService.insert(path+"/"+fileName,fileName,thumbnail);
+            thumbnailService.insert(path+"/"+fileName,fileName,thumbnail,request);
             return "frame";
         } catch (IllegalStateException e) {
             // TODO Auto-generated catch block

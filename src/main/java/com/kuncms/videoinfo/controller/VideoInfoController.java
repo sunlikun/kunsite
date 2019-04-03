@@ -20,6 +20,10 @@ public class VideoInfoController {
 	private VideoInfoService videoInfoService;
 	
 	
+	
+	
+	
+	
 	//根据视频编码查询相应的视频
     @RequestMapping("/serachvideo")
     public String serachvideo(Map<String,Object> map,HttpServletRequest request){
