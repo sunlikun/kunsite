@@ -63,7 +63,7 @@ public class WxpayController extends PayBaseController {
         vo.setSpbill_create_ip(CREATE_IP);
         vo.setNotify_url(NOTIFY_URL);
         vo.setTrade_type("NATIVE");
-        String total_fee = "0.01";
+        String total_fee = "1";
         System.out.println("val："+val);
         vo.setTotal_fee(total_fee);//价格的单位为分
  
@@ -71,7 +71,7 @@ public class WxpayController extends PayBaseController {
         packageParams.put("appid", APPID);//公众账号ID
         packageParams.put("mch_id", MCHID);//商户号
         packageParams.put("nonce_str", nonce_str);//随机字符串
-        packageParams.put("body", "普格娱乐充值");  //商品描述
+        packageParams.put("body", "普格娱乐金币充值");  //商品描述
         packageParams.put("out_trade_no", out_trade_no);//商户订单号
         packageParams.put("total_fee", total_fee); //标价金额 订单总金额，单位为分
         packageParams.put("spbill_create_ip", CREATE_IP);//终端IP APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP
@@ -88,7 +88,7 @@ public class WxpayController extends PayBaseController {
         // 调用微信支付统一下单接口
         String resXml = HttpUtil.postData(PayConfigUtil.UFDODER_URL, requestXML);
         //logger.info("resXml: {}", resXml);
- 
+        System.out.println(resXml);
         // 解析微信支付结果
         Map map = null;
         try {
@@ -185,6 +185,7 @@ public class WxpayController extends PayBaseController {
                 String is_subscribe = (String)packageParams.get("is_subscribe");
                 String out_trade_no = (String)packageParams.get("out_trade_no");
                 String total_fee = (String)packageParams.get("total_fee");
+                String time_end=(String)packageParams.get("time_end");//支付完成时间
  
                 //////////执行自己的业务逻辑////////////////
                 //暂时使用最简单的业务逻辑来处理：只是将业务处理结果保存到session中
@@ -192,25 +193,7 @@ public class WxpayController extends PayBaseController {
                 request.getSession().setAttribute("_PAY_RESULT", "OK");
                 
                 
-                //将交易信息插入交易明细表并增加用户的金币值
-                CoreController  con=new CoreController();
-				//查询用户现有金币数并增加
-				User user=new User();
-				user.setUser_name(passback_params);
-				ArrayList<User> userl=(ArrayList<User>) userService.check_username(user);
-				User loginuser=null;
-				if(userl.size()>0){
-					 loginuser=userl.get(0);
-				}
-				int now_gold_coin=loginuser.getGold_coin();
-				System.out.println("now_gold_coin"+now_gold_coin);
-				int gold_coin=(int) (Double.parseDouble(total_fee)*10);
-				gold_coin=gold_coin+now_gold_coin;
-				System.out.println("gold_coin"+gold_coin);
-				userService.addUserGoldCoin(passback_params,gold_coin);
-                
- 
-                //logger.info("支付成功");
+               //logger.info("支付成功");
                 System.out.println("微信支付成功");
                 //通知微信.异步确认成功.必写.不然会一直通知后台.八次之后就认为交易失败了.
                 resXml = "<xml>" + "<return_code><![CDATA[SUCCESS]]></return_code>"
