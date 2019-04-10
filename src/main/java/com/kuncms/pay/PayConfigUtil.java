@@ -9,6 +9,9 @@ public class PayConfigUtil {
 	
 	//统一下单
 	public final static String UFDODER_URL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+	
+	//查询订单
+	public final static String QUERYORDER_URL = "https://api.mch.weixin.qq.com/pay/orderquery";
 //	public final static String NOTIFY_URL = "http://xxxxxxx"; //微信支付回调接口，就是微信那边收到（改为自己实际的）
 //	//企业向个人账号付款的URL
 //	public final static String SEND_EED_PACK_URL = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";

@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
  
 import javax.servlet.http.HttpServletRequest;
@@ -193,6 +194,7 @@ public class WxpayController extends PayBaseController {
                 request.getSession().setAttribute("_PAY_RESULT", "OK");
                 
                 
+                
                //logger.info("支付成功");
                 System.out.println("微信支付成功");
                 //通知微信.异步确认成功.必写.不然会一直通知后台.八次之后就认为交易失败了.
@@ -223,5 +225,53 @@ public class WxpayController extends PayBaseController {
         }
         return ("success");
     }
+    
+    
+    
+    /**
+     * 微信支付-订单查询
+     * @param request
+     * @param response
+     */
+    @PostMapping("/orderquery")
+    @ResponseBody
+    public String orderquery(HttpServletRequest request, HttpServletResponse response) {
+    	
+    	String out_trade_no= (String) request.getSession().getAttribute("out_trade_no");
+    	String nonce_str= (String) request.getSession().getAttribute("nonce_str");
+    	SortedMap<Object,Object> packageParams = new TreeMap<Object,Object>();
+        packageParams.put("appid", APPID);//公众账号ID
+        packageParams.put("mch_id", MCHID);//商户号
+        packageParams.put("nonce_str", nonce_str);//随机字符串
+        packageParams.put("out_trade_no", out_trade_no);//商户订单号
+        // 签名
+        String sign = PayToolUtil.createSign("UTF-8", packageParams, KEY);
+        packageParams.put("sign", sign);
+ 
+        // 将请求参数转换为xml格式的string
+        String requestXML = PayToolUtil.getRequestXml(packageParams);
+       
+ 
+        // 调用微信支付查询订单接口
+        String resXml = HttpUtil.postData(PayConfigUtil.QUERYORDER_URL, requestXML);
+        
+        System.out.println(resXml);
+        // 解析微信支付结果
+        Map map = null;
+        try {
+            map = XMLUtil4jdom.doXMLParse(resXml);
+          
+        } catch (JDOMException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+ 
+       
+        String result_code = (String) map.get("result_code");
+		
+        return result_code;
+        
+     }
  
 }
