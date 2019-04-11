@@ -338,7 +338,7 @@ public class CoreController {
 			HttpSession session = request.getSession();
 	        session.setAttribute("loginName",loginuser.getUser_name());
 	        session.setAttribute("gold_coin",loginuser.getGold_coin());
-	        session.setAttribute("userList",userl);
+	        session.setAttribute("user",loginuser);
 		}else{
 			flag=false;
 		}

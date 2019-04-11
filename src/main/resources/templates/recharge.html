@@ -342,8 +342,9 @@
     <script src="js/scripts.js"></script>
     
     <script type="text/javascript">
-    
-        var user_name=$("#user_name").val();
+    	
+       	var user_name=$("#user_name").val();
+       	var query=null;
 		var app=new Vue({
 			  el: '#app',
 			  data: {
@@ -390,30 +391,34 @@
 				    	alert("请选择支付方式");
 				    	return false;
 				    }else if(type=="1"){//微信支付
-				    	url="/wxpay/qrcode";
+				    	url="/wxpay/qrcode?total_fee="+val;
+				    	var newWin=window.open (url, '普格娱乐充值', 'left=410,height=510, width=660, top=200,  toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no')
+				    	//轮询查询微信订单是否成功
+				    	 query=setInterval("orderquery()",500);
 				    //alert("微信支付开通中,请等待");
 				    }else if(type=="2"){//支付宝支付
 				    	url="alipay";
+				    	var form=$("<form>");//定义一个form表单
+	          			form.attr("style","display:none");
+	          			form.attr("target","");
+	          			form.attr("method","get");
+	          			form.attr("action",url);
+	          			var input1=$("<input>");
+	          			input1.attr("type","hidden");
+	          			input1.attr("name","val");
+	          			input1.attr("value",val);
+	          			var input2=$("<input>");
+	          			input2.attr("type","hidden");
+	          			input2.attr("name","openid");
+	          			input2.attr("value","");
+	          			$("body").append(form);//将表单放置在web中
+	          			form.append(input1);  
+	          			form.append(input2);  
+	          			form.submit();//表单提交 
 				    }
 				    
-					/* var form=$("<form>");//定义一个form表单
-          			form.attr("style","display:none");
-          			form.attr("target","");
-          			form.attr("method","get");
-          			form.attr("action",url);
-          			var input1=$("<input>");
-          			input1.attr("type","hidden");
-          			input1.attr("name","val");
-          			input1.attr("value",val);
-          			var input2=$("<input>");
-          			input2.attr("type","hidden");
-          			input2.attr("name","openid");
-          			input2.attr("value","");
-          			$("body").append(form);//将表单放置在web中
-          			form.append(input1);  
-          			form.append(input2);  
-          			form.submit();//表单提交 */
-          			window.open (url, '普格娱乐充值', 'left=410,height=510, width=660, top=200,  toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no')
+					
+          			
           			
           		 },
 				  paytype: function (message) {
@@ -423,6 +428,23 @@
 						
 			  }
 			})
+		
+		 	function orderquery() {
+	            $.ajax({
+	                url: '/wxpay/orderquery',
+	                async:true,
+	                type: 'get',
+	                success: function (data) {
+	                	alert(data)
+	                    alert(data.result_code);
+	                	if(data.result_code=='ok'){
+	                		window.clearInterval(query);
+	                		alert("支付成功");
+	                		location.href="/membership";
+	                	}
+	               }
+	           })
+       		}
 	
 	</script>
   </body>

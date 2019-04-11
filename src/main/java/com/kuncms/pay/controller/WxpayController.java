@@ -11,7 +11,9 @@ import com.kuncms.pay.PayConfigUtil;
 import com.kuncms.pay.PayToolUtil;
 import com.kuncms.pay.QRUtil;
 import com.kuncms.pay.XMLUtil4jdom;
+import com.kuncms.pay.model.WechatpayTradeinfo;
 import com.kuncms.pay.model.WxpayVo;
+import com.kuncms.pay.service.WechatpayTradeinfoService;
 import com.kuncms.user.model.User;
 import com.kuncms.user.service.UserService;
 
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.text.ParseException;
 import java.util.*;
  
 /**
@@ -38,13 +41,22 @@ import java.util.*;
 public class WxpayController extends PayBaseController {
 	@Autowired
 	UserService userService;
+	@Autowired
+	WechatpayTradeinfoService wechatpayTradeinfoService;
     /**
      * 微信支付->扫码支付(模式二)->统一下单->微信二维码
      * @return
+     * @throws ParseException 
      */
     @GetMapping("/qrcode")
-    public void wxpayPay(HttpServletResponse response,String val) {
-        String urlCode = null;
+    public void wxpayPay(HttpServletResponse response,String total_fee,HttpServletRequest request) throws ParseException {
+        
+    	User user=(User) request.getSession().getAttribute("user");
+    	
+    	String attach=user.getId();
+    	
+    	String urlCode = null;
+        WechatpayTradeinfo wechatpayTradeinfo=new WechatpayTradeinfo();
         // 获取订单信息
         WxpayVo vo = new WxpayVo();
         String out_trade_no = UUID.randomUUID().toString().replace("-", ""); 
@@ -64,9 +76,13 @@ public class WxpayController extends PayBaseController {
         vo.setSpbill_create_ip(CREATE_IP);
         vo.setNotify_url(NOTIFY_URL);
         vo.setTrade_type("NATIVE");
-        String total_fee = "1";
-        System.out.println("val："+val);
-        vo.setTotal_fee(total_fee);//价格的单位为分
+        System.out.println("total_fee："+total_fee);
+        vo.setTotal_fee(total_fee);
+        wechatpayTradeinfo.setTotalFee(Integer.parseInt(total_fee));
+        wechatpayTradeinfo.setOutTradeNo(out_trade_no);
+        wechatpayTradeinfo.setBody("普格娱乐金币充值");
+        wechatpayTradeinfo.setNonceStr(nonce_str);
+        wechatpayTradeinfo.setStatus("0");
  
         SortedMap<Object,Object> packageParams = new TreeMap<Object,Object>();
         packageParams.put("appid", APPID);//公众账号ID
@@ -78,6 +94,7 @@ public class WxpayController extends PayBaseController {
         packageParams.put("spbill_create_ip", CREATE_IP);//终端IP APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP
         packageParams.put("notify_url", NOTIFY_URL);//通知地址 异步接收微信支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数
         packageParams.put("trade_type", "NATIVE");//交易类型 NATIVE 扫码支付
+        packageParams.put("attach", attach);//交易类型 NATIVE 扫码支付
         // 签名
         String sign = PayToolUtil.createSign("UTF-8", packageParams, KEY);
         packageParams.put("sign", sign);
@@ -104,7 +121,8 @@ public class WxpayController extends PayBaseController {
         // 返回微信支付的二维码连接
         urlCode = (String) map.get("code_url");
         //logger.info("urlCode:{}", urlCode);
- 
+        wechatpayTradeinfo.setCodeUrl(urlCode);
+        wechatpayTradeinfoService.insert(wechatpayTradeinfo,request);
         try {
             int width = 300;
             int height = 300;
@@ -128,9 +146,10 @@ public class WxpayController extends PayBaseController {
      * 微信支付-回调
      * @param request
      * @param response
+     * @throws ParseException 
      */
     @PostMapping("/we_notify")
-    public String wxpayNotify(HttpServletRequest request, HttpServletResponse response) {
+    public String wxpayNotify(HttpServletRequest request, HttpServletResponse response) throws ParseException {
     	 System.out.println("微信支付异步通知");
     	//读取参数
         InputStream inputStream ;
@@ -187,15 +206,36 @@ public class WxpayController extends PayBaseController {
                 String out_trade_no = (String)packageParams.get("out_trade_no");
                 String total_fee = (String)packageParams.get("total_fee");
                 String time_end=(String)packageParams.get("time_end");//支付完成时间
+                String attach=(String)packageParams.get("attach");//支付完成时间
  
                 //////////执行自己的业务逻辑////////////////
                 //暂时使用最简单的业务逻辑来处理：只是将业务处理结果保存到session中
                 //（根据自己的实际业务逻辑来调整，很多时候，我们会操作业务表，将返回成功的状态保留下来）
                 request.getSession().setAttribute("_PAY_RESULT", "OK");
                 
+                //更新订单表并修改用户的金币值
+                WechatpayTradeinfo wechatpayTradeinfo=new WechatpayTradeinfo();
+                wechatpayTradeinfo.setStatus("1");
+                wechatpayTradeinfo.setOutTradeNo(out_trade_no);
+                wechatpayTradeinfo.setTime_end(time_end);
+                wechatpayTradeinfoService.updateByOut_trade_no(wechatpayTradeinfo);
                 
+                //查询用户现有金币数并增加
+				User user=new User();
+				user.setId(attach);
+				ArrayList<User> userl=(ArrayList<User>) userService.check_username(user);
+				User loginuser=null;
+				if(userl.size()>0){
+					 loginuser=userl.get(0);
+				}
+				int now_gold_coin=loginuser.getGold_coin();
+				System.out.println("now_gold_coin"+now_gold_coin);
+				int gold_coin=(int) (Double.parseDouble(total_fee)*10);
+				gold_coin=gold_coin+now_gold_coin;
+				System.out.println("gold_coin"+gold_coin);
+				userService.addUserGoldCoin(attach,gold_coin);
                 
-               //logger.info("支付成功");
+                //logger.info("支付成功");
                 System.out.println("微信支付成功");
                 //通知微信.异步确认成功.必写.不然会一直通知后台.八次之后就认为交易失败了.
                 resXml = "<xml>" + "<return_code><![CDATA[SUCCESS]]></return_code>"
@@ -237,38 +277,41 @@ public class WxpayController extends PayBaseController {
     @ResponseBody
     public String orderquery(HttpServletRequest request, HttpServletResponse response) {
     	
-    	String out_trade_no= (String) request.getSession().getAttribute("out_trade_no");
-    	String nonce_str= (String) request.getSession().getAttribute("nonce_str");
-    	SortedMap<Object,Object> packageParams = new TreeMap<Object,Object>();
-        packageParams.put("appid", APPID);//公众账号ID
-        packageParams.put("mch_id", MCHID);//商户号
-        packageParams.put("nonce_str", nonce_str);//随机字符串
-        packageParams.put("out_trade_no", out_trade_no);//商户订单号
-        // 签名
-        String sign = PayToolUtil.createSign("UTF-8", packageParams, KEY);
-        packageParams.put("sign", sign);
- 
-        // 将请求参数转换为xml格式的string
-        String requestXML = PayToolUtil.getRequestXml(packageParams);
-       
- 
-        // 调用微信支付查询订单接口
-        String resXml = HttpUtil.postData(PayConfigUtil.QUERYORDER_URL, requestXML);
+//    	String out_trade_no= (String) request.getSession().getAttribute("out_trade_no");
+//    	String nonce_str= (String) request.getSession().getAttribute("nonce_str");
+//    	SortedMap<Object,Object> packageParams = new TreeMap<Object,Object>();
+//        packageParams.put("appid", APPID);//公众账号ID
+//        packageParams.put("mch_id", MCHID);//商户号
+//        packageParams.put("nonce_str", nonce_str);//随机字符串
+//        packageParams.put("out_trade_no", out_trade_no);//商户订单号
+//        // 签名
+//        String sign = PayToolUtil.createSign("UTF-8", packageParams, KEY);
+//        packageParams.put("sign", sign);
+// 
+//        // 将请求参数转换为xml格式的string
+//        String requestXML = PayToolUtil.getRequestXml(packageParams);
+//       
+// 
+//        // 调用微信支付查询订单接口
+//        String resXml = HttpUtil.postData(PayConfigUtil.QUERYORDER_URL, requestXML);
+//        
+//        System.out.println(resXml);
+//        // 解析微信支付结果
+//        Map map = null;
+//        try {
+//            map = XMLUtil4jdom.doXMLParse(resXml);
+//          
+//        } catch (JDOMException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+// 
+//       
+//        String result_code = (String) map.get("result_code");
         
-        System.out.println(resXml);
-        // 解析微信支付结果
-        Map map = null;
-        try {
-            map = XMLUtil4jdom.doXMLParse(resXml);
-          
-        } catch (JDOMException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
- 
-       
-        String result_code = (String) map.get("result_code");
+    	 String result_code = (String)request.getSession().getAttribute("_PAY_RESULT");
+    	
 		
         return result_code;
         

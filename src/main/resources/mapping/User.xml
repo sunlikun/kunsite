@@ -26,6 +26,9 @@
          <if test="user_name != null and user_name !=''">
         		and u.user_name=#{user_name} 
       	</if>
+      	<if test="id != null and id !=''">
+        		and u.id=#{id} 
+      	</if>
      </select>
 
 
