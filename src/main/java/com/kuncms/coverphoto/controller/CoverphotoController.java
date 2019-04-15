@@ -83,6 +83,10 @@ public class CoverphotoController {
 	        List<Coverphoto> pageList = personPageInfo.getList();
 	       
 	        JSONArray listArray=JSONArray.fromObject(pageList);     
+	        response.setContentType("application/json");
+	        response.setHeader("Pragma", "No-cache");
+	        response.setHeader("Cache-Control", "no-cache");
+	        response.setCharacterEncoding("UTF-8");
 	        PrintWriter out= null;
 	        out = response.getWriter();
 	        out.print(listArray.toString());
