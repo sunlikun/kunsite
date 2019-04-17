@@ -22,13 +22,13 @@
 				<center style="margin-top: 200px">
 				<div id="app">
 					<form role="form" action="/newsignup"  id="app" @submit="checkForm"  method="post">
-					    
+					    <!--  
 					 	<p v-if="errors.length">
 						   <ul>
 						      <li v-for="error in errors">{{ error }}</li>
 						    </ul>
 					  	</p>
-						
+						-->
 						<div class="form-group"  >
 							 
 							<label>
@@ -41,7 +41,7 @@
 							<label>
 								密码
 							</label>
-							<input type="text" class="form-control"  id="password"   name="password" style="width: 200px" v-model="password" /><span>{{message1}}</span>
+							<input type="text" class="form-control"  id="password"   name="password" style="width: 200px" v-model="password" onkeyup="this.value=this.value.replace(/[^a-z0-9_]/g,'');" /><span>{{message1}}</span>
 						</div>
 						
 						
@@ -71,19 +71,32 @@
 			  },
 			  methods:{
 				  checkForm: function (e) {
-				      if (this.user_name && this.password) {
-				        return true;
-				      }
-
-				      this.errors = [];
+					  this.errors = [];
+					  
+					 
 
 				      if (!this.user_name) {
-				        this.errors.push('用户名不能为空');
-				      }
+				        this.message='用户名不能为空';
+				        this.errors.push("Name required.");
+				      }else  if(this.message=='用户名重复'){
+						  this.errors.push("Name repeat");
+						
+					  }else if(this.user_name.length>8){
+						  	this.message='用户名长度不能超过8个字符';
+					        this.errors.push("Name out long.");
+					  }
+				     
 				      if (!this.password) {
-				        this.errors.push('密码不能为空');
+				        this.message1='密码不能为空';
+				        this.errors.push("Pass required.");
+				      }else if(this.password.length>16){
+						  	this.message1='密码长度不能超过16个字符';
+					        this.errors.push("Pass out long.");
+					  }
+				      
+				      if (!this.errors.length) {
+				          return true;
 				      }
-
 				      e.preventDefault();
 				    },
 				    inputFunc: function (event) {
