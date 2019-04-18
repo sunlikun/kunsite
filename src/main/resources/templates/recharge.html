@@ -70,6 +70,9 @@
 	
 	}
 	.cdiv{ border:3px solid #000} 
+	
+	.point{position:absolute;left:50%; top:50%;}
+        .pop{width:300px; height:380px; position:absolute;left:-250px; top:-250px;background: white; }
 	</style>
 	
 	<script type="text/javascript">
@@ -290,11 +293,10 @@
 					              </label>
 					            </div>
 					          </div>
-					          
-					              
-					          
 					          <input id="type"  name="type" v-model="type" style="display: none">
-					          <p>需要支付金额</p>
+					          <!-- 
+					          <p>需要支付金额<input id="total_fee"  name="total_fee" v-model="total_fee" ></p>
+					           -->
 					          <div class="charge-group">
 					            <div class="charge-group__inner">
 					              <label class="charge-item">
@@ -327,12 +329,23 @@
 		
 		
    </div>
+</div>
    
-   
-   <img src="" alt="" id="img">
-   
-   
-   
+ 	<div  style="width:100%; height:90%;left:0;top:0; position:fixed;background:rgba(0,0,0,0.3);display: none" id="payimg">
+ 			
+	    	<div class="point">
+	    		<div class="pop">
+	    		
+	    		<center style="margin-top: 15px"><font size="3">请打开微信扫码支付</font></center>
+	    		
+	    		<img src="" alt="" id="img"><br>
+	    		<center>
+	    		<button type="button" class="btn btn-primary" id="done">支付完成</button>
+	    		<button type="button" class="btn btn-default" id="cancel">取消</button>
+	    		</center>
+				</div>
+	      	</div>
+   </div>  
    
    <div th:include="footer :: footer"></div> 
    <input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none"> 
@@ -391,10 +404,13 @@
 				    	alert("请选择支付方式");
 				    	return false;
 				    }else if(type=="1"){//微信支付
+				    	$("#img").attr("src","");
 				    	url="/wxpay/qrcode?total_fee="+val;
-				    	var newWin=window.open (url, '普格娱乐充值', 'left=410,height=510, width=660, top=200,  toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no')
+				    	$("#img").attr("src",url);
+				    	$("#payimg").show();
+				    	//var newWin=window.open (url, '普格娱乐充值', 'left=410,height=510, width=660, top=200,  toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no')
 				    	//轮询查询微信订单是否成功
-				    	 query=setInterval("orderquery()",500);
+				    	// query=setInterval("orderquery()",500);
 				    //alert("微信支付开通中,请等待");
 				    }else if(type=="2"){//支付宝支付
 				    	url="alipay";
@@ -429,7 +445,7 @@
 			  }
 			})
 		
-		 	function orderquery() {
+		 	/* function orderquery() {
 	            $.ajax({
 	                url: '/wxpay/orderquery',
 	                async:true,
@@ -444,7 +460,15 @@
 	                	}
 	               }
 	           })
-       		}
+       		} */
+       		
+       		
+       		$("#cancel").click(function(){
+       			$("#payimg").hide();
+            });
+       		$("#done").click(function(){
+       			location.reload();
+            });
 	
 	</script>
   </body>

@@ -29,9 +29,28 @@
     
     
     <insert id="insert"  parameterType="com.kuncms.coverphoto.model.Coverphoto">
+
 		insert into coverphoto(id,coverphotoid,baiduyun_address,baiduyun_pass,video_name,create_time,createby,update_time,updateby,flag,gold_coin,clicks,downloads) 
 		   values(#{id},#{coverphotoid},#{baiduyun_address},#{baiduyun_pass},#{video_name},#{create_time},#{createby},#{update_time},#{updateby},#{flag},#{gold_coin},#{clicks},#{downloads})
- 	</insert>
+	</insert>
+ 	
+ 	<update id="updateCoverPhotoById" parameterType="com.kuncms.coverphoto.model.Coverphoto">
+ 	
+ 	    update coverphoto a set 
+ 	    <if test="clicks != null and clicks != ''">
+				a.clicks=#{clicks}
+		</if>
+		<if test="downloads != null and downloads != ''">
+				,a.downloads=#{downloads}
+		</if>
+        <where>
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+		</where>
+ 	
+ 	
+ 	</update>
   
   	<update id="updateCoverPhotoById" parameterType="com.kuncms.coverphoto.model.Coverphoto">
  	

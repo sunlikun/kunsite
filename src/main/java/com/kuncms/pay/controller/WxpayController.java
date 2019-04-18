@@ -83,7 +83,7 @@ public class WxpayController extends PayBaseController {
         wechatpayTradeinfo.setBody("普格娱乐金币充值");
         wechatpayTradeinfo.setNonceStr(nonce_str);
         wechatpayTradeinfo.setStatus("0");
- 
+        total_fee=String.valueOf(Integer.parseInt(total_fee)*100);
         SortedMap<Object,Object> packageParams = new TreeMap<Object,Object>();
         packageParams.put("appid", APPID);//公众账号ID
         packageParams.put("mch_id", MCHID);//商户号
@@ -230,7 +230,7 @@ public class WxpayController extends PayBaseController {
 				}
 				int now_gold_coin=loginuser.getGold_coin();
 				System.out.println("now_gold_coin"+now_gold_coin);
-				int gold_coin=(int) (Double.parseDouble(total_fee)*10);
+				int gold_coin=Integer.parseInt(total_fee)/10;
 				gold_coin=gold_coin+now_gold_coin;
 				System.out.println("gold_coin"+gold_coin);
 				userService.addUserGoldCoin(attach,gold_coin);

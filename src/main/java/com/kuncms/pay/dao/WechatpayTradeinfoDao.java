@@ -12,5 +12,7 @@ import com.kuncms.pay.model.WechatpayTradeinfo;
 public interface WechatpayTradeinfoDao {
 
 	void insert(WechatpayTradeinfo wechatpayTradeinfo);
+
+	void updateByOut_trade_no(WechatpayTradeinfo wechatpayTradeinfo);
    
 }

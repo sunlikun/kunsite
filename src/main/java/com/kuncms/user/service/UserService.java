@@ -49,11 +49,11 @@ public class UserService {
 		// TODO Auto-generated method stub
 		return userDao.isRegister(user);
 	}
-	public void addUserGoldCoin(String user_name, int gold_coin) {
+	public void addUserGoldCoin(String id, int gold_coin) {
 		// TODO Auto-generated method stub
 		
 		User user=new User();
-		user.setUser_name(user_name);
+		user.setId(id);
 		user.setGold_coin(gold_coin);
 		userDao.addUserGoldCoin(user);
 	}

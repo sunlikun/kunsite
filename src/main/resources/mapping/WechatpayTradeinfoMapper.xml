@@ -345,7 +345,7 @@
     update wechatpay_tradeinfo
     set update_time = #{updateTime,jdbcType=TIMESTAMP},
      	status = #{status,jdbcType=CHAR}
-    	where out_trade_no = #{out_trade_no,jdbcType=VARCHAR}
+    	where out_trade_no = #{outTradeNo,jdbcType=VARCHAR}
   </update>
   
   

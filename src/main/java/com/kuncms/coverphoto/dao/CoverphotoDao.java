@@ -19,4 +19,6 @@ public interface CoverphotoDao {
 
 	ArrayList<Coverphoto> queryCoverPhotoById(Coverphoto coverphoto);
 
+	void updateCoverPhotoById(Coverphoto coverphoto);
+
 }

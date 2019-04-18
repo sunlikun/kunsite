@@ -43,6 +43,8 @@ public class CoverphotoService {
 		coverphoto.setCreateby(userName);
 		coverphoto.setUpdateby(userName);
 		coverphoto.setFlag("1");
+		coverphoto.setClicks(0);
+		coverphoto.setDownloads(0);
 		coverphotoDao.insert(coverphoto);
 	}
 
@@ -65,6 +67,12 @@ public class CoverphotoService {
 	public ArrayList<Coverphoto> queryCoverPhotoById(Coverphoto coverphoto) {
 		// TODO Auto-generated method stub
 		return coverphotoDao.queryCoverPhotoById(coverphoto);
+	}
+	
+	
+	public void updateCoverPhotoById(Coverphoto coverphoto) {
+		// TODO Auto-generated method stub
+		coverphotoDao.updateCoverPhotoById(coverphoto);
 	}
 	
 	
