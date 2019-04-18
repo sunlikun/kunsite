@@ -43,7 +43,7 @@ public class WechatpayTradeinfoService {
 		DateUtil dateUtil=new DateUtil();
 		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		wechatpayTradeinfo.setUpdateTime(format.parse(dateUtil.getNow()));
-		wechatpayTradeinfoDao.insert(wechatpayTradeinfo);
+		wechatpayTradeinfoDao.updateByOut_trade_no(wechatpayTradeinfo);
 	}
    
 }

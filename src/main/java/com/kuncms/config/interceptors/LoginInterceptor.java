@@ -35,7 +35,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     /*@Value("${IGNORE_LOGIN}") 
     Boolean IGNORE_LOGIN;*/  
   
-    @Override  
+	@Override  
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)  
             throws Exception {  
         String basePath = request.getContextPath();  
@@ -55,7 +55,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
           
         //如果登录了，会把用户信息存进session  
         HttpSession session = request.getSession();  
-        List<User> users =  (List<User>) session.getAttribute("userList");  
+        User users =  (User) session.getAttribute("user");  
         /*User userInfo = new User(); 
         userInfo.setId(users.get(0).getId()); 
         userInfo.setName(users.get(0).getName()); 
