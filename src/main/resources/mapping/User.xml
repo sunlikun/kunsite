@@ -5,7 +5,14 @@
 
 	
  	<update id="addUserGoldCoin"  parameterType="com.kuncms.user.model.User">
-		update user_info  set gold_coin=#{gold_coin} where user_name=#{user_name}
+		update user_info u set gold_coin=#{gold_coin} where  flag='1'
+
+				<if test="user_name != null and user_name !=''">
+		        		and u.user_name=#{user_name} 
+		      	</if>
+		      	<if test="id != null and id !=''">
+		        		and u.id=#{id} 
+      			</if>
  	</update>
 
 
@@ -18,7 +25,14 @@
 
 
  	<update id="update"  parameterType="com.kuncms.user.model.User">
-		update user_info  set gold_coin=#{gold_coin} where user_name=#{user_name}
+		update user_info u set u.gold_coin=#{gold_coin} where flag='1'
+		
+		<if test="user_name != null and user_name !=''">
+        		and u.user_name=#{user_name} 
+      	</if>
+      	<if test="id != null and id !=''">
+        		and u.id=#{id} 
+      	</if>
  	</update>
 
  	<select id="check_username"  parameterType="com.kuncms.user.model.User"  resultType="com.kuncms.user.model.User">

@@ -44,6 +44,16 @@ public class ThumbnailController {
 	@Autowired
 	UserService userService;
 	
+	/**
+	 * @param map
+	 * @param id
+	 * @param user
+	 * @param model
+	 * @param request
+	 * @param t_gold_coin
+	 * @return
+	 * 跳转到下载页
+	 */
 	@RequestMapping("/todown")
     public String todown(Map<String,Object> map,String id,User user,Model model,HttpServletRequest request,int t_gold_coin){
 	   
@@ -51,24 +61,28 @@ public class ThumbnailController {
 	    coverphoto.setId(id);
 	    ArrayList<Coverphoto> list=coverphotoService.queryCoverPhotoById(coverphoto);
 	    if(list.size()>0){
+	       Coverphoto coverphoto1=list.get(0);
  		   String url=list.get(0).getBaiduyun_address();
  		   model.addAttribute("url",url);
+ 		   //修改当前作品的下载量
+ 		   coverphoto1.setDownloads(coverphoto1.getDownloads()+1);
+ 		   coverphotoService.updateCoverPhotoById(coverphoto1);
 			   
  	   };
  	   
  	   //扣除用户对应的金币
  	   HttpSession session=request.getSession();
- 	   String user_name=(String) session.getAttribute("loginName");
- 	   user.setUser_name(user_name);
- 	   ArrayList<User> userl=(ArrayList<User>) userService.check_username(user);
-		User loginuser=null;
+ 	   User loginuser=(User) session.getAttribute("user");
+ 	   ArrayList<User> userl=(ArrayList<User>) userService.check_username(loginuser);
+		
 		if(userl.size()>0){
-			 loginuser=userl.get(0);
+			 User loginuser1=userl.get(0);
+			 int  goldCoin=loginuser1.getGold_coin();
+			 int  rgoldCoin=goldCoin-t_gold_coin;
+			 loginuser1.setGold_coin(rgoldCoin);
+			 userService.update(loginuser1);
 		}
-		int  goldCoin=loginuser.getGold_coin();
-		int  rgoldCoin=goldCoin-t_gold_coin;
-		loginuser.setGold_coin(rgoldCoin);
-		userService.update(loginuser);
+		
 		
 		return "download";
 	
@@ -165,23 +179,32 @@ public class ThumbnailController {
 	
 	
 	
+	/**
+	 * @param map
+	 * @param id
+	 * @param baiduyun_pass
+	 * @param baiduyun_address
+	 * @param t_gold_coin
+	 * @param model
+	 * @param request
+	 * @return
+	 * 跳转到详情页
+	 */
 	@RequestMapping("/details")
     public String details(Map<String,Object> map,String id,String baiduyun_pass,String baiduyun_address,String t_gold_coin,Model model,HttpServletRequest request){
-	   //ArrayList<Coverphoto> list=thumbnailService.queryCoverPhoto();
-	   //com.alibaba.fastjson.JSONArray array= com.alibaba.fastjson.JSONArray.parseArray(JSON.toJSONString(list));
-	   //model.addAttribute("data", array.toJSONString());
+	  
+		//取出当前作品的点击率并加1
+		Coverphoto coverphoto=new Coverphoto();
+		coverphoto.setId(id);
+		ArrayList<Coverphoto> list=coverphotoService.queryCoverPhotoById(coverphoto);
+		Coverphoto coverphoto1=list.get(0);
+		coverphoto1.setClicks(coverphoto1.getClicks()+1);
+		coverphotoService.updateCoverPhotoById(coverphoto1);
+	   
+		
 		model.addAttribute("id",id);
 		model.addAttribute("t_gold_coin",t_gold_coin);
-//		BASE64Decoder decoder = new BASE64Decoder();
-//		byte[] b;
-//		try {
-//			b = decoder.decodeBuffer(baiduyun_address);
-//			 baiduyun_address=new  String(b,"UTF-8");
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//       
+
 		HttpSession session=request.getSession();
 		if(session.getAttribute("loginName")!=null){
 			String user_name=(String) session.getAttribute("loginName");
@@ -190,8 +213,8 @@ public class ThumbnailController {
 			model.addAttribute("gold_coin",gold_coin);
 		}
 		
-		//User loginuser=(User) session.getAttribute("loginuser");
-		System.out.println(t_gold_coin+"6666666666");
+		
+		System.out.println("t_gold_coin"+t_gold_coin);
 		model.addAttribute("baiduyun_pass",baiduyun_pass);
 		
 		model.addAttribute("baiduyun_address",baiduyun_address);
