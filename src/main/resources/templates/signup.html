@@ -8,6 +8,7 @@
 		<link href="css/bootstrap.min.css" rel="stylesheet">
     	<link href="css/style.css" rel="stylesheet">
     	<link href="css/button.css" rel="stylesheet">
+    	<link rel="icon" type="image/x-icon" href="/img/favicon.ico">
 		<title>注册</title>
 		<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
 		<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
@@ -41,7 +42,7 @@
 							<label>
 								密码
 							</label>
-							<input type="text" class="form-control"  id="password"   name="password" style="width: 200px" v-model="password" onkeyup="this.value=this.value.replace(/[^a-z0-9_]/g,'');" /><span>{{message1}}</span>
+							<input type="text" class="form-control"  id="password"   name="password" style="width: 200px" v-model="password" onkeyup="this.value=this.value.replace(/[^a-z0-9_]/g,'');"/><span>{{message1}}</span>
 						</div>
 						
 						

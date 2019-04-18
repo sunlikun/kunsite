@@ -14,6 +14,21 @@ private String video_name;
 private String flag;
 private String baiduyun_address;
 private int gold_coin;
+private int clicks;
+private int downloads;
+
+public int getClicks() {
+	return clicks;
+}
+public void setClicks(int clicks) {
+	this.clicks = clicks;
+}
+public int getDownloads() {
+	return downloads;
+}
+public void setDownloads(int downloads) {
+	this.downloads = downloads;
+}
 
 public int getGold_coin() {
 	return gold_coin;
