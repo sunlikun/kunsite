@@ -204,6 +204,7 @@ public class ThumbnailController {
 		
 		model.addAttribute("id",id);
 		model.addAttribute("t_gold_coin",t_gold_coin);
+		model.addAttribute("clicks",coverphoto1.getClicks());
 
 		HttpSession session=request.getSession();
 		if(session.getAttribute("loginName")!=null){
