@@ -143,6 +143,8 @@
               	
              }
           });
+          
+         
           /* function encode64(input) {
         	  	var keyStr = input;
         	    var output = "";
@@ -171,7 +173,52 @@
         	    return output;
         	} */
         	
-         
+         function  createrankingList(){
+        		 $.ajax({
+                     type: "post",
+                     url: "/queryrankingList",
+                     data: {},
+                     dataType: "json",
+                     success: function(data){
+                   	var coverphotoArr = data;
+                   	var converGroup="";
+                   	for(var i=0;i<coverphotoArr.length;i++){
+                   		　　//alert(coverphotoArr[i].coverphotoid);
+                   		var id=coverphotoArr[i].id;
+                   		var baiduyun_pass=coverphotoArr[i].baiduyun_pass;
+                   		var baiduyun_address=coverphotoArr[i].baiduyun_address;
+                   		//alert(baiduyun_address)
+                   		//alert(coverphotoArr[i].coverphotoid)
+                   		var tableContent="";
+                         	tableContent += '<div class="col-sm-6 col-md-4">';
+                           tableContent += '<div class="thumbnail">';
+                         
+                           tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'">';
+                           var coverid="/images/"+coverphotoArr[i].coverphotoid.substring(30);
+                          // alert(coverid)
+                           tableContent += '<img  class="img-responsive"   src="' + coverid+ '" >';
+                           tableContent += '</a>';
+                           
+                           tableContent += '<div class="caption">';
+                         	tableContent += '<p>' + coverphotoArr[i].video_name+ '</p>';
+                         	tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币</p>';
+                           tableContent += ' <p><a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-primary" role="button"> 查看</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default" role="button">  下载</a></p> ';
+                         
+                           tableContent += '</p>';
+                           tableContent += '<div>';
+                           tableContent += '</div></div></div></div>';
+                           
+                          
+                         
+                           converGroup+=tableContent;
+                           
+                   	}
+                   	$("#coverphoto").append(converGroup);
+                  	   
+                     	
+                    }
+                 });
+         }
           
       });
         
@@ -223,6 +270,8 @@
 									<li><a href="#home" data-toggle="tab">iOS</a></li>
 									
 								</ul>
+								<div id="rankingList">
+								</div>
 								<div id="myTabContent" class="tab-content">
 									<div class="tab-pane fade in active" id="home">
 										
