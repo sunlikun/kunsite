@@ -30,8 +30,8 @@
     
     <insert id="insert"  parameterType="com.kuncms.coverphoto.model.Coverphoto">
 
-		insert into coverphoto(id,coverphotoid,baiduyun_address,baiduyun_pass,video_name,create_time,createby,update_time,updateby,flag,gold_coin,clicks,downloads) 
-		   values(#{id},#{coverphotoid},#{baiduyun_address},#{baiduyun_pass},#{video_name},#{create_time},#{createby},#{update_time},#{updateby},#{flag},#{gold_coin},#{clicks},#{downloads})
+		insert into coverphoto(id,coverphotoid,baiduyun_address,baiduyun_pass,video_name,create_time,createby,update_time,updateby,flag,gold_coin,clicks,downloads,category) 
+		   values(#{id},#{coverphotoid},#{baiduyun_address},#{baiduyun_pass},#{video_name},#{create_time},#{createby},#{update_time},#{updateby},#{flag},#{gold_coin},#{clicks},#{downloads},#{category})
 	</insert>
  	
  	<update id="updateCoverPhotoById" parameterType="com.kuncms.coverphoto.model.Coverphoto">
