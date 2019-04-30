@@ -3,6 +3,7 @@ package com.kuncms.thumbnail.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
@@ -26,6 +27,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.kuncms.coverphoto.dao.CoverphotoDao;
 import com.kuncms.coverphoto.model.Coverphoto;
 import com.kuncms.coverphoto.service.CoverphotoService;
+import com.kuncms.downloadrecord.model.DownloadRecord;
+import com.kuncms.downloadrecord.service.DownloadRecordService;
 import com.kuncms.thumbnail.service.ThumbnailService;
 import com.kuncms.user.model.User;
 import com.kuncms.user.service.UserService;
@@ -43,6 +46,8 @@ public class ThumbnailController {
 	CoverphotoService coverphotoService;
 	@Autowired
 	UserService userService;
+	@Autowired
+	DownloadRecordService downloadRecordService;
 	
 	/**
 	 * @param map
@@ -53,11 +58,13 @@ public class ThumbnailController {
 	 * @param t_gold_coin
 	 * @return
 	 * 跳转到下载页
+	 * @throws ParseException 
 	 */
 	@RequestMapping("/todown")
-    public String todown(Map<String,Object> map,String id,User user,Model model,HttpServletRequest request,int t_gold_coin){
+    public String todown(Map<String,Object> map,String id,User user,Model model,HttpServletRequest request,int t_gold_coin) throws ParseException{
 	   
 		Coverphoto coverphoto=new Coverphoto();
+		DownloadRecord downloadRecord=new DownloadRecord();
 	    coverphoto.setId(id);
 	    ArrayList<Coverphoto> list=coverphotoService.queryCoverPhotoById(coverphoto);
 	    if(list.size()>0){
@@ -67,7 +74,10 @@ public class ThumbnailController {
  		   //修改当前作品的下载量
  		   coverphoto1.setDownloads(coverphoto1.getDownloads()+1);
  		   coverphotoService.updateCoverPhotoById(coverphoto1);
-			   
+ 		   //增加下载记录
+ 		   String videoId=list.get(0).getId();
+ 		   downloadRecord.setVideoId(videoId); 
+ 		   downloadRecordService.insert(downloadRecord, request);
  	   };
  	   
  	   //扣除用户对应的金币
@@ -102,8 +112,9 @@ public class ThumbnailController {
 		String result="";
 		JSONObject resultj = new JSONObject();
 		if(user_name!=null&&!user_name.equals("")){
-			 //根据id查询出对应的封面信息
+			 //根据id查询出对应的视频信息
 			   Coverphoto coverphoto=new Coverphoto();
+			 
 			   coverphoto.setId(id);
 			   ArrayList<Coverphoto> list=coverphotoService.queryCoverPhotoById(coverphoto);
 			   
@@ -111,9 +122,10 @@ public class ThumbnailController {
 		       try {
 		    	   if(list.size()>0){
 		    		   String url=list.get(0).getBaiduyun_address();
+		    		  
 		    		   //browse(url);
 		    		   resultj.put("url",url);
-		   			   
+		    		 
 		    	   };
 				
 			} catch (Exception e) {
