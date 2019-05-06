@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.kuncms.coverphoto.dao.CoverphotoDao;
 import com.kuncms.coverphoto.model.Coverphoto;
+import com.kuncms.downloadrecord.model.DownloadRecord;
 import com.kuncms.util.DateUtil;
 import com.kuncms.videoinfo.dao.VideoInfoDao;
 import com.kuncms.videoinfo.model.Videoinfo;
@@ -74,6 +75,17 @@ public class CoverphotoService {
 		// TODO Auto-generated method stub
 		coverphotoDao.updateCoverPhotoById(coverphoto);
 	}
+
+
+
+	public ArrayList<Coverphoto> queryVideo(String[] idArr) {
+		// TODO Auto-generated method stub
+		return coverphotoDao.queryVideo(idArr);
+	}
+
+
+
+	
 	
 	
 	

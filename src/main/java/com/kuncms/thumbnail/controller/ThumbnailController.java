@@ -76,7 +76,7 @@ public class ThumbnailController {
  		   coverphotoService.updateCoverPhotoById(coverphoto1);
  		   //增加下载记录
  		   String videoId=list.get(0).getId();
- 		   downloadRecord.setVideoId(videoId); 
+ 		   downloadRecord.setVideo_id(videoId); 
  		   downloadRecordService.insert(downloadRecord, request);
  	   };
  	   

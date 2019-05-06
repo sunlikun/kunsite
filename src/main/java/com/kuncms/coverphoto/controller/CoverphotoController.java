@@ -2,8 +2,11 @@ package com.kuncms.coverphoto.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -26,6 +29,8 @@ import com.github.pagehelper.PageInfo;
 import com.kuncms.coverphoto.dao.CoverphotoDao;
 import com.kuncms.coverphoto.model.Coverphoto;
 import com.kuncms.coverphoto.service.CoverphotoService;
+import com.kuncms.downloadrecord.model.DownloadRecord;
+import com.kuncms.downloadrecord.service.DownloadRecordService;
 import com.kuncms.videoinfo.model.Videoinfo;
 import com.kuncms.videoinfo.service.VideoInfoService;
 
@@ -36,8 +41,57 @@ public class CoverphotoController {
 	private CoverphotoDao coverphotoDao;
 	@Autowired
 	CoverphotoService coverphotoService;
+	@Autowired
+	DownloadRecordService downloadRecordService;
 	
-	
+	@RequestMapping("/queryrankingList")
+	public void queryrankingList(HttpServletResponse response,String flag) throws IOException {
+//		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+//		Calendar c = Calendar.getInstance();
+//		//根据flag的值查出视频的id
+//		String start_time="";
+//		String end_time="";
+//		c.setTime(new Date());
+//	    Date d1 = c.getTime();
+//        String day1 = format.format(d1);
+//        end_time=day1;
+		ArrayList<DownloadRecord> recordlist=new ArrayList<DownloadRecord>();
+		if(flag.equals("1")){//当天
+			
+			 recordlist=downloadRecordService.queryRecordDayBy();
+	         
+	      
+		}
+		if(flag.equals("2")){//当周
+			 recordlist=downloadRecordService.queryRecordIWeek();
+	       
+		}
+		if(flag.equals("3")){//当月
+			
+			 recordlist=downloadRecordService.queryRecordMonth();
+		}
+		
+		//将视频的id放入数组中
+		String[] idArr=new String[recordlist.size()];
+		for(int i=0;i<recordlist.size();i++){
+			idArr[i]=recordlist.get(i).getVideo_id();
+		}
+		ArrayList<Coverphoto> list=coverphotoService.queryVideo(idArr);
+		response.setContentType("application/json");
+        response.setHeader("Pragma", "No-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setCharacterEncoding("UTF-8");
+        
+        JSONArray listArray=JSONArray.fromObject(list);     
+        PrintWriter out= null;
+        out = response.getWriter();
+        out.print(listArray.toString());
+        System.out.println(listArray.toString());
+        out.flush();
+        out.close();
+		
+		
+	}
 	
 	
 	@RequestMapping("queryAllCoverPhoto")

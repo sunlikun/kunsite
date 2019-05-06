@@ -27,7 +27,7 @@
   
      
 	<style>
-	body { width:80%; margin:50px auto; }
+	body { width:70%; margin:50px auto; }
 	// Extra small devices (portrait phones, less than 576px)
 	@media (max-width: 575.98px) { ... }
 	
@@ -125,7 +125,7 @@
                     tableContent += '</a>';
                     
                     tableContent += '<div class="caption">';
-                  	tableContent += '<p>' + coverphotoArr[i].video_name+ '</p>';
+                  	tableContent += '<p>' + coverphotoArr[i].video_name.substring(0, 25)+ '...</p>';
                   	tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币</p>';
                     tableContent += ' <p><a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-primary" role="button"> 查看</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default" role="button">  下载</a></p> ';
                   
@@ -142,6 +142,8 @@
            	   
               	
              }
+              
+             
           });
           
          
@@ -172,53 +174,7 @@
         	 
         	    return output;
         	} */
-        	
-         function  createrankingList(){
-        		 $.ajax({
-                     type: "post",
-                     url: "/queryrankingList",
-                     data: {},
-                     dataType: "json",
-                     success: function(data){
-                   	var coverphotoArr = data;
-                   	var converGroup="";
-                   	for(var i=0;i<coverphotoArr.length;i++){
-                   		　　//alert(coverphotoArr[i].coverphotoid);
-                   		var id=coverphotoArr[i].id;
-                   		var baiduyun_pass=coverphotoArr[i].baiduyun_pass;
-                   		var baiduyun_address=coverphotoArr[i].baiduyun_address;
-                   		//alert(baiduyun_address)
-                   		//alert(coverphotoArr[i].coverphotoid)
-                   		var tableContent="";
-                         	tableContent += '<div class="col-sm-6 col-md-4">';
-                           tableContent += '<div class="thumbnail">';
-                         
-                           tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'">';
-                           var coverid="/images/"+coverphotoArr[i].coverphotoid.substring(30);
-                          // alert(coverid)
-                           tableContent += '<img  class="img-responsive"   src="' + coverid+ '" >';
-                           tableContent += '</a>';
-                           
-                           tableContent += '<div class="caption">';
-                         	tableContent += '<p>' + coverphotoArr[i].video_name+ '</p>';
-                         	tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币</p>';
-                           tableContent += ' <p><a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-primary" role="button"> 查看</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default" role="button">  下载</a></p> ';
-                         
-                           tableContent += '</p>';
-                           tableContent += '<div>';
-                           tableContent += '</div></div></div></div>';
-                           
-                          
-                         
-                           converGroup+=tableContent;
-                           
-                   	}
-                   	$("#coverphoto").append(converGroup);
-                  	   
-                     	
-                    }
-                 });
-         }
+         
           
       });
         
@@ -263,33 +219,37 @@
 								</p>
 								<ul id="myTab" class="nav nav-tabs">
 									<li class="active">
-										<a href="#home" data-toggle="tab">
-											 菜鸟教程
+										<a href="#home" data-toggle="tab" onclick="createrankingList(1)">
+											 当天排行
 										</a>
 									</li>
-									<li><a href="#home" data-toggle="tab">iOS</a></li>
+									<li><a href="#home" data-toggle="tab" onclick="createrankingList(2)">本周排行</a></li>
+									<li><a href="#home" data-toggle="tab" onclick="createrankingList(3)">本月排行</a></li>
 									
 								</ul>
-								<div id="rankingList">
-								</div>
 								<div id="myTabContent" class="tab-content">
 									<div class="tab-pane fade in active" id="home">
 										
-										<div class="card">
-											<img class="card-img-top" alt="Bootstrap Thumbnail First" src="https://www.layoutit.com/img/people-q-c-600-200-1.jpg" />
-											<div class="card-block">
-												<h5 class="card-title">
-													Card title
-												</h5>
-												<p class="card-text">
-													Cras justo odio, dapibus 
-												<p>
-													<a class="btn btn-primary" href="#">Action</a> <a class="btn" href="#">Action</a>
-												</p>
+										
+											<div class="container-fluid">
+												<div class="row">
+													<div id="rank" style=" width: 30rem;height: 100%;">
+														<!-- 
+														<div class="col-md-12">
+															<div style="display:inline-block;background:#f00;"><img alt="Bootstrap Image Preview" src="https://www.layoutit.com/img/sports-q-c-140-140-3.jpg" /></div>
+															
+															<div style="display:inline-block;margin-left:0px;">div2</div>
+														
+														 -->
+														
+														</div>
+													</div>
+												</div>
 											</div>
-										</div>
 									</div>
 								</div>
+								
+								
 							</div>
 								
 								
@@ -316,6 +276,46 @@
    
     
     <script type="text/javascript">
+    
+    
+	    createrankingList('1');	
+	    function  createrankingList(flag){
+	   	 //alert(flag)
+	   		 $.ajax({
+	               type: "post",
+	               url: "/queryrankingList",
+	               data: {"flag":flag},
+	               dataType: "json",
+	               success: function(data){
+	              	var coverphotoArr = data;
+	              	var converGroup="";
+	            	$("#rank").empty();
+	              	for(var i=0;i<coverphotoArr.length;i++){
+	              		　　//alert(coverphotoArr[i].coverphotoid);
+	              		var id=coverphotoArr[i].id;
+	              		var baiduyun_pass=coverphotoArr[i].baiduyun_pass;
+	              		var baiduyun_address=coverphotoArr[i].baiduyun_address;
+	              		//alert(baiduyun_address)
+	              		//alert(coverphotoArr[i].coverphotoid)
+	              		var tableContent="";
+	                    	tableContent += '<div class="col-md-12">';
+	                    	tableContent += '<div style="display:inline-block;background:#f00;">';
+	                    	tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'">';
+	                    	var coverid="/images/"+coverphotoArr[i].coverphotoid.substring(30);
+	                   	tableContent += '<img  class="img-responsive"   src="' + coverid+ '" ></div>';
+	                      	tableContent += '</a>';
+	                      	tableContent += '<div style="display:inline-block;margin-left:0px;">' + coverphotoArr[i].video_name.substring(0, 25)+ '</div>';
+	                    	tableContent += '</div>';
+	                      converGroup+=tableContent;
+	                      
+	              	}
+	              	$("#rank").append(converGroup);
+	             	   
+	                	
+	               }
+	            });
+	    }
+    
     
         var user_name=$("#user_name").val();
         var code=$("#code").val();

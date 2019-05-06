@@ -21,4 +21,6 @@ public interface CoverphotoDao {
 
 	void updateCoverPhotoById(Coverphoto coverphoto);
 
+	ArrayList<Coverphoto> queryVideo(String[] idArr);
+
 }

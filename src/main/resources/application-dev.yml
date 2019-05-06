@@ -1,12 +1,12 @@
 server:
-  port: 8081
+  port: 8082
 
 spring:
 
     datasource:
         name: kun_cms
-        url: jdbc:mysql://localhost:3306/kun_cms?useUnicode=true&characterEncoding=utf8
-        #url: jdbc:mysql://39.98.164.226:3306/kun_cms_test?useUnicode=true&characterEncoding=utf8
+        #url: jdbc:mysql://localhost:3306/kun_cms?useUnicode=true&characterEncoding=utf8
+        url: jdbc:mysql://39.98.164.226:3306/kun_cms_test?useUnicode=true&characterEncoding=utf8
         username: root
         password: kg123456
         # 使用druid数据源

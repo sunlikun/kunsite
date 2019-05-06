@@ -3,13 +3,40 @@ package com.kuncms.downloadrecord.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+@Component
 public class DownloadRecord implements Serializable {
    
     private String id;
-    private String videoId;
-	private Date downloadTime;
+    private String video_id;
+	private Date download_time;
     private String user_name;
-    private static final long serialVersionUID = 1L;
+    public String getVideo_id() {
+		return video_id;
+	}
+
+
+	public void setVideo_id(String video_id) {
+		this.video_id = video_id;
+	}
+
+
+	public Date getDownload_time() {
+		return download_time;
+	}
+
+
+	public void setDownload_time(Date download_time) {
+		this.download_time = download_time;
+	}
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
+	private static final long serialVersionUID = 1L;
     public String getUser_name() {
   		return user_name;
   	}
@@ -30,22 +57,5 @@ public class DownloadRecord implements Serializable {
     }
 
     
-    public String getVideoId() {
-        return videoId;
-    }
-
    
-    public void setVideoId(String videoId) {
-        this.videoId = videoId;
-    }
-
-   
-    public Date getDownloadTime() {
-        return downloadTime;
-    }
-
-   
-    public void setDownloadTime(Date downloadTime) {
-        this.downloadTime = downloadTime;
-    }
 }

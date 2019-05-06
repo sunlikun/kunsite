@@ -2,7 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.kuncms.coverphoto.dao.CoverphotoDao" >
 
-
+ 	 <select id="queryVideo"    resultType="com.kuncms.coverphoto.model.Coverphoto">
+        SELECT*FROM coverphoto a
+        <where>
+				 a.id in
+				 <foreach collection="array" index="index" item="idArr" open="(" separator="," close=")">
+         				#{idArr}
+    			</foreach>
+			
+		</where>
+				
+     </select>
 
 	 <select id="queryCoverPhotoById"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
         SELECT*FROM coverphoto a

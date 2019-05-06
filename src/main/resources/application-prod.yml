@@ -6,8 +6,9 @@ spring:
     datasource:
         name: kun_cms
         url: jdbc:mysql://localhost:3306/kun_cms?useUnicode=true&characterEncoding=utf8
+        #url: jdbc:mysql://39.98.164.226:3306/kun_cms_test?useUnicode=true&characterEncoding=utf8
         username: root
-        password: N#M15r5fqae2
+        password: kg123456
         # 使用druid数据源
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.jdbc.Driver
@@ -46,8 +47,14 @@ pagehelper:
     supportMethodsArguments: true
     params: count=countSql
     
-
-  
+#微信支付的相关配置
+WXPAY:
+    APPID: wxa1f4e7957d869f53
+    MCHID: 1529797251
+    KEY: kungedeapimiyaoKg123456789056321
+    APPSECRET: 396e3058561fd53fa8120faf57ced10a  
+    NOTIFY_URL: http://39.98.164.226:8082/wxpay/we_notify
+    CREATE_IP: 39.98.164.226
  
    
     
