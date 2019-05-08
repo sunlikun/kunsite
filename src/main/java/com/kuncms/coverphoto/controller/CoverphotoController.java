@@ -70,13 +70,14 @@ public class CoverphotoController {
 			
 			 recordlist=downloadRecordService.queryRecordMonth();
 		}
-		
-		//将视频的id放入数组中
-		String[] idArr=new String[recordlist.size()];
-		for(int i=0;i<recordlist.size();i++){
-			idArr[i]=recordlist.get(i).getVideo_id();
+		ArrayList<Coverphoto> list=new ArrayList<>();
+		if(recordlist.size()>0){
+			String[] idArr=new String[recordlist.size()];
+			for(int i=0;i<recordlist.size();i++){
+				idArr[i]=recordlist.get(i).getVideo_id();
+			}
+		    list=coverphotoService.queryVideo(idArr);
 		}
-		ArrayList<Coverphoto> list=coverphotoService.queryVideo(idArr);
 		response.setContentType("application/json");
         response.setHeader("Pragma", "No-cache");
         response.setHeader("Cache-Control", "no-cache");

@@ -8,11 +8,16 @@
     <link href="/css/style.css" rel="stylesheet">
     <link href="/css/button.css" rel="stylesheet">
     <link rel="stylesheet" href="../../jqwidgets/styles/jqx.base.css" type="text/css" />
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
     <script type="text/javascript" src="/scripts/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="/js/jqthumb.min.js"></script>
     <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
 	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 </head>
+<style>
+body { width:80%; margin:50px auto; }
+
+</style>
 <body>
 <div th:include="header :: header"></div> 
 
@@ -26,7 +31,7 @@
 				基本信息
 			</h3>
 			
-				<p>账户名称：{{ user_name }}</p>
+				<p>账户名称：{{user_name }}</p>
 				<!--  
 			  	<p>账户状态：{{ user_status }}</p>
 			  	<p>账户类型：{{ user_class }}</p>
@@ -48,10 +53,11 @@
 			</h3>
 				<p>电子邮箱：{{ email }}</p>
 				<p>账户密码：{{ password }}</p>
+				<p v-if="user_name === 'admin'"><a href='/SysManagementController/toSysManagement'>网站管理</a></p>
 		</div>
 		
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-4" align="center">
 			<img alt="Bootstrap Image Preview" src="https://www.layoutit.com/img/sports-q-c-140-140-3.jpg" /> 
 			<address>
 				  普通会员

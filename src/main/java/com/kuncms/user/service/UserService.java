@@ -57,5 +57,9 @@ public class UserService {
 		user.setGold_coin(gold_coin);
 		userDao.addUserGoldCoin(user);
 	}
+	public String getStatistics() {
+		// TODO Auto-generated method stub
+		return userDao.getStatistics();
+	}
 
 }

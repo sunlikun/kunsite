@@ -27,7 +27,7 @@
   
      
 	<style>
-	body { width:70%; margin:50px auto; }
+	body { width:80%; margin:50px auto; }
 	// Extra small devices (portrait phones, less than 576px)
 	@media (max-width: 575.98px) { ... }
 	
@@ -186,6 +186,7 @@
 	<div th:include="header :: header"></div> 
 	<div class="container-fluid">
   		<div class="row">
+  		 <div class="col-sm-12">
 	  		<div style="margin-top: 10%">
 		  		<nav class="navbar navbar-default" role="navigation">
 				    <div class="container-fluid">
@@ -199,9 +200,10 @@
 				</nav>
 			</div>
 		</div>
+		</div>
 	</div>
-		<p></p><p></p>
-		<div class="row">
+		
+		<div class="row" style="margin-top: 10px;margin-left: 10px;margin-right: 10px;">
 				<div class="col-md-8">
 					<div class="row" id="coverphoto">
 					
@@ -217,16 +219,18 @@
 								<p>
 									内容持续更新中
 								</p>
-								<ul id="myTab" class="nav nav-tabs">
-									<li class="active">
-										<a href="#home" data-toggle="tab" onclick="createrankingList(1)">
-											 当天排行
-										</a>
-									</li>
-									<li><a href="#home" data-toggle="tab" onclick="createrankingList(2)">本周排行</a></li>
-									<li><a href="#home" data-toggle="tab" onclick="createrankingList(3)">本月排行</a></li>
-									
-								</ul>
+								<center>
+									<ul id="myTab" class="nav nav-tabs">
+										<li class="active">
+											<a href="#home" data-toggle="tab" onclick="createrankingList(1)">
+												 当天排行
+											</a>
+										</li>
+										<li><a href="#home" data-toggle="tab" onclick="createrankingList(2)">本周排行</a></li>
+										<li><a href="#home" data-toggle="tab" onclick="createrankingList(3)">本月排行</a></li>
+										
+									</ul>
+								</center>
 								<div id="myTabContent" class="tab-content">
 									<div class="tab-pane fade in active" id="home">
 										
@@ -278,9 +282,10 @@
     <script type="text/javascript">
     
     
-	    createrankingList('1');	
+	   
 	    function  createrankingList(flag){
 	   	 //alert(flag)
+	   	 	 $("#rank").empty();
 	   		 $.ajax({
 	               type: "post",
 	               url: "/queryrankingList",
@@ -289,7 +294,7 @@
 	               success: function(data){
 	              	var coverphotoArr = data;
 	              	var converGroup="";
-	            	$("#rank").empty();
+	            	
 	              	for(var i=0;i<coverphotoArr.length;i++){
 	              		　　//alert(coverphotoArr[i].coverphotoid);
 	              		var id=coverphotoArr[i].id;
@@ -316,7 +321,7 @@
 	            });
 	    }
     
-    
+	    createrankingList('1');
         var user_name=$("#user_name").val();
         var code=$("#code").val();
         //alert(code)

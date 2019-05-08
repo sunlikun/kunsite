@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.kuncms.user.dao.UserDao" >
-
+	
+	<select id="getStatistics"   resultType="string">
+        SELECT count(*) as signnum FROM user_info  u where u.flag='1';
+    </select>
 
 	
  	<update id="addUserGoldCoin"  parameterType="com.kuncms.user.model.User">
@@ -25,7 +28,7 @@
 
 
  	<update id="update"  parameterType="com.kuncms.user.model.User">
-		update user_info u set u.gold_coin=#{gold_coin} where flag='1'
+		update user_info u set u.gold_coin=#{gold_coin},u.empirical_value=#{empirical_value} where flag='1'
 		
 		<if test="user_name != null and user_name !=''">
         		and u.user_name=#{user_name} 
@@ -48,7 +51,7 @@
 
     <select id="queryCoverPhoto"  parameterType="com.kuncms.user.model.User"  resultType="com.kuncms.user.model.User">
         SELECT*FROM coverphoto;
-     </select>
+    </select>
      
      <select id="login_operate"  parameterType="com.kuncms.user.model.User"  resultType="com.kuncms.user.model.User">
         SELECT*FROM user_info u where flag='1'

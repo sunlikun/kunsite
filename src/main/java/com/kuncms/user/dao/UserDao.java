@@ -23,4 +23,6 @@ public interface UserDao {
 
 	public void addUserGoldCoin(User user);
 
+	public String getStatistics();
+
 }

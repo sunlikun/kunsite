@@ -89,7 +89,10 @@ public class ThumbnailController {
 			 User loginuser1=userl.get(0);
 			 int  goldCoin=loginuser1.getGold_coin();
 			 int  rgoldCoin=goldCoin-t_gold_coin;
+			 int  empirical_value=loginuser1.getEmpirical_value();
+			 empirical_value=empirical_value+1;
 			 loginuser1.setGold_coin(rgoldCoin);
+			 loginuser1.setEmpirical_value(empirical_value);
 			 userService.update(loginuser1);
 		}
 		
