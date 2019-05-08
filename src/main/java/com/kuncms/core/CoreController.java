@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,7 +36,7 @@ public class CoreController {
 	
 	@Autowired
 	UserService userService;
-	
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	@RequestMapping("/addUserGoldCoin")
 	
 	public void addUserGoldCoin(int gold_coin,String user_name) throws IOException {
@@ -324,10 +326,9 @@ public class CoreController {
 	
 	@RequestMapping("/login_operate")
     public String login_operate(Map<String,Object> map,User user,Model model,HttpServletRequest request){
-	   //ArrayList<Coverphoto> list=thumbnailService.queryCoverPhoto();
-	   //com.alibaba.fastjson.JSONArray array= com.alibaba.fastjson.JSONArray.parseArray(JSON.toJSONString(list));
-	   //model.addAttribute("data", array.toJSONString());
-		String result="";
+		//日志级别从低到高分为TRACE < DEBUG < INFO < WARN < ERROR < FATAL，如果设置为WARN，则低于WARN的信息都不会输出。
+       
+        String result="";
 		boolean flag;
 		ArrayList<User> userl=(ArrayList<User>) userService.login_operate(user);
 		
@@ -339,7 +340,7 @@ public class CoreController {
 	        session.setAttribute("loginName",loginuser.getUser_name());
 	        session.setAttribute("gold_coin",loginuser.getGold_coin());
 	        session.setAttribute("user",loginuser);
-		}else{
+	    }else{
 			flag=false;
 		}
 		if(flag==true){
