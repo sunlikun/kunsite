@@ -33,6 +33,9 @@
         SELECT*FROM coverphoto c  
         <where>
 			c.flag="1"
+			<if test="category != null and category != ''">
+				and c.category=#{category}
+			</if>
 		</where>
 		ORDER BY c.create_time desc limit 0,9;
      </select>

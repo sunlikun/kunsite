@@ -58,9 +58,9 @@ public class CoverphotoService {
 
 
 
-	public ArrayList<Coverphoto> queryIndexCoverPhoto() {
+	public ArrayList<Coverphoto> queryIndexCoverPhoto(Coverphoto coverphoto) {
 		// TODO Auto-generated method stub
-		return coverphotoDao.queryIndexCoverPhoto();
+		return coverphotoDao.queryIndexCoverPhoto(coverphoto);
 	}
 
 

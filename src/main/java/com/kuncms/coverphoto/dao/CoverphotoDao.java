@@ -15,7 +15,7 @@ public interface CoverphotoDao {
 
 	ArrayList<Coverphoto> queryCoverPhoto();
 
-	ArrayList<Coverphoto> queryIndexCoverPhoto();
+	ArrayList<Coverphoto> queryIndexCoverPhoto(Coverphoto coverphoto);
 
 	ArrayList<Coverphoto> queryCoverPhotoById(Coverphoto coverphoto);
 

@@ -92,8 +92,13 @@
           if(user_name!=null&&user_name!==''){
         	  $("#login").html("你好   "+user_name);
           }
+          queryData('1');
+          queryData('2');
           
-          var data=null
+      });
+      //查询展示内容 
+	  function queryData(category){
+		  var data=null
           $.ajaxSetup({
 
           	async:false
@@ -102,7 +107,7 @@
           $.ajax({
               type: "post",
               url: "/queryIndexCoverPhoto",
-              data: {},
+              data: {"category":category},
               dataType: "json",
               success: function(data){
             	var coverphotoArr = data;
@@ -138,47 +143,22 @@
                     converGroup+=tableContent;
                     
             	}
-            	$("#coverphoto").append(converGroup);
+            	
+            	if(category=='1'){
+            		$("#part1").append(converGroup);
+            	}
+            	if(category=='2'){
+            		$("#part2").append(converGroup);
+            	}
+            	
+            	
            	   
               	
              }
               
              
           });
-          
-         
-          /* function encode64(input) {
-        	  	var keyStr = input;
-        	    var output = "";
-        	    var chr1, chr2, chr3 = "";
-        	    var enc1, enc2, enc3, enc4 = "";
-        	    var i = 0;
-        	    do {
-        	            chr1 = input.charCodeAt(i++);
-        	            chr2 = input.charCodeAt(i++);
-        	            chr3 = input.charCodeAt(i++);
-        	            enc1 = chr1 >> 2;
-        	            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
-        	            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
-        	            enc4 = chr3 & 63;
-        	            if (isNaN(chr2)) {
-        	                    enc3 = enc4 = 64;
-        	            } else if (isNaN(chr3)) {
-        	                    enc4 = 64;
-        	            }
-        	            output = output + keyStr.charAt(enc1) + keyStr.charAt(enc2)
-        	                            + keyStr.charAt(enc3) + keyStr.charAt(enc4);
-        	            chr1 = chr2 = chr3 = "";
-        	            enc1 = enc2 = enc3 = enc4 = "";
-        	    } while (i < input.length);
-        	 
-        	    return output;
-        	} */
-         
-          
-      });
-        
-  	
+      }
 	
 	</script>
   </head>
@@ -186,26 +166,23 @@
 	<div th:include="header :: header"></div> 
 	<div class="container-fluid">
   		<div class="row">
-  		 <div class="col-sm-12">
-	  		<div style="margin-top: 10%">
-		  		<nav class="navbar navbar-default" role="navigation">
-				    <div class="container-fluid">
-				    
-				    <div>
-				        <ul class="nav navbar-nav">
-				            <li> <a href="" class="navbar-brand">精彩内容</a></li>
-				        </ul>
-				    </div>
-				    </div>
-				</nav>
+	  		<div class="col-sm-12">
+		  		<div style="margin-top: 10%">
+			  		<nav class="navbar navbar-default" role="navigation">
+					    <div class="container-fluid">
+						    <div>
+						        <ul class="nav navbar-nav">
+						            <li> <a href="" class="navbar-brand">精彩内容1</a></li>
+						        </ul>
+						    </div>
+					    </div>
+					</nav>
+				</div>
 			</div>
 		</div>
-		</div>
-	</div>
-		
 		<div class="row" style="margin-top: 10px;margin-left: 10px;margin-right: 10px;">
 				<div class="col-md-8">
-					<div class="row" id="coverphoto">
+					<div class="row" id="part1">
 					
 					</div>
 				</div>
@@ -269,6 +246,31 @@
 				
 			</div>
 		</div>
+		
+		<div class="row">
+	  		<div class="col-sm-8">
+		  		<div style="margin-top: 10%">
+			  		<nav class="navbar navbar-default" role="navigation">
+					    <div class="container-fluid">
+						    <div>
+						        <ul class="nav navbar-nav">
+						            <li> <a href="" class="navbar-brand">精彩内容2</a></li>
+						        </ul>
+						    </div>
+					    </div>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" style="margin-top: 10px;margin-left: 10px;margin-right: 10px;">
+				<div class="col-md-8">
+					<div class="row" id="part2">
+					
+					</div>
+				</div>
+	</div>	
+			
    </div>
    <div th:include="footer :: footer"></div> 
    <input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none"> 

@@ -199,15 +199,14 @@ public class CoverphotoController {
 	}
 	
 	/**
-	 * 首页使用的饭拍封面查询，限定查前9条
+	 * 首页使用视频查询，限定查前9条
 	 * @param response
-	 * @throws IOException
 	 */
 	@RequestMapping("/queryIndexCoverPhoto")
 	
-	public void queryIndexCoverPhoto(HttpServletResponse response) throws IOException {
+	public void queryIndexCoverPhoto(HttpServletResponse response,Coverphoto coverphoto) throws IOException {
 		
-		ArrayList<Coverphoto> list=coverphotoService.queryIndexCoverPhoto();
+		ArrayList<Coverphoto> list=coverphotoService.queryIndexCoverPhoto(coverphoto);
 		
 		 response.setContentType("application/json");
 	        response.setHeader("Pragma", "No-cache");

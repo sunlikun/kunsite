@@ -27,10 +27,11 @@
 				<div class="col-md-12">
 					<div class="row">
 					<div id="app">
+						<h4>网站情况统计</h4>
 						<div class="col-md-4">
 						<ul>
 								<li class="list-item">
-									
+									在线人数 :{{onlineNum}}
 								</li>
 								<li class="list-item">
 									Consectetur adipiscing elit
@@ -84,7 +85,7 @@
 							</ul>
 						</div>
 						<div class="col-md-4">
-						<h4>网站情况统计</h4>
+					
 						<ul>
 								<li class="list-item">
 									当前注册人数 :{{signnum}}
@@ -134,7 +135,8 @@
 		  el: '#app',
 		  data: {
 			  
-			  signnum:''
+			  signnum:'',
+			  onlineNum:''
 		  },
 		  methods:{
 			  getStatistics: function () {
