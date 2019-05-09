@@ -2,6 +2,7 @@ package com.kuncms.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
 
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,13 +84,14 @@ public class FileUploadController {
         	if(!(fileArr[i].isEmpty())){
         		String fileName = fileArr[i].getOriginalFilename();
                 int size = (int) fileArr[i].getSize();
-                System.out.println(fileName + "-->" + size);
+                //System.out.println(fileName + "-->" + size);
                 String filePath = ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/img/";
                 //String path = "/img/"+fileName ;
-                String path = "/usr/local/kun_cms/thun/"+fileName ;
+                fileName =generateRandomFilename() + fileName.substring(fileName.lastIndexOf("."));
+                String path = "/usr/local/kun_cms/thun";
                 File dest = new File(path + "/" + fileName);
                 //File dest = new File(filePath + "/" + fileName);
-                String filepath=filePath + "/" + fileName;
+                //String filepath=filePath + "/" + fileName;
                 if(!dest.getParentFile().exists()){ //判断文件父目录是否存在
                     dest.getParentFile().mkdir();
                 }
@@ -136,9 +138,10 @@ public class FileUploadController {
         System.out.println(fileName + "-->" + size);
         //String filePath = ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/img/";
         //String filePath = request.getSession().getServletContext().getRealPath("/usr/local/kun_cms/coverphoto");
-        String path = "/usr/local/kun_cms/coverphoto/"+fileName ;
+        fileName =generateRandomFilename() + fileName.substring(fileName.lastIndexOf("."));
+        String path = "/usr/local/kun_cms/coverphoto" ;
         File dest = new File(path + "/" + fileName);
-        String filepath=path + "/" + fileName;
+        //String filepath=path + "/" + fileName;
         if(!dest.getParentFile().exists()){ //判断文件父目录是否存在
             dest.getParentFile().mkdir();
         }
@@ -270,6 +273,33 @@ public class FileUploadController {
 //        }
 //    }
     
-   
+    public static String generateRandomFilename(){  
+        String fourRandom = "";
+        //产生4位的随机数(不足4位前加零)
+        int   randomNum =   (int)(Math.random()*10000);
+        fourRandom = randomNum +"";
+        int randLength =  fourRandom.length();
+        if(randLength <4){
+            for(int i=1; i <=4-randLength; i++)
+                fourRandom = fourRandom + "0";
+        } 
+        StringBuilder sb = new StringBuilder("");
+         Calendar cal=Calendar.getInstance();
+         sb.append(cal.get(Calendar.YEAR))
+        .append(twoNumbers(cal.get(Calendar.MONTH) + 1))
+        .append(twoNumbers(cal.get(Calendar.DAY_OF_MONTH)))
+        .append(twoNumbers(cal.get(Calendar.HOUR)))
+        .append(twoNumbers(cal.get(Calendar.MINUTE)))
+        .append(twoNumbers(cal.get(Calendar.SECOND)))
+        .append(fourRandom);
+        return sb.toString(); 
+     } 
+  private static String twoNumbers(int number){
+    String _number = number + "";
+    if(_number.length() < 2){
+     _number = "0" + _number;
+    }
+    return _number;
+  }
 
 }
