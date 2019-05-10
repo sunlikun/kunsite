@@ -51,12 +51,15 @@ public class CoverphotoService {
 
 
 
+	public ArrayList<Coverphoto> queryCoverPhoto(Coverphoto coverphoto) {
+		// TODO Auto-generated method stub
+		return coverphotoDao.queryCoverPhoto(coverphoto);
+	}
+
 	public ArrayList<Coverphoto> queryCoverPhoto() {
 		// TODO Auto-generated method stub
 		return coverphotoDao.queryCoverPhoto();
 	}
-
-
 
 	public ArrayList<Coverphoto> queryIndexCoverPhoto(Coverphoto coverphoto) {
 		// TODO Auto-generated method stub

@@ -271,12 +271,11 @@ public class CoreController {
 	 * @return
 	 */
 	@RequestMapping("/more")
-    public String more(Map<String,Object> map){
+    public String more(Map<String,Object> map,String flag,Model model){
 	   //ArrayList<Coverphoto> list=thumbnailService.queryCoverPhoto();
 	   //com.alibaba.fastjson.JSONArray array= com.alibaba.fastjson.JSONArray.parseArray(JSON.toJSONString(list));
-	   //model.addAttribute("data", array.toJSONString());
-
-       return "more";
+	   model.addAttribute("flag", flag);
+	   return "more";
     }
 	
 	

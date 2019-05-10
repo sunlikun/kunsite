@@ -213,56 +213,39 @@
   </head>
   <body bgcolor="#DDDDDD">
 	<div th:include="header :: header"></div> 
-	
-	<div style="margin-top: 10%">
-	<!-- 
-	<a href="http://www.bootcss.com/" class="button button-rounded button-tiny">今日热门</a>&nbsp;&nbsp;&nbsp;<a href="http://www.bootcss.com/" class="button button-rounded button-tiny">更多推荐</a>
-	 -->
-	</div>
 	<p></p><p></p>
-	<div class="row">
-		<div class="col-md-12">
-			<div class="row" id="coverphoto">
-			<!-- 
-				<div class="col-md-4">
-					<div class="card">
-						<img class="card-img-top" alt="Bootstrap Thumbnail First" src="/img/05.jpg">
-						<div class="card-block">
-							<h5 class="card-title">
-								Card title
-							</h5>
-							<p class="card-text">
-								Cras
-							</p>
-							<p>
-								<a class="btn btn-primary" href="#">Action</a> <a class="btn" href="#">Action</a>
-							</p>
-						</div>
-					</div>
+	<div class="container-fluid">
+		<div class="row" style="margin-top: 10px;">
+			<div class="col-md-12">
+				<nav class="navbar navbar-default" role="navigation">
+						    <div class="container-fluid">
+							    <div>
+							        <ul class="nav navbar-nav">
+							            <li> <a href="" class="navbar-brand"></a></li>
+							        </ul>
+							    </div>
+						    </div>
+				</nav>
+				<div class="row" id="coverphoto">
 				</div>
-				 -->
 			</div>
-			  
-    </div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+						
+								<div align="center"> 
+									<div id="ele">
+						        		<div class="Pagination">
+						          	</div>
+						        </div>
+						
+					
+			</div>
+		</div>
 	</div>
-	
-</div>
-
-<div class="row">
-	<div class="col-md-12">
-				
-						<div align="center"> 
-							<div id="ele">
-				        		<div class="Pagination">
-				          	</div>
-				        </div>
-				
-			
-	</div>
-</div>
-
- <div th:include="footer :: footer"></div> 
-   <input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none"> 
+ 	<div th:include="footer :: footer"></div> 
+    <input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none"> 
+    <input id="flag" th:value="${flag}" name="flag" type="text" style="display: none">
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/scripts.js"></script>
@@ -325,6 +308,7 @@
 	
 	    // prepare the data
 	    var user_name=$("#user_name").val();
+	    var flag=$("#flag").val();
 	    //alert(user_name)
 	    if(user_name!=null&&user_name!==''){
 	  	  $("#login").html("你好   "+user_name);
@@ -341,7 +325,7 @@
 	    $.ajax({
 	        type: "post",
 	        url: "queryAllCoverPhoto",
-	        data: {},
+	        data: {"category":flag},
 	        dataType: "json",
 	        success: function(data){
 	      	var coverphotoArr = data;
@@ -365,7 +349,7 @@
         	 $.ajax({
      	        type: "post",
      	        url: "/queryMoreCoverPhoto",
-     	        data: {currentPage:page,pageSize:12},
+     	        data: {currentPage:page,pageSize:12,"category":flag},
      	        dataType: "json",
      	       	success: function(data){
                	var coverphotoArr = data;

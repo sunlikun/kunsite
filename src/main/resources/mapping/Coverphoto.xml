@@ -25,8 +25,13 @@
      </select>
 
 
-    <select id="queryCoverPhoto"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
-        SELECT*FROM coverphoto
+     <select id="queryCoverPhoto"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
+        SELECT*FROM coverphoto c
+         <where>
+        	<if test="category != null and category != ''">
+				 c.category=#{category}
+			</if>
+		 </where>
      </select>
      
      <select id="queryIndexCoverPhoto"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">

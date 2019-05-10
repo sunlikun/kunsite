@@ -96,11 +96,11 @@ public class CoverphotoController {
 	
 	
 	@RequestMapping("queryAllCoverPhoto")
-	public void queryAllCoverPhoto(HttpServletResponse response) throws IOException {
+	public void queryAllCoverPhoto(HttpServletResponse response,Coverphoto coverphoto) throws IOException {
 		
-		ArrayList<Coverphoto> list=coverphotoService.queryCoverPhoto();
+			ArrayList<Coverphoto> list=coverphotoService.queryCoverPhoto(coverphoto);
 		
-		 response.setContentType("application/json");
+		 	response.setContentType("application/json");
 	        response.setHeader("Pragma", "No-cache");
 	        response.setHeader("Cache-Control", "no-cache");
 	        response.setCharacterEncoding("UTF-8");
@@ -128,10 +128,10 @@ public class CoverphotoController {
 	 */
 	@RequestMapping("/queryMoreCoverPhoto")
 	
-	public void queryMoreCoverPhoto(HttpServletResponse response,int currentPage, int pageSize) throws IOException {
+	public void queryMoreCoverPhoto(HttpServletResponse response,int currentPage, int pageSize,Coverphoto coverphoto) throws IOException {
 		//System.out.println(currentPage+"   "+pageSize);
 			PageHelper.startPage(currentPage , pageSize);
-		 	ArrayList<Coverphoto> list=coverphotoService.queryCoverPhoto();
+		 	ArrayList<Coverphoto> list=coverphotoService.queryCoverPhoto(coverphoto);
 	        //得到分页的结果对象
 	        PageInfo<Coverphoto> personPageInfo = new PageInfo<>(list);
 	        //得到分页中的person条目对象

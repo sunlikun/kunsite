@@ -13,6 +13,8 @@ public interface CoverphotoDao {
 
 	void insert(Coverphoto coverphoto);
 
+	ArrayList<Coverphoto> queryCoverPhoto(Coverphoto coverphoto);
+	
 	ArrayList<Coverphoto> queryCoverPhoto();
 
 	ArrayList<Coverphoto> queryIndexCoverPhoto(Coverphoto coverphoto);
