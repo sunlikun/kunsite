@@ -25,4 +25,8 @@ public interface UserDao {
 
 	public String getStatistics();
 
+	public ArrayList<User> query_userlis();
+
+	public void deluser(User user);
+
 }

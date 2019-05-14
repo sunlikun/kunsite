@@ -18,19 +18,120 @@
     <script type="text/javascript" src="/jqwidgets/jqxlistbox.js"></script>
     <script type="text/javascript" src="/jqwidgets/jqxdropdownlist.js"></script>
     <script type="text/javascript" src="/jqwidgets/jqxgrid.js"></script>
-    <script type="text/javascript" src="/jqwidgets/jqxgrid.selection.js"></script> 
+    <script type="text/javascript" src="/jqwidgets/jqxgrid.selection.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxgrid.pager.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxgrid.sort.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxgrid.filter.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxgrid.columnsresize.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxgrid.selection.js"></script>  
     <script type="text/javascript" src="/scripts/demos.js"></script>
     <script type="text/javascript" src="/jqwidgets/jqxwindow.js"></script>
     <script type="text/javascript">
    
         $(document).ready(function () {
+            // prepare the data
+            var data=null
+            $.ajaxSetup({
+
+            	async:false
+
+            });
+            $.ajax({
+                type: "post",
+                url: "/query_userlis",
+                data: {},
+                dataType: "json",
+                success: function(data){
+                	//alert(data)
+                	var source =
+                    {
+                        localdata: data,
+                        datatype: "local",
+                        datafields:
+                        [
+                            { name: 'id', type: 'string' },
+                            { name: 'user_name', type: 'string' },
+                            { name: 'password', type: 'string' },
+                            { name: 'create_time', type: 'string' },
+                            { name: 'update_time', type: 'string' },
+                            { name: 'gold_coin', type: 'string' },
+                            { name: 'integral', type: 'string' },
+                            { name: 'empirical_value', type: 'string' },
+                            { name: 'email', type: 'string' },
+                            { name: 'is_wechat', type: 'string' },
+                            { name: 'flag', type: 'string' }
+                       ]
+                    };
+                    var dataAdapter = new $.jqx.dataAdapter(source);
+                    // initialize jqxGrid
+                    var cellsrenderer = function (row, column, value) {
+                    	
+                    	var data = $('#grid').jqxGrid('getrowdata', row);
+                    	var id=data.id;
+                		return  '<button  onclick="deluser(\''+id+'\')">'+"删除"+'</button>';
+            		}
+                    $("#grid").jqxGrid(
+                    {
+                        width: 1500,
+                        height: 550,
+                        source: dataAdapter,
+                        sortable: true,
+                        pageable: true,
+                        autoheight: true,
+                        columnsresize: true,
+                        showtoolbar: true,
+                       	columns: [
+                          { text: 'id', datafield: 'id', width: 100 },
+                          { text: '用户名', datafield: 'user_name', width: 100 },
+                          { text: '密码', datafield: 'password', width: 100},
+                          { text: '创建时间', datafield: 'create_time', width: 100},
+                          { text: '更新时间', datafield: 'update_time', width: 100},
+                          { text: '金币', datafield: 'gold_coin', width: 100},
+                          { text: '经验值', datafield: 'empirical_value', width: 100},
+                          { text: '邮箱', datafield: 'email', width: 100},
+                          { text: '微信用户', datafield: 'is_wechat', width: 100},
+                          { text: '用户状态', datafield: 'flag', width: 100},
+                          { text: '操作', cellsrenderer:cellsrenderer, width: 100}
+                        ]
+                    });
+                   // $("#popupWindow").jqxWindow({
+                   //     width: 1500, resizable: true,  isModal: true, autoOpen: false, cancelButton: $("#Cancel"), modalOpacity: 0.01           
+                   // });
+                         }
+            });
+          
            
             
         });
-     </script>
+        
+        
+        function deluser(id){
+        	 $.ajaxSetup({
+
+             	async:false
+
+             });
+             $.ajax({
+                 type: "post",
+                 url: "/deluser",
+                 data: {id:id},
+                 dataType: "json",
+                 success: function(data){
+                 	alert(data.result);
+                 	location.reload();
+                 }
+             });
+        }
+     	
+        
+      
+    </script>
 </head>
-	<body class='default'>
-	
-	 
-	</body>
+<body class='default'>
+用户管理
+ <div id="jqxWidget">
+    <div id="grid">
+    </div>
+ </div>   
+</body>
 </html>

@@ -1,9 +1,13 @@
 package com.kuncms.user.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +28,56 @@ public class UserController {
     public String hello() {
         return "hello!";
     }
+	
+	
+	
+	/**
+	 * @param map
+	 * @param user
+	 * @param model
+	 * @param request
+	 * @param response
+	 * 删除用户
+	 * @throws IOException 
+	 */
+	@RequestMapping("/deluser")
+    public void deluser(Map<String,Object> map,User user,Model model,HttpServletRequest request,HttpServletResponse response) throws IOException{ 
+		 user.setFlag("0");
+		 userService.deluser(user);
+		 response.setContentType("application/json");
+	     response.setHeader("Pragma", "No-cache");
+	     response.setHeader("Cache-Control", "no-cache");
+         response.setCharacterEncoding("UTF-8");
+         JSONObject obj=new JSONObject();
+         obj.put("result", "删除成功!");
+         PrintWriter out= null;
+         out = response.getWriter();
+         out.print(obj.toJSONString());
+         out.flush();
+         out.close();
+		 
+	}
+	
+	
+	
+	/**
+	 * @param map
+	 * @param user
+	 * @param model
+	 * @param request
+	 * @return
+	 * 网站管理-用户查询
+	 */
+	@ResponseBody
+	@RequestMapping("/query_userlis")
+    public ArrayList<User> query_userlis(Map<String,Object> map,User user,Model model,HttpServletRequest request){
+	  
+		
+		ArrayList<User> userlis=(ArrayList<User>) userService.query_userlis();
+		
+		return userlis;
+	}
+	
 	
 	@ResponseBody
 	@RequestMapping("/get_user")

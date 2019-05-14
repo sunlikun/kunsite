@@ -32,6 +32,7 @@
 				 c.category=#{category}
 			</if>
 		 </where>
+		 	ORDER BY c.create_time desc
      </select>
      
      <select id="queryIndexCoverPhoto"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">

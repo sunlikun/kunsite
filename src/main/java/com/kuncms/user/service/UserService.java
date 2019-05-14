@@ -61,5 +61,13 @@ public class UserService {
 		// TODO Auto-generated method stub
 		return userDao.getStatistics();
 	}
+	public ArrayList<User> query_userlis() {
+		// TODO Auto-generated method stub
+		return userDao.query_userlis();
+	}
+	public void deluser(User user) {
+		// TODO Auto-generated method stub
+		userDao.deluser(user);
+	}
 
 }

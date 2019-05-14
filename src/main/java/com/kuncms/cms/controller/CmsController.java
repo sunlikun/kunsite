@@ -45,7 +45,7 @@ public class CmsController {
 	 * @return
 	 */
 	@RequestMapping("to_UserManage")
-    public String wechat_login(Map<String,Object> map,Model model,HttpServletRequest request){
+    public String to_UserManage(Map<String,Object> map,Model model,HttpServletRequest request){
 		
 		return "UserManage";
     }
