@@ -29,4 +29,6 @@ public interface UserDao {
 
 	public void deluser(User user);
 
+	void bindEmail(User user);
+
 }

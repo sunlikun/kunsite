@@ -69,5 +69,9 @@ public class UserService {
 		// TODO Auto-generated method stub
 		userDao.deluser(user);
 	}
+	public void bindEmail(User user) {
+		// TODO Auto-generated method stub
+		userDao.bindEmail(user);
+	}
 
 }

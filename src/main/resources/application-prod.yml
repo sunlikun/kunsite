@@ -2,7 +2,22 @@ server:
   port: 8081
 
 spring:
-
+    
+    mail:
+           host: smtp.qq.com
+           password:  cvfiwmexrrmrgfjg
+           username: 1144954876@qq.com
+           test-connection: false
+           protocol: smtp
+           default-encoding: UTF-8
+           properties:
+             mail:
+              smtp:
+               auth: true
+               starttls:
+                  enable: true
+                  required: true
+    
     datasource:
         name: kun_cms
         url: jdbc:mysql://localhost:3306/kun_cms?useUnicode=true&characterEncoding=utf8

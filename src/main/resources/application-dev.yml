@@ -12,9 +12,26 @@ logging:
   # logback.xml路径，默认为classpath:logback.xml
   # config: ./logback.xml
 
+    
+
 spring:
 
-    datasource:
+
+  mail:
+       host: smtp.qq.com
+       password:  cvfiwmexrrmrgfjg
+       username: 1144954876@qq.com
+       test-connection: false
+       protocol: smtp
+       default-encoding: UTF-8
+       properties:
+         mail:
+          smtp:
+           auth: true
+           starttls:
+              enable: true
+              required: true
+  datasource:
         name: kun_cms
         #url: jdbc:mysql://localhost:3306/kun_cms?useUnicode=true&characterEncoding=utf8
         url: jdbc:mysql://39.98.164.226:3306/kun_cms_test?useUnicode=true&characterEncoding=utf8
@@ -37,8 +54,10 @@ spring:
         testOnReturn: false
         poolPreparedStatements: true
         maxOpenPreparedStatements: 20
-        
-        thymeleaf:  
+
+
+
+thymeleaf:  
           cache: true  
           prefix: classpath:/templates/  
           suffix: .html  
