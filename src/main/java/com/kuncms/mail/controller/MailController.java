@@ -33,14 +33,14 @@ public class MailController {
      * @return
      * 绑定邮箱
      */
-    @RequestMapping("bindEmail")
+    @RequestMapping("upPass")
     @ResponseBody
-    public String bindEmail(User user,HttpServletRequest request,HttpServletResponse response){
+    public String upPass(User user,HttpServletRequest request,HttpServletResponse response){
     	User loginuser=(User) request.getSession().getAttribute("user");
     	user.setId(loginuser.getId());
-    	userService.bindEmail(user);
+    	userService.upPass(user);
     	JSONObject result=new JSONObject();
-    	result.put("result", "绑定成功");
+    	result.put("result", "密码修改成功");
 		return result.toJSONString();
     	
 		

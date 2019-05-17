@@ -31,4 +31,7 @@ public interface UserDao {
 
 	void bindEmail(User user);
 
+	void updateAll(User user);
+
+
 }

@@ -30,6 +30,20 @@ public class UserController {
     }
 	
 	
+	@RequestMapping("bindEmail")
+    @ResponseBody
+    public String bindEmail(User user,HttpServletRequest request,HttpServletResponse response){
+    	User loginuser=(User) request.getSession().getAttribute("user");
+    	user.setId(loginuser.getId());
+    	userService.bindEmail(user);
+    	JSONObject result=new JSONObject();
+    	result.put("result", "绑定成功");
+		return result.toJSONString();
+    	
+		
+    }
+	
+	
 	
 	/**
 	 * @param map

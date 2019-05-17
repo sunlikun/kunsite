@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.kuncms.user.dao.UserDao" >
+
+
+	<update id="updateAll"  parameterType="com.kuncms.user.model.User">
+		update user_info u set
+		<if test="password != null and password !=''">
+        		 u.password=#{password} 
+      	</if>
+		 where flag='1'
+		<if test="user_name != null and user_name !=''">
+        		and u.user_name=#{user_name} 
+      	</if>
+      	<if test="id != null and id !=''">
+        		and u.id=#{id} 
+      	</if>
+ 	</update>
 	
 	<update id="bindEmail"  parameterType="com.kuncms.user.model.User">
 		update user_info u set u.email=#{email} where flag='1'

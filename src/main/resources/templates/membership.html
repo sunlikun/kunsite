@@ -55,9 +55,9 @@ body { width:80%; margin:50px auto; }
 				安全中心
 			</h3>
 				<p>电子邮箱：{{ email }}&nbsp;&nbsp;<a href='' data-toggle="modal" data-target="#myModal" v-show="b">绑定邮箱</a><a href='' data-toggle="modal" data-target="#myModal" v-show="u">修改邮箱</a></p>
-				<p>账户密码：{{ password }}</p>
+				<p>账户密码：{{ password }}&nbsp;&nbsp;<a href='' data-toggle="modal" data-target="#myModal1">修改密码</a></p>
 				<p v-if="user_name === 'admin'"><a href='/SysManagementController/toSysManagement'>网站监控</a>&nbsp;&nbsp;<a href='/frame'>网站管理</a></p>
-				<!-- 模态框（Modal） -->
+				<!-- 邮箱 -->
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 15%;">
 					<div class="modal-dialog">
 						<div class="modal-content">
@@ -99,6 +99,38 @@ body { width:80%; margin:50px auto; }
 					</div><!-- /.modal -->
 				</div>
 				
+				<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 15%;">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+									&times;
+								</button>
+								<h4 class="modal-title" id="myModalLabel">
+									修改密码
+								</h4>
+							</div>
+							<div class="modal-body" align="center">
+								<table   style="border-collapse:separate; border-spacing:0px 10px;">
+								
+								<tr>
+								<td><label>请输入新的密码:</label></td>
+								<td><input type="text" class="form-control"  id="npass" name="npass" style="width: 200px" v-model="npass" onkeyup="this.value=this.value.replace(/[^a-z0-9_]/g,'');" maxlength="16"/></td>
+								<td><span>{{message2}}</span></td>
+								</tr>
+								</table>
+								<br><br>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+								</button>
+								<button type="button" class="btn btn-primary" v-on:click="upPass" id="submit">
+									提交
+								</button>
+							</div>
+						</div><!-- /.modal-content -->
+					</div><!-- /.modal -->
+				</div>
 		</div>
 		
 		</div>
@@ -159,7 +191,9 @@ var app1=new Vue({
 		      message1:"",
 		      echeckcode:"",
 		      b:"",
-		      u:""
+		      u:"",
+		      npass:"",
+		      message2:""
 			  
 	  },
 	  methods:{
@@ -227,7 +261,7 @@ var app1=new Vue({
 	               });
 				  
 		},
-		 bindEmail: function () {//邮箱绑定
+		 bindEmail: function () {//修改密码
 				 
 			    //对验证码进行校验
 				if(this.checkcode==null||this.checkcode==''){
@@ -248,7 +282,24 @@ var app1=new Vue({
 				
 				  
 		},
-		//   时间格式化
+		upPass: function () {//邮箱绑定
+				 
+			    //对验证码进行校验
+				if(this.npass==null||this.npass==''){
+			    	this.message2="密码不能为空";
+			    	return false;
+			    }else{
+			    	
+			    	this.$http.post('/MailController/upPass',{password:this.npass},{emulateJSON:true}).then(function(res){
+			    		alert(res.data.result)
+			    		location.reload();
+		                },function(res){
+		                   console.log(res.data);
+		             });
+			    }
+				
+				  
+		},//   时间格式化
        	dateFormat:function(time) {
 				    var date=new Date(time);
 				    var year=date.getFullYear();

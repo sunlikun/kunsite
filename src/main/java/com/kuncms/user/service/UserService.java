@@ -73,5 +73,9 @@ public class UserService {
 		// TODO Auto-generated method stub
 		userDao.bindEmail(user);
 	}
+	public void upPass(User user) {
+		// TODO Auto-generated method stub
+		userDao.updateAll(user);
+	}
 
 }
