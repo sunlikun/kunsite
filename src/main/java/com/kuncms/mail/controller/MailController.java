@@ -26,7 +26,26 @@ public class MailController {
 	UserService userService;
     
     
+    
+    
     /**
+     * @param user
+     * @param request
+     * @param response
+     * @return
+                * 根据邮箱查找出邮箱所绑定的用户
+     */
+    @RequestMapping("getUserAccount")
+    @ResponseBody
+    public ArrayList<User> getUserAccount(User user,HttpServletRequest request,HttpServletResponse response){
+    	ArrayList<User> userl=(ArrayList<User>) userService.check_username(user);
+		
+    	return userl;
+    	
+		
+    }
+    
+     /**
      * @param user
      * @param request
      * @param response

@@ -5,16 +5,24 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta name="description" content="">
 		<meta name="author" content="">
-		<link href="css/bootstrap.min.css" rel="stylesheet">
-    	<link href="css/style.css" rel="stylesheet">
-    	<link href="css/button.css" rel="stylesheet">
-    	<link rel="icon" type="image/x-icon" href="/img/favicon.ico">
 		<title>登陆</title>
+		<link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+    	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 		<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
 		<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
-	 	<script type="text/javascript" src="/js/jquery.js"></script>
 	 	<script src=" http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
-		
+	 	<link href="/css/bootstrap.min.css" rel="stylesheet">
+    	<link href="/css/style.css" rel="stylesheet">
+    	<link href="/css/button.css" rel="stylesheet">
+    	<link rel="stylesheet" href="../../jqwidgets/styles/jqx.base.css" type="text/css" />
+    	<link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+	    <script type="text/javascript" src="/scripts/jquery-1.11.1.min.js"></script>
+	    <script type="text/javascript" src="/js/jqthumb.min.js"></script>
+	    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+		<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 	</head>
 	<body class="text-center">
 		<div class="container-fluid">
@@ -44,7 +52,7 @@
 									</label>
 									<input type="password" class="form-control" id="password" name="password" style="width: 200px" v-model="password"/>
 								</div>
-								<a href='' data-toggle="modal" data-target="#myModal">忘记账号</a><span style="margin-left: 80px"><a href='' data-toggle="modal" data-target="#myModal">找回密码</a></span>
+								<a href='' data-toggle="modal" data-target="#myModal1">忘记账号</a><span style="margin-left: 80px"><a href='' data-toggle="modal" data-target="#myModal">找回密码</a></span>
 								<p v-if="logerror">登陆失败:账户名或密码错误! </p>
 								 
 								<div class="checkbox">
@@ -57,8 +65,8 @@
 									<input type="button" @click="login_check()" value="确定">
 								</div>
 							</form>
-							<!-- 忘记密码 -->
-							<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 15%;">
+							<!-- 忘记账号 -->
+							<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 15%;">
 								<div class="modal-dialog">
 									<div class="modal-content">
 										<div class="modal-header">
@@ -66,14 +74,14 @@
 												&times;
 											</button>
 											<h4 class="modal-title" id="myModalLabel">
-												找回密码
+												找回账号
 											</h4>
 										</div>
 										<div class="modal-body" align="center">
 											<table   style="border-collapse:separate; border-spacing:0px 10px;">
 											
 											<tr>
-											<td><label>请输入邮箱地址:</label></td>
+											<td><label>请输入账号绑定的邮箱地址:</label></td>
 											<td><input type="text" class="form-control"  id="nemail" name="nemail" style="width: 200px" v-model="nemail"/></td>
 											<td><span>{{message}}</span></td>
 											</tr>
@@ -91,7 +99,7 @@
 											<button type="button" class="btn btn-primary" v-on:click="checkEmail" id="check">
 												验证
 											</button>
-											<button type="button" class="btn btn-primary" v-on:click="bindEmail" id="submit" style="display: none">
+											<button type="button" class="btn btn-primary" v-on:click="getUserAccount" id="submit" style="display: none">
 												提交
 											</button>
 										</div>
@@ -114,7 +122,7 @@
 											<table   style="border-collapse:separate; border-spacing:0px 10px;">
 											
 											<tr>
-											<td><label>请输入邮箱地址:</label></td>
+											<td><label>请输入账号绑定的邮箱地址:</label></td>
 											<td><input type="text" class="form-control"  id="nemail" name="nemail" style="width: 200px" v-model="nemail"/></td>
 											<td><span>{{message}}</span></td>
 											</tr>
@@ -132,7 +140,7 @@
 											<button type="button" class="btn btn-primary" v-on:click="checkEmail" id="check">
 												验证
 											</button>
-											<button type="button" class="btn btn-primary" v-on:click="bindEmail" id="submit" style="display: none">
+											<button type="button" class="btn btn-primary" v-on:click="getUserAccount" id="submit" style="display: none">
 												提交
 											</button>
 										</div>
@@ -208,13 +216,19 @@
 				      }
 
 				  },
-				    checkEmail: function () {//校验邮箱是否已经绑定(废弃)
+				    checkEmail: function () {//校验邮箱是否已经绑定
 					    $("#check").attr("disabled", true);
 					  	this.$http.post('/MailController/checkEmail',{email:this.nemail},{emulateJSON:true}).then(function(res){
 			               	  
 							  //alert(res.body.email);
 							  if(res.body.email=='0'){
-								  this.message="可以注册,请查收验证邮件";
+								  this.message="邮箱不存在";
+								  $("#checkcodetr").hide();
+								  $("#check").attr("disabled", false);
+								  
+							  }else{
+								  
+								  this.message="验证码已经发送,请查收验证邮件";
 								  //显示验证码输入框，并发送邮件，返回验证码的值
 								  this.$http.post('/MailController/getCheckCode',{email:this.nemail},{emulateJSON:true}).then(function(res){
 					               	  //alert(res.data);
@@ -222,17 +236,12 @@
 					               	  $("#checkcodetr").show();
 					               	  $("#check").hide();
 					               	  $("#submit").show();
-					               	  this.message1="输入邮件中的验证码再次提交";
+					               	  this.message1="输入邮件中的验证码点击提交";
 					               	  this.echeckcode=res.data;
 					               	  
 								  },function(res){
 					                   console.log(res.data);
 					              });
-								  
-							  }else{
-								  this.message="该邮箱已经绑定,请选择其他邮箱";
-								  $("#checkcodetr").hide();
-								  $("#check").attr("disabled", false);
 							  }
 			               	  //this.nemail=null
 			                },function(res){
@@ -240,7 +249,7 @@
 			               });
 						  
 					},
-					bindEmail: function () {//修改密码
+					getUserAccount: function () {//根据邮箱找回账号
 						 
 						    //对验证码进行校验
 							if(this.checkcode==null||this.checkcode==''){
@@ -251,7 +260,7 @@
 						    	return false;
 						    }else if(this.checkcode==this.echeckcode&&this.checkcode!=null&&this.echeckcode!=null){
 						    	
-						    	this.$http.post('/MailController/bindEmail',{email:this.nemail},{emulateJSON:true}).then(function(res){
+						    	this.$http.post('/MailController/getUserAccount',{email:this.nemail},{emulateJSON:true}).then(function(res){
 						    		alert(res.data.result)
 						    		location.reload();
 					                },function(res){
