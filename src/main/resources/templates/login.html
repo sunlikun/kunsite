@@ -82,13 +82,23 @@
 											
 											<tr>
 											<td><label>请输入账号绑定的邮箱地址:</label></td>
-											<td><input type="text" class="form-control"  id="nemail" name="nemail" style="width: 200px" v-model="nemail"/></td>
+											<td><input type="text" class="form-control"  id="aemail" name="aemail" style="width: 200px" v-model="aemail"/></td>
 											<td><span>{{message}}</span></td>
 											</tr>
 											<tr style="display: none" id="checkcodetr">
 											<td><label>验证码:</label></td>
 											<td align="right"><input type="text" class="form-control"  id="checkcode" name="checkcode" style="width: 80px;" v-model="checkcode"/></td>
 											<td><span>{{message1}}</span></td>
+											</tr>
+											<tr style="display: none" id="backAccount">
+											<td>
+											您的账号:
+											</td>
+											<td align="left">
+											<div v-for = "(item, index) in accountData" :key = "item.id">
+										        {{item.user_name}}
+										    </div>
+											</td>
 											</tr>
 											</table>
 											<br><br>
@@ -102,6 +112,7 @@
 											<button type="button" class="btn btn-primary" v-on:click="getUserAccount" id="submit" style="display: none">
 												提交
 											</button>
+											
 										</div>
 									</div><!-- /.modal-content -->
 								</div><!-- /.modal -->
@@ -120,16 +131,29 @@
 										</div>
 										<div class="modal-body" align="center">
 											<table   style="border-collapse:separate; border-spacing:0px 10px;">
-											
+											<tr>
+											<td><label>请输入您的账号:</label></td>
+											<td><input type="text" class="form-control"  id="account" name="account" style="width: 200px" v-model="account"/></td>
+											</tr>
 											<tr>
 											<td><label>请输入账号绑定的邮箱地址:</label></td>
-											<td><input type="text" class="form-control"  id="nemail" name="nemail" style="width: 200px" v-model="nemail"/></td>
-											<td><span>{{message}}</span></td>
+											<td><input type="text" class="form-control"  id="pemail" name="pnemail" style="width: 200px" v-model="pemail"/></td>
+											<td><span>{{message3}}</span></td>
 											</tr>
-											<tr style="display: none" id="checkcodetr">
+											<tr style="display: none" id="checkcodetr1">
 											<td><label>验证码:</label></td>
-											<td align="right"><input type="text" class="form-control"  id="checkcode" name="checkcode" style="width: 80px;" v-model="checkcode"/></td>
-											<td><span>{{message1}}</span></td>
+											<td align="right"><input type="text" class="form-control"  id="checkcode1" name="checkcode1" style="width: 80px;" v-model="checkcode1"/></td>
+											<td><span>{{message4}}</span></td>
+											</tr>
+											<tr style="display: none" id="newpass">
+											<td><label>输入新密码:</label></td>
+											<td><input type="password" class="form-control"  id="npass" name="npass" style="width: 200px" v-model="npass" onkeyup="this.value=this.value.replace(/[^a-z0-9_]/g,'');" maxlength="16"/></td>
+											<td><span>{{message6}}</span></td>
+											</tr>
+											<tr style="display: none" id="newpass1">
+											<td><label>再次输入新密码:</label></td>
+											<td><input type="password" class="form-control"  id="npass1" name="npass1" style="width: 200px" v-model="npass1" onkeyup="this.value=this.value.replace(/[^a-z0-9_]/g,'');" maxlength="16"/></td>
+											<td><span>{{message5}}</span></td>
 											</tr>
 											</table>
 											<br><br>
@@ -137,12 +161,14 @@
 										<div class="modal-footer">
 											<button type="button" class="btn btn-default" data-dismiss="modal">关闭
 											</button>
-											<button type="button" class="btn btn-primary" v-on:click="checkEmail" id="check">
+											<button type="button" class="btn btn-primary" v-on:click="checkEmailandAcc" id="check1">
 												验证
 											</button>
-											<button type="button" class="btn btn-primary" v-on:click="getUserAccount" id="submit" style="display: none">
+											<button type="button" class="btn btn-primary" v-on:click="getUserPass" id="submit1" style="display: none">
 												提交
 											</button>
+											
+											
 										</div>
 									</div><!-- /.modal-content -->
 								</div><!-- /.modal -->
@@ -179,7 +205,19 @@
 					  logerror: false,
 					  message:"",
 					  message1:"",
-					  checkcode:""
+					  checkcode:"",
+					  pemail:"",
+					  aemail:"",
+					  accountData:"",
+					  account:"",
+					  message3:"",
+					  message4:"",
+					  message5:"",
+					  message6:"",
+					  npass1:"",
+					  npass:"",
+					  checkcode1:"",
+					  echeckcode:""
 			  },
 			  methods:{ 
 				 
@@ -218,7 +256,7 @@
 				  },
 				    checkEmail: function () {//校验邮箱是否已经绑定
 					    $("#check").attr("disabled", true);
-					  	this.$http.post('/MailController/checkEmail',{email:this.nemail},{emulateJSON:true}).then(function(res){
+					  	this.$http.post('/MailController/checkEmail',{email:this.aemail},{emulateJSON:true}).then(function(res){
 			               	  
 							  //alert(res.body.email);
 							  if(res.body.email=='0'){
@@ -230,7 +268,7 @@
 								  
 								  this.message="验证码已经发送,请查收验证邮件";
 								  //显示验证码输入框，并发送邮件，返回验证码的值
-								  this.$http.post('/MailController/getCheckCode',{email:this.nemail},{emulateJSON:true}).then(function(res){
+								  this.$http.post('/MailController/getCheckCode',{email:this.aemail},{emulateJSON:true}).then(function(res){
 					               	  //alert(res.data);
 									  //显示验证码输入框，并发送邮件，返回验证码的值
 					               	  $("#checkcodetr").show();
@@ -260,17 +298,85 @@
 						    	return false;
 						    }else if(this.checkcode==this.echeckcode&&this.checkcode!=null&&this.echeckcode!=null){
 						    	
-						    	this.$http.post('/MailController/getUserAccount',{email:this.nemail},{emulateJSON:true}).then(function(res){
-						    		alert(res.data.result)
-						    		location.reload();
+						    	this.$http.post('/MailController/getUserAccount',{email:this.aemail},{emulateJSON:true}).then(function(res){
+						    		//alert(res.data[0].user_name)
+						    		this.accountData=res.data;
+						    		$("#backAccount").show();
+						    		//location.reload();
 					                },function(res){
 					                   console.log(res.data);
 					             });
 						    }
 							
 							  
-					}
-			    }
+					},
+					checkEmailandAcc: function () {//校验账号与邮箱是否匹配
+					    $("#check1").attr("disabled", true);
+					  	this.$http.post('/MailController/checkEmailandAcc',{email:this.pemail,user_name:this.account},{emulateJSON:true}).then(function(res){
+			               	  
+							  //alert(res.body.email);
+							  if(res.body.email=='0'){
+								  this.message3="账户和邮箱不一致";
+								  $("#checkcodetr1").hide();
+								  $("#check1").attr("disabled", false);
+								  
+							  }else{
+								  
+								  this.message="验证码已经发送,请查收验证邮件";
+								  //显示验证码输入框，并发送邮件，返回验证码的值
+								  this.$http.post('/MailController/getCheckCode',{email:this.pemail},{emulateJSON:true}).then(function(res){
+					               	  //alert(res.data);
+									  //显示验证码输入框，并发送邮件，返回验证码的值
+					               	  $("#checkcodetr1").show();
+					               	  $("#newpass").show();
+					               	  $("#newpass1").show();
+					               	  $("#check1").hide();
+					               	  $("#submit1").show();
+					               	  this.message3="";
+					               	  this.message4="输入邮件中的验证码点击提交";
+					               	  this.echeckcode=res.data;
+					               	  
+								  },function(res){
+					                   console.log(res.data);
+					              });
+							  }
+			               	  //this.nemail=null
+			                },function(res){
+			                   console.log(res.data);
+			               });
+						  
+					},
+					getUserPass: function () {//重新设置密码
+						 
+						    //对验证码进行校验
+							if(this.checkcode1==null||this.checkcode1==''){
+						    	this.message4="验证码不能为空";
+						    	return false;
+						    }else if(this.checkcode1!=this.echeckcode){
+						    	this.message4="验证码不正确";
+						    	return false;
+						    }else if(this.npass==null||this.npass==''||this.npass1==null||this.npass1==''){
+							    	if(this.npass==null||this.npass==''){
+							    		this.message6="密码不能为空";
+							    	}else{
+							    		this.message5="确认密码不能为空";
+							    	}
+						    		
+							    	return false;
+							    }else if(this.npass1!=this.npass){
+							    	this.message5="两次输入的密码不一致";
+							    	return false;
+							    }else {
+							    	
+							    	this.$http.post('/MailController/resetPass',{password:this.npass,user_name:this.account},{emulateJSON:true}).then(function(res){
+							    		alert(res.data.result)
+							    		location.reload();
+						                },function(res){
+						                   console.log(res.data);
+						             });
+							    }
+						   }
+				}
 			
 			})
 		
