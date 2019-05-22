@@ -88,6 +88,13 @@ public class CoverphotoService {
 
 
 
+	public void upVideo(Coverphoto coverphoto) {
+		// TODO Auto-generated method stub
+		coverphotoDao.upVideo(coverphoto);
+	}
+
+
+
 	
 	
 	

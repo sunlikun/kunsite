@@ -25,4 +25,6 @@ public interface CoverphotoDao {
 
 	ArrayList<Coverphoto> queryVideo(String[] idArr);
 
+	void upVideo(Coverphoto coverphoto);
+
 }

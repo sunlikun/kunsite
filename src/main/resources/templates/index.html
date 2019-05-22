@@ -132,7 +132,7 @@
                     
                     tableContent += '<div class="caption">';
                   	tableContent += '<p>' + coverphotoArr[i].video_name.substring(0, 25)+ '...</p>';
-                  	tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币</p>';
+                  	tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币&nbsp;&nbsp;人气值:'+coverphotoArr[i].clicks+'</p>';
                     tableContent += ' <p><a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-primary" role="button"> 查看</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default" role="button">  下载</a></p> ';
                   
                     tableContent += '</p>';

@@ -21,6 +21,7 @@
     <script type="text/javascript" src="/jqwidgets/jqxgrid.selection.js"></script> 
     <script type="text/javascript" src="/scripts/demos.js"></script>
     <script type="text/javascript" src="/jqwidgets/jqxwindow.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxgrid.columnsresize.js"></script>
     <script type="text/javascript">
    
         $(document).ready(function () {
@@ -90,6 +91,7 @@
                         height: 550,
                         source: dataAdapter,
                         showtoolbar: true,
+                        columnsresize: true,
                         rendertoolbar: function (toolbar) {
                             var me = this;
                             var container = $("<div style='margin: 5px;'></div>");
@@ -123,18 +125,36 @@
                                 
                             });
                           
-                            // delete row.
+                            // 删除视频
                             $("#deleterowbutton").on('click', function () {
                                 var selectedrowindex = $("#grid").jqxGrid('getselectedrowindex');
                                 var rowscount = $("#grid").jqxGrid('getdatainformation').rowscount;
                                 if (selectedrowindex >= 0 && selectedrowindex < rowscount) {
-                                    var id = $("#grid").jqxGrid('getrowid', selectedrowindex);
-                                    var commit = $("#grid").jqxGrid('deleterow', id);
+                                    //var id = $("#grid").jqxGrid('getrowid', selectedrowindex);
+                                    var data = $('#grid').jqxGrid('getrowdata', selectedrowindex);
+                                    var id=data.id;
+                                    $.ajaxSetup({
+
+                                     	async:false
+
+                                    });
+                                    $.ajax({
+                                        type: "post",
+                                        url: "delVideo",
+                                        data: {id:id},
+                                        dataType: "json",
+                                        success: function(data){
+                                           alert(data.result);
+                                           var id = $("#grid").jqxGrid('getrowid', selectedrowindex);
+                                           var commit = $("#grid").jqxGrid('deleterow', id);
+                                        }
+                                    });
+                                   
                                 }
                             });
                         },
                         columns: [
-                          { text: 'id', datafield: 'id', width: 200 },
+                          { text: 'id', datafield: 'id', width: 200, hidden: true},
                           { text: 'coverphotoid', datafield: 'coverphotoid', width: 200 },
                           { text: 'video_name', datafield: 'video_name', width: 200},
                           { text: 'baiduyun_address', datafield: 'baiduyun_address', width: 200},

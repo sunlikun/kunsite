@@ -5,7 +5,7 @@
  	 <select id="queryVideo"    resultType="com.kuncms.coverphoto.model.Coverphoto">
         SELECT*FROM coverphoto a
         <where>
-				 a.id in
+			a.flag="1" and	 a.id in
 				 <foreach collection="array" index="index" item="idArr" open="(" separator="," close=")">
          				#{idArr}
     			</foreach>
@@ -17,6 +17,7 @@
 	 <select id="queryCoverPhotoById"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
         SELECT*FROM coverphoto a
         <where>
+        a.flag="1"
 			<if test="id != null and id != ''">
 				AND a.id = #{id}
 			</if>
@@ -28,6 +29,7 @@
      <select id="queryCoverPhoto"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
         SELECT*FROM coverphoto c
          <where>
+         c.flag="1"
         	<if test="category != null and category != ''">
 				 c.category=#{category}
 			</if>
@@ -62,13 +64,27 @@
 		<if test="downloads != null and downloads != ''">
 				,a.downloads=#{downloads}
 		</if>
+		<if test="flag != null and flag != ''">
+				,a.flag=#{flag}
+		</if>
         <where>
 			<if test="id != null and id != ''">
 				AND a.id = #{id}
 			</if>
 		</where>
+ 	</update>
  	
+ 	<update id="upVideo" parameterType="com.kuncms.coverphoto.model.Coverphoto">
  	
+ 	    update coverphoto a set 
+ 	    <if test="flag != null and flag != ''">
+				a.flag=#{flag}
+		</if>
+        <where>
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+		</where>
  	</update>
   
 </mapper>

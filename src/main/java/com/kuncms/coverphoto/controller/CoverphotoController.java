@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.kuncms.coverphoto.dao.CoverphotoDao;
@@ -43,6 +44,24 @@ public class CoverphotoController {
 	CoverphotoService coverphotoService;
 	@Autowired
 	DownloadRecordService downloadRecordService;
+	
+	/**
+	 * @param response
+	 * @param coverphoto
+	 * @return 
+	 * @throws IOException
+	 * 视频删除
+	 */
+	@RequestMapping("/delVideo")
+	@ResponseBody
+	public Object delVideo(HttpServletResponse response,Coverphoto coverphoto) throws IOException {
+			coverphoto.setFlag("0");
+			coverphotoService.upVideo(coverphoto);
+			JSONObject result=new JSONObject();
+			result.put("result", "视频删除成功");
+			return result.toString();
+	}
+	
 	
 	@RequestMapping("/queryrankingList")
 	public void queryrankingList(HttpServletResponse response,String flag) throws IOException {
