@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 import com.kuncms.coverphoto.model.Coverphoto;
+import com.kuncms.pay.service.WechatpayTradeinfoService;
 import com.kuncms.user.model.User;
 import com.kuncms.user.service.UserService;
 import com.kuncms.util.HttpClientUtils;
@@ -37,10 +38,36 @@ public class CmsController {
 	
 	@Autowired
 	UserService userService;
+	@Autowired
+	WechatpayTradeinfoService wechatpayTradeinfoService;
+	
+	@RequestMapping("queryRechargeRecord")
+	public void queryRechargeRecord(HttpServletResponse response,User user) throws IOException {
+		
+			//ArrayList<WechatPay> list=wechatpayTradeinfoService.queryRechargeRecord(user);
+		
+//		 	response.setContentType("application/json");
+//	        response.setHeader("Pragma", "No-cache");
+//	        response.setHeader("Cache-Control", "no-cache");
+//	        response.setCharacterEncoding("UTF-8");
+//	        
+//	        JSONArray listArray=JSONArray.fromObject(list);     
+//	        PrintWriter out= null;
+//	        out = response.getWriter();
+//	        out.print(listArray.toString());
+//	        System.out.println(listArray.toString());
+//	        out.flush();
+//	        out.close();
+	
+		
+		
+	}
+	
+	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	/**
-	 * 跳转到微信登陆
+	 * 跳转到用户管理
 	 * @param map
 	 * @return
 	 */
@@ -49,5 +76,19 @@ public class CmsController {
 		
 		return "UserManage";
     }
+	
+	/**
+	 * 跳转到用户充值记录
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping("RechargeRecord")
+    public String to_RechargeRecord(Map<String,Object> map,Model model,HttpServletRequest request){
+		
+		return "RechargeRecord";
+    }
+	
+	
+	
 	
 }

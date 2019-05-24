@@ -13,8 +13,10 @@ import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import com.kuncms.pay.dao.WechatpayTradeinfoDao;
 import com.kuncms.pay.model.WechatpayTradeinfo;
+import com.kuncms.user.model.User;
 import com.kuncms.util.DateUtil;
 @Service
 public class WechatpayTradeinfoService {
@@ -45,5 +47,9 @@ public class WechatpayTradeinfoService {
 		wechatpayTradeinfo.setUpdateTime(format.parse(dateUtil.getNow()));
 		wechatpayTradeinfoDao.updateByOut_trade_no(wechatpayTradeinfo);
 	}
+//	public ArrayList<WechatPay> queryRechargeRecord(User user) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
    
 }
