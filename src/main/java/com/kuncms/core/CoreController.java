@@ -37,6 +37,50 @@ public class CoreController {
 	@Autowired
 	UserService userService;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	
+	
+	
+	@RequestMapping("/cms_login_operate")
+    public String cms_login_operate(Map<String,Object> map,User user,Model model,HttpServletRequest request){
+		//日志级别从低到高分为TRACE < DEBUG < INFO < WARN < ERROR < FATAL，如果设置为WARN，则低于WARN的信息都不会输出。
+		String result="";
+		boolean flag;
+		ArrayList<User> userl=(ArrayList<User>) userService.login_operate(user);
+		if(userl.size()>0){
+			User loginuser=userl.get(0);
+			flag=true;
+			model.addAttribute("user_name",loginuser.getUser_name());
+			HttpSession session = request.getSession();
+	        session.setAttribute("loginName",loginuser.getUser_name());
+	        session.setAttribute("gold_coin",loginuser.getGold_coin());
+	        session.setAttribute("user",loginuser);
+	    }else{
+			flag=false;
+		}
+		if(flag==true){
+			result="frame";
+		}else{
+			model.addAttribute("flag","登陆失败,用户名或密码错误!");
+			result="cmslogin";
+		}
+        return result;
+    }
+	
+	
+	/**
+	 * 跳转到内容管理系统登录页面
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping("/to_cmslogin")
+    public String to_cmslogin(Map<String,Object> map){
+	  return "cmslogin";
+    }
+	
+	
+	
+	
 	@RequestMapping("/addUserGoldCoin")
 	
 	public void addUserGoldCoin(int gold_coin,String user_name) throws IOException {

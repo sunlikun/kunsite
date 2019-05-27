@@ -18,4 +18,6 @@ public interface AlipayTradeInfoDao {
 
 	ArrayList<Coverphoto> queryThumbnail(Thumbnail thumbnail);
 
+	ArrayList<AlipayTradeInfo> queryRechargeRecord(AlipayTradeInfo alipayTradeInfo);
+
 }

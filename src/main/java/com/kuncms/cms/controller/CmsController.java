@@ -22,6 +22,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 import com.kuncms.coverphoto.model.Coverphoto;
+import com.kuncms.pay.controller.WechatPay;
+import com.kuncms.pay.model.AlipayTradeInfo;
+import com.kuncms.pay.model.WechatpayTradeinfo;
+import com.kuncms.pay.service.AlipayTradeInfoService;
 import com.kuncms.pay.service.WechatpayTradeinfoService;
 import com.kuncms.user.model.User;
 import com.kuncms.user.service.UserService;
@@ -40,24 +44,35 @@ public class CmsController {
 	UserService userService;
 	@Autowired
 	WechatpayTradeinfoService wechatpayTradeinfoService;
+	@Autowired
+	AlipayTradeInfoService alipayTradeInfoService;
 	
-	@RequestMapping("queryRechargeRecord")
-	public void queryRechargeRecord(HttpServletResponse response,User user) throws IOException {
-		
-			//ArrayList<WechatPay> list=wechatpayTradeinfoService.queryRechargeRecord(user);
-		
-//		 	response.setContentType("application/json");
-//	        response.setHeader("Pragma", "No-cache");
-//	        response.setHeader("Cache-Control", "no-cache");
-//	        response.setCharacterEncoding("UTF-8");
-//	        
-//	        JSONArray listArray=JSONArray.fromObject(list);     
-//	        PrintWriter out= null;
-//	        out = response.getWriter();
-//	        out.print(listArray.toString());
-//	        System.out.println(listArray.toString());
-//	        out.flush();
-//	        out.close();
+	@RequestMapping("/queryRechargeRecord")
+	public void queryRechargeRecord(HttpServletResponse response,HttpServletRequest request) throws IOException {
+			
+			User loginuser=(User) request.getSession().getAttribute("user");
+			
+			//微信支付记录
+			WechatpayTradeinfo wechatpayTradeinfo=new  WechatpayTradeinfo();
+			wechatpayTradeinfo.setCreateBy(loginuser.getUser_name());
+			ArrayList<WechatPay> list=wechatpayTradeinfoService.queryRechargeRecord(wechatpayTradeinfo);
+			
+			AlipayTradeInfo alipayTradeInfo=new AlipayTradeInfo();
+			alipayTradeInfo.setUser_name(loginuser.getUser_name());
+			ArrayList<AlipayTradeInfo> list1=alipayTradeInfoService.queryRechargeRecord(alipayTradeInfo);
+			
+			response.setContentType("application/json");
+	        response.setHeader("Pragma", "No-cache");
+	        response.setHeader("Cache-Control", "no-cache");
+	        response.setCharacterEncoding("UTF-8");
+	        JSONArray listArray=JSONArray.fromObject(list);
+	        JSONObject result=new JSONObject();
+	        result.put("wechat", listArray);
+	        PrintWriter out= null;
+	        out = response.getWriter();
+	        out.print(result.toString());
+	        out.flush();
+	        out.close();
 	
 		
 		

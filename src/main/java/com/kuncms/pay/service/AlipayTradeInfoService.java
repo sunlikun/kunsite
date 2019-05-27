@@ -30,6 +30,13 @@ public class AlipayTradeInfoService {
 
 
 
+	public ArrayList<AlipayTradeInfo> queryRechargeRecord(AlipayTradeInfo alipayTradeInfo) {
+		// TODO Auto-generated method stub
+		return alipayTradeInfoDao.queryRechargeRecord(alipayTradeInfo);
+	}
+
+
+
 	
 	
 	
