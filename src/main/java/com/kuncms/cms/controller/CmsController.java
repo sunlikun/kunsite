@@ -47,6 +47,12 @@ public class CmsController {
 	@Autowired
 	AlipayTradeInfoService alipayTradeInfoService;
 	
+	/**
+	 * @param response
+	 * @param request
+	 * @throws IOException
+	 * 支付记录查询
+	 */
 	@RequestMapping("/queryRechargeRecord")
 	public void queryRechargeRecord(HttpServletResponse response,HttpServletRequest request) throws IOException {
 			
@@ -66,16 +72,15 @@ public class CmsController {
 	        response.setHeader("Cache-Control", "no-cache");
 	        response.setCharacterEncoding("UTF-8");
 	        JSONArray listArray=JSONArray.fromObject(list);
+	        JSONArray listArray1=JSONArray.fromObject(list1);
 	        JSONObject result=new JSONObject();
 	        result.put("wechat", listArray);
+	        result.put("alipay", listArray1);
 	        PrintWriter out= null;
 	        out = response.getWriter();
 	        out.print(result.toString());
 	        out.flush();
 	        out.close();
-	
-		
-		
 	}
 	
 	

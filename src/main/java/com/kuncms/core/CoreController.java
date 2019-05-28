@@ -40,6 +40,16 @@ public class CoreController {
 	
 	
 	
+	/**
+	 * 跳转到内容搜索页面
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping("/to_serach")
+    public String to_serach(Map<String,Object> map){
+	  return "serach";
+    }
+	
 	
 	@RequestMapping("/cms_login_operate")
     public String cms_login_operate(Map<String,Object> map,User user,Model model,HttpServletRequest request){

@@ -148,6 +148,8 @@ public class FileUploadController {
         try {
             file.transferTo(dest); //保存文件
             //保存文件进入数据库
+            String serial_number=Common_util.getRandomNum4();
+            coverphoto.setSerial_number(serial_number);
             coverphotoService.insert(path+"/"+fileName,fileName,coverphoto, request);
             return "VideoManage";
         } catch (IllegalStateException e) {
@@ -273,7 +275,7 @@ public class FileUploadController {
 //        }
 //    }
     
-    public static String generateRandomFilename(){  
+  public static String generateRandomFilename(){  
         String fourRandom = "";
         //产生4位的随机数(不足4位前加零)
         int   randomNum =   (int)(Math.random()*10000);
@@ -293,7 +295,7 @@ public class FileUploadController {
         .append(twoNumbers(cal.get(Calendar.SECOND)))
         .append(fourRandom);
         return sb.toString(); 
-     } 
+  } 
   private static String twoNumbers(int number){
     String _number = number + "";
     if(_number.length() < 2){
