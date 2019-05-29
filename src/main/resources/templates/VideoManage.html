@@ -22,6 +22,8 @@
     <script type="text/javascript" src="/scripts/demos.js"></script>
     <script type="text/javascript" src="/jqwidgets/jqxwindow.js"></script>
     <script type="text/javascript" src="/jqwidgets/jqxgrid.columnsresize.js"></script>
+    <script type="text/javascript" src="../../jqwidgets/jqxnumberinput.js"></script>
+    <script type="text/javascript" src="../../jqwidgets/jqxinput.js"></script>
     <script type="text/javascript">
    
         $(document).ready(function () {
@@ -54,6 +56,10 @@
                             { name: 'flag', type: 'string' },
                             { name: 'baiduyun_address', type: 'string' },
                             { name: 'baiduyun_pass', type: 'string' },
+                            { name: 'gold_coin', type: 'string' },
+                            { name: 'downloads', type: 'string' },
+                            { name: 'category', type: 'string' },
+                            { name: 'serial_number', type: 'string' }
                             
                            
                           
@@ -83,7 +89,7 @@
                     var cellsrenderer = function (row, column, value) {
                     	
                     	var data = $('#grid').jqxGrid('getrowdata', row);
-                		return  '<a href="/thumbnailManage?id='+data.id+'" target="_blank" style="color:black;text-decoration:none;">'+"缩略图"+'</a>';
+                		return  '<a href="/thumbnailManage?id='+data.id+'" target="_blank" style="color:black;text-decoration:none;">'+"添加缩略图"+'</a>';
             		}
                     $("#grid").jqxGrid(
                     {
@@ -154,19 +160,83 @@
                             });
                         },
                         columns: [
-                          { text: 'id', datafield: 'id', width: 200, hidden: true},
-                          { text: 'coverphotoid', datafield: 'coverphotoid', width: 200 },
-                          { text: 'video_name', datafield: 'video_name', width: 200},
-                          { text: 'baiduyun_address', datafield: 'baiduyun_address', width: 200},
-                          { text: 'baiduyun_pass', datafield: 'baiduyun_pass', width: 200},
-                          { text: 'create_time', datafield: 'create_time', width: 200},
-                          { text: 'thumbnail', cellsrenderer:cellsrenderer, width: 200}
+                          { text: 'id', datafield: 'id', width: 100, hidden: true},
+                          { text: 'coverphotoid', datafield: 'coverphotoid', width: 100 },
+                          { text: 'video_name', datafield: 'video_name', width: 100},
+                          { text: 'baiduyun_address', datafield: 'baiduyun_address', width: 100},
+                          { text: 'baiduyun_pass', datafield: 'baiduyun_pass', width: 100},
+                          { text: 'create_time', datafield: 'create_time', width: 100},
+                          { text: 'gold_coin', datafield: 'gold_coin', width: 100},
+                          { text: 'downloads', datafield: 'downloads', width: 100},
+                          { text: 'category', datafield: 'category', width: 100},
+                          { text: 'serial_number', datafield: 'serial_number', width: 100},
+                          { text: 'thumbnail', cellsrenderer:cellsrenderer, width: 100},
+                          { text: 'Edit', datafield: 'Edit', columntype: 'button',width: 100, cellsrenderer: function () {
+                              return "Edit";
+                           }, buttonclick: function (row) {
+                              // open the popup window when the user clicks a button.
+                              editrow = row;
+                              var offset = $("#grid").offset();
+                              $("#popupWindow").jqxWindow({ position: { x: parseInt(offset.left) + 260, y: parseInt(offset.top) + 60 } });
+                              // get the clicked row's data and initialize the input fields.
+                              var dataRecord = $("#grid").jqxGrid('getrowdata', editrow);
+                              $("#video_name1").val(dataRecord.video_name);
+                              $("#baiduyun_address1").val(dataRecord.baiduyun_address);
+                              $("#baiduyun_pass1").val(dataRecord.baiduyun_pass);
+                              $("#coverphotoid1").val(dataRecord.coverphotoid);
+                              $("#id1").val(dataRecord.id);
+                              $("#gold_coin1").val(dataRecord.gold_coin);
+                              $("#serial_number1").val(dataRecord.serial_number);
+                              $("#category1").val(dataRecord.category);
+                              // show the popup window.
+                              $("#popupWindow").jqxWindow('open');
+                          }
+                          }
                         ]
                     });
-                   // $("#popupWindow").jqxWindow({
-                   //     width: 1500, resizable: true,  isModal: true, autoOpen: false, cancelButton: $("#Cancel"), modalOpacity: 0.01           
-                   // });
-                         }
+                    // initialize the popup window and buttons.
+                    $("#popupWindow").jqxWindow({
+                        width: 280, height:250,resizable: false,  isModal: true, autoOpen: false, cancelButton: $("#Cancel"), modalOpacity: 0.01           
+                    });
+                    $("#popupWindow").on('open', function () {
+                        $("#id1").jqxInput('selectAll');
+                    });
+                 
+                    $("#Cancel").jqxButton({ theme: theme });
+                    $("#Save").jqxButton({ theme: theme });
+                    // update the edited row when the user clicks the 'Save' button.
+                    $("#Save").click(function () {
+                        if (editrow >= 0) {
+                            var row = { id: $("#id1").val(), video_name: $("#video_name1").val(), baiduyun_address: $("#baiduyun_address1").val(),
+                            			baiduyun_pass: $("#baiduyun_pass1").val(), coverphotoid: $("#coverphotoid1").val(), id: $("#id1").val(),
+                            			gold_coin: $("#gold_coin1").val(),serial_number: $("#serial_number1").val(),category: $("#category1").val()
+                           };
+                            var rowID = $('#grid').jqxGrid('getrowid', editrow);
+                            //更新视频信息
+                            $.ajaxSetup({
+
+                                     	async:false
+
+                            });
+                            $.ajax({
+                                  type: "post",
+                                  url: "upVideo",
+                                  data: {id: $("#id1").val(), video_name: $("#video_name1").val(), baiduyun_address: $("#baiduyun_address1").val(),
+		                          			baiduyun_pass: $("#baiduyun_pass1").val(), coverphotoid: $("#coverphotoid1").val(), id: $("#id1").val(),
+		                        			gold_coin: $("#gold_coin1").val(),serial_number: $("#serial_number1").val(),category: $("#category1").val()
+                       			  			,flag: 1
+                                  },
+                                  dataType: "json",
+                                  success: function(data){
+                                     alert(data.result);
+                                     $('#grid').jqxGrid('updaterow', rowID, row);
+                                     $("#popupWindow").jqxWindow('hide');
+                                  }
+                           });
+                          
+                        }
+                    });
+                }
             });
           
            
@@ -232,6 +302,57 @@
     </div>
     </div>
     
+    <div id="popupWindow">
+            <div>修改视频信息</div>
+            <div style="overflow: hidden;">
+                <table>
+                	<tr style="display: none">
+                        <td align="right">id:</td>
+                        <td align="left"><input id="id1" /></td>
+                    </tr>
+                    <tr>
+                        <td align="right">视频的封面:</td>
+                        <td align="left"><input id="coverphotoid1" /></td>
+                    </tr>
+                    <tr>
+                        <td align="right">视频的名称:</td>
+                        <td align="left"><input id="video_name1" /></td>
+                    </tr>
+                    <tr>
+                        <td align="right">视频的地址:</td>
+                        <td align="left"><input id="baiduyun_address1" /></td>
+                    </tr>
+                    <tr>
+                        <td align="right">视频分享码:</td>
+                        <td align="left"><input id="baiduyun_pass1"></div></td>
+                    </tr>
+                    <tr>
+                        <td align="right">视频金币数:</td>
+                        <td align="left"><input id="gold_coin1"></div></td>
+                    </tr>
+                    <tr>
+                        <td align="right">视频编号:</td>
+                        <td align="left"><input id="serial_number1"></div></td>
+                    </tr>
+                     <tr>
+                        <td align="right">视频类别:</td>
+                        <td align="left">
+                        	<div>
+                        		<select id="category1" name="category">
+        											<option value="1">女团</option>
+        											<option value="2">车模</option>
+        											<option value="3">模特</option>
+        						</select>
+                        	</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right"></td>
+                        <td style="padding-top: 10px;" align="right"><input style="margin-right: 5px;" type="button" id="Save" value="Save" /><input id="Cancel" type="button" value="Cancel" /></td>
+                    </tr>
+                </table>
+            </div>
+     </div>
     <!-- 
     <div id="popupWindow">
             <div>缩略图管理</div>

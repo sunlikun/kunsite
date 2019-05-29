@@ -80,6 +80,27 @@
  	    <if test="flag != null and flag != ''">
 				a.flag=#{flag}
 		</if>
+		 <if test="coverphotoid != null and coverphotoid != ''">
+				,a.coverphotoid=#{coverphotoid}
+		</if>
+		 <if test="video_name != null and video_name != ''">
+				,a.video_name=#{video_name}
+		</if>
+		 <if test="baiduyun_address != null and baiduyun_address != ''">
+				,a.baiduyun_address=#{baiduyun_address}
+		</if>
+		<if test="baiduyun_pass != null and baiduyun_pass != ''">
+				,a.baiduyun_pass=#{baiduyun_pass}
+		</if>
+		 <if test="gold_coin != null and gold_coin != ''">
+				,a.gold_coin=#{gold_coin}
+		</if>
+		 <if test="category != null and category != ''">
+				,a.category=#{category}
+		</if>
+		 <if test="serial_number != null and serial_number != ''">
+				,a.serial_number=#{serial_number}
+		</if>
         <where>
 			<if test="id != null and id != ''">
 				AND a.id = #{id}

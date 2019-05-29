@@ -48,6 +48,22 @@ public class CoverphotoController {
 	/**
 	 * @param response
 	 * @param coverphoto
+	 * @return
+	 * @throws IOException
+	 * 视频信息更新
+	 */
+	@RequestMapping("/upVideo")
+	@ResponseBody
+	public Object upVideo(HttpServletResponse response,Coverphoto coverphoto) throws IOException {
+			coverphotoService.upVideo(coverphoto);
+			JSONObject result=new JSONObject();
+			result.put("result", "更新成功");
+			return result.toString();
+	}
+	
+	/**
+	 * @param response
+	 * @param coverphoto
 	 * @return 
 	 * @throws IOException
 	 * 视频删除

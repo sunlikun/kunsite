@@ -18,6 +18,7 @@ private int clicks;
 private int downloads;
 private String category;
 private String serial_number;
+private String baiduyun_pass;
 
 public String getSerial_number() {
 	return serial_number;
@@ -52,7 +53,7 @@ public int getGold_coin() {
 public void setGold_coin(int gold_coin) {
 	this.gold_coin = gold_coin;
 }
-private String baiduyun_pass;
+
 
 
 public String getBaiduyun_address() {
