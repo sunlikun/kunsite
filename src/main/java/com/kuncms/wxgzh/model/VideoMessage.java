@@ -10,10 +10,22 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 @XStreamAlias("xml")
 public class VideoMessage extends BaseMessage {
     
-    // 媒体ID
+   // 媒体ID
     private String MediaId;
     // 语音格式
     private String ThumbMediaId;
+    
+    private String title;
+    
+    public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+    
+    
     
     public String getMediaId() {
         return MediaId;

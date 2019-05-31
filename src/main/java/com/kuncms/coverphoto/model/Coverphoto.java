@@ -19,7 +19,16 @@ private int downloads;
 private String category;
 private String serial_number;
 private String baiduyun_pass;
+private String MediaId;
 
+
+
+public String getMediaId() {
+	return MediaId;
+}
+public void setMediaId(String mediaId) {
+	MediaId = mediaId;
+}
 public String getSerial_number() {
 	return serial_number;
 }

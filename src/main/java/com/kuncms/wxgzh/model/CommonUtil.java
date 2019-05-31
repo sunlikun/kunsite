@@ -186,18 +186,19 @@ public class CommonUtil {
                           //json = (JSONObject) arr.get(0);
 
                           Material material = new Material();
-                          String title = json.getString("media_id");
-                          String author = json.getString("name");
-                          String digest = json.getString("update_time");
-                          String url = json.getString("url");
+                          String media_id = json.getString("media_id");
+                          String name = json.getString("name");
+                          String update_time = json.getString("update_time");
+                          //String url = json.getString("url");
                          
-                          material.setTitle(title);
-                          material.setAuthor(author);
-                          material.setDigest(digest);
-                          material.setUrl(url);
-                          material.setShow_cover_pic(1);
+                          material.setMedia_id(media_id);
+                          material.setName(name);
+                          material.setUpdate_time(update_time);
+                         
+                       
+                          //material.setUrl(url);
+                         
                           lists.add(material);
-                 
                       }
               
                 }
