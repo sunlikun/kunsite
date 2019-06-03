@@ -38,7 +38,15 @@ public class CoreController {
 	UserService userService;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	
+	/**
+	 * 跳转到微信内容上传页面
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping("/wechat_upload")
+    public String wechat_upload(Map<String,Object> map){
+	  return "wechat_upload";
+    }
 	
 	/**
 	 * 跳转到内容搜索页面

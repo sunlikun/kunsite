@@ -1,6 +1,12 @@
 package com.kuncms.wxgzh.controller;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -16,12 +22,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+
+import com.github.pagehelper.util.StringUtil;
 import com.kuncms.coverphoto.model.Coverphoto;
 import com.kuncms.coverphoto.service.CoverphotoService;
 import com.kuncms.user.service.UserService;
 import com.kuncms.util.Decript;
+import com.kuncms.util.HttpClientUtils;
+import com.kuncms.wxgzh.model.AccessToken;
 import com.kuncms.wxgzh.model.Article;
+import com.kuncms.wxgzh.model.CommonUtil;
 import com.kuncms.wxgzh.model.MessageUtil;
 import com.kuncms.wxgzh.model.NewsMessage;
 import com.kuncms.wxgzh.model.TextMeaasge;
@@ -31,6 +43,7 @@ import com.kuncms.wxgzh.model.WeiXinUserInfo;
 import com.kuncms.wxgzh.model.WeixinUtil;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 
 @Controller
@@ -44,6 +57,52 @@ public class WechatController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private final String token = "1144954876";
 	
+	/**
+	 * 上传其他永久素材(图片素材的上限为5000，其他类型为1000)
+	 * @param appid
+	 * @param secret
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/uploadPermanentMaterial")
+	@ResponseBody
+	public JSONObject addMaterialEver(File file,String type) throws Exception {
+		try {
+			System.out.println("开始上传"+type+"永久素材---------------------");	
+			
+			//开始获取证书
+			String accessToken=CommonUtil.getToken(WeChatConfig.APP_ID,WeChatConfig.APP_SECRET).getAccessToken();			
+			if(StringUtil.isEmpty(accessToken)){
+				System.out.println("accessToken is null");	
+				return null;
+			}			
+			
+			//上传素材	
+			String path="https://api.weixin.qq.com/cgi-bin/material/add_material?access_token="+accessToken+"&type="+type;
+			String result=HttpClientUtils.connectHttpsByPost(path, null, file);
+			result=result.replaceAll("[\\\\]", "");
+			System.out.println("result:"+result);	
+			JSONObject resultJSON=JSONObject.fromObject(result);
+			if(resultJSON!=null){
+				if(resultJSON.get("media_id")!=null){
+					System.out.println("上传"+type+"永久素材成功");
+					return resultJSON;
+				}else{
+					System.out.println("上传"+type+"永久素材失败");
+				}
+			}
+			
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally{
+			System.out.println("结束上传"+type+"永久素材---------------------");	
+		}
+	}
+
+
+
 	
 	
 
