@@ -6,11 +6,11 @@ import org.junit.Test;
 
 public class MaterialTest {
     
-    @Test
+   @Test
     public void testGetMaterial() {
     	AccessToken token = CommonUtil.getToken(WeChatConfig.APP_ID,WeChatConfig.APP_SECRET);//获取接口访问凭证access_token
         //System.out.println(token);
-    	List<Material> lists = CommonUtil.getMaterial(token.getAccessToken(),"video",0,10);//调用获取素材列表的方法
+    	List<Material> lists = CommonUtil.getMaterial(token.getAccessToken(),"video",20,10);//调用获取素材列表的方法
         System.out.println("资源个数"+lists.size());//输出
     }
 //    @Test
@@ -19,4 +19,6 @@ public class MaterialTest {
 //         	System.out.println("access_token:"+token.getAccessToken());
 //         	System.out.println("expires_in:"+token.getExpiresin());
 //    }
+    
+  
 }

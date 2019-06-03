@@ -95,6 +95,20 @@ public class CoverphotoService {
 
 
 
+	public ArrayList<Coverphoto> queryVideoWithnoMediaId() {
+		// TODO Auto-generated method stub
+		return coverphotoDao.queryVideoWithnoMediaId();
+	}
+
+
+
+	public ArrayList<Coverphoto> queryCovPhoBySer_num(Coverphoto coverphoto) {
+		// TODO Auto-generated method stub
+		return coverphotoDao.queryCovPhoBySer_num(coverphoto);
+	}
+
+
+
 	
 	
 	
