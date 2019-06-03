@@ -37,6 +37,7 @@ import com.kuncms.wxgzh.model.CommonUtil;
 import com.kuncms.wxgzh.model.MessageUtil;
 import com.kuncms.wxgzh.model.NewsMessage;
 import com.kuncms.wxgzh.model.TextMeaasge;
+import com.kuncms.wxgzh.model.Video;
 import com.kuncms.wxgzh.model.VideoMessage;
 import com.kuncms.wxgzh.model.WeChatConfig;
 import com.kuncms.wxgzh.model.WeiXinUserInfo;
@@ -144,13 +145,13 @@ public class WechatController {
             text.setFromUserName(toUserName);
             text.setCreateTime(new Date().getTime());
             text.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_TEXT);
-            //text.setFuncFlag(0);
-            
-            //WeiXinUserInfo weiXinUserInfo = WeixinUtil.getUserInfo(WeixinUtil.getAccessToken(appid, appSecret).getAccessToken(),fromUserName);
-            
-            text.setContent("输入不详！！！请重新输入！！！");
+//            WeiXinUserInfo weiXinUserInfo = WeixinUtil.getUserInfo(WeixinUtil.getAccessToken(WeChatConfig.APP_ID, WeChatConfig.APP_SECRET).getAccessToken(),fromUserName);
+                        text.setContent("输入不详！！！请重新输入！！！");
+            VideoMessage  video=new VideoMessage();
+           
             
             String respMessage = MessageUtil.messageToXml(text);
+            
             
             // 文本消息
             if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
@@ -163,12 +164,26 @@ public class WechatController {
                 newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
                 
                 List<Article> articleList = new ArrayList<Article>();
+            	
+            	
 
                 // 指定消息回复  
                 if ("1".equals(content)) {
                     text.setContent("今天的天气真不错！");
-                    respMessage = MessageUtil.messageToXml(text);
+                    //respMessage = MessageUtil.messageToXml(text);
                     
+
+                video.setToUserName(fromUserName);
+              	video.setFromUserName(toUserName);
+              	video.setCreateTime(new Date().getTime());
+              	video.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_VIDEO);
+              	Video vi=new Video();
+              	vi.setMediaId("VRVwPhHpR4-a9vIyAgt3zemsMkbHYx9y5_z2OB5L1PA");
+              	vi.setTitle("测试");
+              	vi.setDescription("ce");
+              	video.setVideo(vi);
+              
+              	respMessage = MessageUtil.messageToXml(video);
                 }
                 //单图文消息
                 else if("2".equals(content)){
@@ -185,7 +200,7 @@ public class WechatController {
                     // 将图文消息对象转换成xml字符串 
                     respMessage = MessageUtil.messageToXml(newsMessage);
                 }
-                //多图文消息
+               // 多图文消息
                 else if("3".equals(content)){
                     Article article1 = new Article();
                     article1.setTitle("微信公众帐号开发教程Java版");
@@ -216,122 +231,18 @@ public class WechatController {
                 
             }
             
-            System.out.println(respMessage);
-            response.getWriter().write(respMessage);// 将回应发送给微信服务器  
+            System.out.println("消息回复 "+respMessage);
+            response.setContentType("application/json");
+	        response.setHeader("Pragma", "No-cache");
+	        response.setHeader("Cache-Control", "no-cache");
+	        response.setCharacterEncoding("UTF-8");
+	        response.getWriter().write(respMessage);// 将回应发送给微信服务器  
             
         } catch (Exception e) {
             e.printStackTrace();
         }
         
     }
-	
-//	public void postMsg(HttpServletRequest request, HttpServletResponse response)
-//            throws ServletException, IOException {
-//        try {
-//            Map<String, String> map = MessageUtil.xmlToMap(request);
-//            String toUserName = map.get("ToUserName");
-//            String fromUserName = map.get("FromUserName");
-//            String msgType = map.get("MsgType");
-//            String content = map.get("Content");
-//            
-//            TextMeaasge text = new TextMeaasge();
-//            // 发送和回复是反向的
-//            text.setToUserName(fromUserName);
-//            text.setFromUserName(toUserName);
-//            text.setCreateTime(new Date().getTime());
-//            text.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_TEXT);
-////            WeiXinUserInfo weiXinUserInfo = WeixinUtil.getUserInfo(WeixinUtil.getAccessToken(WeChatConfig.APP_ID, WeChatConfig.APP_SECRET).getAccessToken(),fromUserName);
-//                        text.setContent("输入不详！！！请重新输入！！！");
-//            VideoMessage  video=new VideoMessage();
-//           
-//            
-//            String respMessage = MessageUtil.messageToXml(text);
-//            
-////            video.setToUserName(fromUserName);
-////        	video.setFromUserName(toUserName);
-////        	video.setCreateTime(new Date().getTime());
-////        	video.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_VIDEO);
-////        	video.setMediaId("VRVwPhHpR4-a9vIyAgt3zemsMkbHYx9y5_z2OB5L1PA");
-////        	video.setTitle("测试");
-////        	respMessage = MessageUtil.messageToXml(video);
-//            
-//            // 文本消息
-//            if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
-//                 
-//                // 创建图文消息  
-//                NewsMessage newsMessage = new NewsMessage();
-//                newsMessage.setToUserName(fromUserName);
-//                newsMessage.setFromUserName(toUserName);
-//                newsMessage.setCreateTime(new Date().getTime());
-//                newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
-//                
-//                List<Article> articleList = new ArrayList<Article>();
-//            	
-//            	
-//
-//                // 指定消息回复  
-//                if ("1".equals(content)) {
-//                    text.setContent("今天的天气真不错！");
-//                    respMessage = MessageUtil.messageToXml(text);
-//                }
-//                //单图文消息
-//                else if("2".equals(content)){
-//                    Article article = new Article();
-//                    article.setTitle("微信公众帐号开发教程Java版");
-//                    article.setDescription("第一张图片");
-//                    article.setPicUrl("http://pic.qiantucdn.com/58pic/26/10/40/58c04e46c2ffa_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw==/align/center");
-//                    article.setUrl("http://www.cnblogs.com/x-99/");
-//                    articleList.add(article);
-//                    // 设置图文消息个数 
-//                    newsMessage.setArticleCount(articleList.size());
-//                    // 设置图文消息包含的图文集合 
-//                    newsMessage.setArticles(articleList);
-//                    // 将图文消息对象转换成xml字符串 
-//                    respMessage = MessageUtil.messageToXml(newsMessage);
-//                }
-//               // 多图文消息
-//                else if("3".equals(content)){
-//                    Article article1 = new Article();
-//                    article1.setTitle("微信公众帐号开发教程Java版");
-//                    article1.setDescription("");
-//                    article1.setPicUrl("http://pic.qiantucdn.com/58pic/26/10/40/58c04e46c2ffa_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw==/align/center");
-//                    article1.setUrl("http://www.cnblogs.com/x-99/");
-//                    Article article2 = new Article();
-//                    article2.setTitle("微信公众帐号开发教程.NET版");
-//                    article2.setDescription("");
-//                    article2.setPicUrl("http://pic.qiantucdn.com/58pic/26/10/40/58c04e46c2ffa_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw==/align/center");
-//                    article2.setUrl("http://www.cnblogs.com/x-99/");
-//                    Article article3 = new Article();
-//                    article3.setTitle("微信公众帐号开发教程C版");
-//                    article3.setDescription("");
-//                    article3.setPicUrl("http://pic.qiantucdn.com/58pic/26/10/40/58c04e46c2ffa_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw==/align/center");
-//                    article3.setUrl("http://www.cnblogs.com/x-99/");
-//                    
-//                    articleList.add(article1);
-//                    articleList.add(article2);
-//                    articleList.add(article3);
-//                    // 设置图文消息个数 
-//                    newsMessage.setArticleCount(articleList.size());
-//                    // 设置图文消息包含的图文集合 
-//                    newsMessage.setArticles(articleList);
-//                    // 将图文消息对象转换成xml字符串 
-//                    respMessage = MessageUtil.messageToXml(newsMessage);
-//                }
-//                
-//            }
-//            
-//            System.out.println("消息回复 "+respMessage);
-//            response.setContentType("application/json");
-//	        response.setHeader("Pragma", "No-cache");
-//	        response.setHeader("Cache-Control", "no-cache");
-//	        response.setCharacterEncoding("UTF-8");
-//	        response.getWriter().write(respMessage);// 将回应发送给微信服务器  
-//            
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        
-//    }
 	
 	
 	
