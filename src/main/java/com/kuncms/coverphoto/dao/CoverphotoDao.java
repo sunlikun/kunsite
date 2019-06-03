@@ -27,4 +27,8 @@ public interface CoverphotoDao {
 
 	void upVideo(Coverphoto coverphoto);
 
+	ArrayList<Coverphoto> queryVideoWithnoMediaId();
+
+	ArrayList<Coverphoto> queryCovPhoBySer_num(Coverphoto coverphoto);
+
 }
