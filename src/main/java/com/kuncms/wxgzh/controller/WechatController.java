@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.github.pagehelper.util.StringUtil;
 import com.kuncms.coverphoto.model.Coverphoto;
 import com.kuncms.coverphoto.service.CoverphotoService;
+import com.kuncms.user.model.User;
 import com.kuncms.user.service.UserService;
 import com.kuncms.util.Decript;
 import com.kuncms.util.HttpClientUtils;
@@ -152,7 +153,7 @@ public class WechatController {
             text.setFromUserName(toUserName);
             text.setCreateTime(new Date().getTime());
             text.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_TEXT);
-//            WeiXinUserInfo weiXinUserInfo = WeixinUtil.getUserInfo(WeixinUtil.getAccessToken(WeChatConfig.APP_ID, WeChatConfig.APP_SECRET).getAccessToken(),fromUserName);
+            WeiXinUserInfo weiXinUserInfo = WeixinUtil.getUserInfo(WeixinUtil.getAccessToken(WeChatConfig.APP_ID, WeChatConfig.APP_SECRET).getAccessToken(),fromUserName);
             text.setContent("没找到您需要的信息！！！请重新输入！！！");
             String respMessage = MessageUtil.messageToXml(text);
            
@@ -163,6 +164,18 @@ public class WechatController {
                 // 订阅  
                 if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {  
                 	text.setContent("感谢关注！相关视频编号请至官网查看，或关注快手(用户名为摄影诗)，斗鱼tv(用户名新火车)查看，输入编号可在线观看精彩视频！");
+                	//用户完成订阅后自动在普格娱乐官网进行注册
+                	User user=new User();
+    		        user.setOpenid(weiXinUserInfo.getOpenid());
+    		        user.setIs_wechat("1");
+    		        user.setUser_name(weiXinUserInfo.getNickname());
+    		        ArrayList<User> userlis=userService.isRegister(user);
+    		        if(userlis.size()>0){//已经注册
+    		        	  
+    		        }else{//尚未注册
+    		        	userService.newsignup(user);
+    		        }
+                	
                 }  
                 if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK)) {  
                     // 事件KEY值，与创建自定义菜单时指定的KEY值对应  

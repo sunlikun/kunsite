@@ -147,9 +147,11 @@ body { width:80%; margin:50px auto; }
 
 
  <div th:include="footer :: footer"></div> 
- <input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none"> 
+ <input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none">
+ <input id="id" th:value="${id}" name="id" type="text" style="display: none">  
 <script>
 var user_name=$("#user_name").val();
+var id=$("#id").val();
 var app=new Vue({
 	  el: '#app',
 	  data: {
@@ -202,7 +204,7 @@ var app1=new Vue({
 			  if(user_name!=null&&user_name!=''){
 				  
 					//发送 post 请求
-	                this.$http.post('/get_user',{user_name:user_name},{emulateJSON:true}).then(function(res){
+	                this.$http.post('/get_user',{id:id},{emulateJSON:true}).then(function(res){
 	                	 
 	                	
 	                		//alert(res.body.user_name);

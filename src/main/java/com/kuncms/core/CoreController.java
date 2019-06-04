@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,10 @@ import com.kuncms.coverphoto.model.Coverphoto;
 import com.kuncms.user.model.User;
 import com.kuncms.user.service.UserService;
 import com.kuncms.util.HttpClientUtils;
+import com.kuncms.wxgzh.model.MessageUtil;
+import com.kuncms.wxgzh.model.WeChatConfig;
+import com.kuncms.wxgzh.model.WeiXinUserInfo;
+import com.kuncms.wxgzh.model.WeixinUtil;
 
 import net.sf.json.JSONArray;
 
@@ -299,7 +304,36 @@ public class CoreController {
        return "recharge";
     }
 	
-	
+	/**
+	 * 微信公众号账户中心
+	 * @param map
+	 * @return
+	 * @throws DocumentException 
+	 * @throws IOException 
+	 */
+	@RequestMapping("/we_membership")
+    public String we_membership(HttpServletRequest request, HttpServletResponse response,Model model) throws IOException, DocumentException{
+		 Map<String, String> map = MessageUtil.xmlToMap(request);
+	     String toUserName = map.get("ToUserName");
+	     String fromUserName = map.get("FromUserName");
+	     String msgType = map.get("MsgType");
+	     String content = map.get("Content");
+	     WeiXinUserInfo weiXinUserInfo = WeixinUtil.getUserInfo(WeixinUtil.getAccessToken(WeChatConfig.APP_ID, WeChatConfig.APP_SECRET).getAccessToken(),fromUserName);
+	     User user=new User();
+         user.setOpenid(weiXinUserInfo.getOpenid());
+         user.setIs_wechat("1");
+         user.setUser_name(weiXinUserInfo.getNickname());
+         ArrayList<User> userlis=userService.isRegister(user);
+		 String result="";
+		 if(userlis.size()>0){//已经注册
+			 	result="membership";
+	     }else{//尚未注册
+	        	result="erro";
+	     }
+		 model.addAttribute("id",userlis.get(0).getId());
+		 model.addAttribute("user_name",userlis.get(0).getUser_name());
+		 return result;
+    }
 	
 	
 	/**
@@ -313,14 +347,15 @@ public class CoreController {
 	   //com.alibaba.fastjson.JSONArray array= com.alibaba.fastjson.JSONArray.parseArray(JSON.toJSONString(list));
 	   //model.addAttribute("data", array.toJSONString());
 		HttpSession session=request.getSession();
-		String user_name=(String) session.getAttribute("loginName");
+		User user=(User) session.getAttribute("user");
 		String result="";
-		if(user_name==null){
+		if(user.getUser_name()==null){
 			result="login";
 		}else{
 			result="membership";
 		}
-		model.addAttribute("user_name",user_name);
+		model.addAttribute("user_name",user.getUser_name());
+		model.addAttribute("id",user.getId());
 		
        return result;
     }

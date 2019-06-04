@@ -101,9 +101,10 @@ public class MenuManager {
 //        btn32.setKey("32");  
 //  
         CommonButton btn33 = new CommonButton();  
-        btn33.setName("幽默笑话");  
-        btn33.setType("click");  
-        btn33.setKey("33");  
+        btn33.setName("账户中心");  
+        btn33.setKey("33"); 
+        btn33.setType("view");  
+        btn33.setUrl("http://www.pergirls.com/we_membership");
   
 //        ComplexButton mainBtn1 = new ComplexButton();  
 //        mainBtn1.setName("在线点播");  
