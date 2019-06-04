@@ -130,6 +130,13 @@ public class WechatController {
 		
 	}
 	
+	/**
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 * 微信消息回复
+	 */
 	public void postMsg(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
@@ -146,89 +153,112 @@ public class WechatController {
             text.setCreateTime(new Date().getTime());
             text.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_TEXT);
 //            WeiXinUserInfo weiXinUserInfo = WeixinUtil.getUserInfo(WeixinUtil.getAccessToken(WeChatConfig.APP_ID, WeChatConfig.APP_SECRET).getAccessToken(),fromUserName);
-                        text.setContent("输入不详！！！请重新输入！！！");
-            VideoMessage  video=new VideoMessage();
-           
-            
+            text.setContent("没找到您需要的信息！！！请重新输入！！！");
             String respMessage = MessageUtil.messageToXml(text);
-            
+           
+            if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_EVENT)) {  
+                // 事件类型  
+                String eventType = map.get("Event"); 
+                
+                // 订阅  
+                if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {  
+                	text.setContent("感谢关注！相关视频编号请至官网查看，或关注快手(用户名为摄影诗)，斗鱼tv(用户名新火车)查看，输入编号可在线观看精彩视频！");
+                }  
+                if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK)) {  
+                    // 事件KEY值，与创建自定义菜单时指定的KEY值对应  
+                    String eventKey = map.get("EventKey");  
+                    if (eventKey.equals("11")) {  
+                    	 text.setContent("请输入视频编号！相关视频编号请至官网查看，或关注快手(用户名为摄影诗)，斗鱼tv(用户名新火车)查看");
+                    }
+                    
+                    respMessage = MessageUtil.messageToXml(text);
+                  }
+            }
+          
             
             // 文本消息
             if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
                  
                 // 创建图文消息  
-                NewsMessage newsMessage = new NewsMessage();
-                newsMessage.setToUserName(fromUserName);
-                newsMessage.setFromUserName(toUserName);
-                newsMessage.setCreateTime(new Date().getTime());
-                newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
-                
-                List<Article> articleList = new ArrayList<Article>();
-            	
-            	
-
-                // 指定消息回复  
-                if ("1".equals(content)) {
-                    text.setContent("今天的天气真不错！");
+//                NewsMessage newsMessage = new NewsMessage();
+//                newsMessage.setToUserName(fromUserName);
+//                newsMessage.setFromUserName(toUserName);
+//                newsMessage.setCreateTime(new Date().getTime());
+//                newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+//                
+//                List<Article> articleList = new ArrayList<Article>();
+            	Coverphoto coverphoto=new Coverphoto();
+        		String serial_number=content;
+        		coverphoto.setSerial_number(serial_number);
+        		ArrayList<Coverphoto> list=coverphotoService.queryCovPhoBySer_num(coverphoto);
+	            // 指定消息回复  
+                //if ("1".equals(content)) {
+                    //text.setContent("今天的天气真不错！");
                     //respMessage = MessageUtil.messageToXml(text);
-                    
-
-                video.setToUserName(fromUserName);
-              	video.setFromUserName(toUserName);
-              	video.setCreateTime(new Date().getTime());
-              	video.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_VIDEO);
-              	Video vi=new Video();
-              	vi.setMediaId("VRVwPhHpR4-a9vIyAgt3zemsMkbHYx9y5_z2OB5L1PA");
-              	vi.setTitle("测试");
-              	vi.setDescription("ce");
-              	video.setVideo(vi);
-              
-              	respMessage = MessageUtil.messageToXml(video);
-                }
+        		if(list.size()>0) {
+        			Coverphoto c=list.get(0);
+        			VideoMessage  video=new VideoMessage();
+                    video.setToUserName(fromUserName);
+	              	video.setFromUserName(toUserName);
+	              	video.setCreateTime(new Date().getTime());
+	              	video.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_VIDEO);
+	              	Video vi=new Video();
+	              	vi.setMediaId(c.getMediaId());
+	              	vi.setTitle(c.getVideo_name());
+	              	vi.setDescription(c.getSerial_number());
+	              	video.setVideo(vi);
+	              
+	              	respMessage = MessageUtil.messageToXml(video);
+        		}else {
+        			text.setContent("内容编号有误，没有此资源！");
+        			respMessage = MessageUtil.messageToXml(text);
+        		}
+                	
+                //}
                 //单图文消息
-                else if("2".equals(content)){
-                    Article article = new Article();
-                    article.setTitle("微信公众帐号开发教程Java版");
-                    article.setDescription("第一张图片");
-                    article.setPicUrl("http://pic.qiantucdn.com/58pic/26/10/40/58c04e46c2ffa_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw==/align/center");
-                    article.setUrl("http://www.cnblogs.com/x-99/");
-                    articleList.add(article);
-                    // 设置图文消息个数 
-                    newsMessage.setArticleCount(articleList.size());
-                    // 设置图文消息包含的图文集合 
-                    newsMessage.setArticles(articleList);
-                    // 将图文消息对象转换成xml字符串 
-                    respMessage = MessageUtil.messageToXml(newsMessage);
-                }
+//                else if("2".equals(content)){
+//                    Article article = new Article();
+//                    article.setTitle("微信公众帐号开发教程Java版");
+//                    article.setDescription("第一张图片");
+//                    article.setPicUrl("http://pic.qiantucdn.com/58pic/26/10/40/58c04e46c2ffa_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw==/align/center");
+//                    article.setUrl("http://www.cnblogs.com/x-99/");
+//                    articleList.add(article);
+//                    // 设置图文消息个数 
+//                    newsMessage.setArticleCount(articleList.size());
+//                    // 设置图文消息包含的图文集合 
+//                    newsMessage.setArticles(articleList);
+//                    // 将图文消息对象转换成xml字符串 
+//                    respMessage = MessageUtil.messageToXml(newsMessage);
+//                }
                // 多图文消息
-                else if("3".equals(content)){
-                    Article article1 = new Article();
-                    article1.setTitle("微信公众帐号开发教程Java版");
-                    article1.setDescription("");
-                    article1.setPicUrl("http://pic.qiantucdn.com/58pic/26/10/40/58c04e46c2ffa_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw==/align/center");
-                    article1.setUrl("http://www.cnblogs.com/x-99/");
-                    Article article2 = new Article();
-                    article2.setTitle("微信公众帐号开发教程.NET版");
-                    article2.setDescription("");
-                    article2.setPicUrl("http://pic.qiantucdn.com/58pic/26/10/40/58c04e46c2ffa_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw==/align/center");
-                    article2.setUrl("http://www.cnblogs.com/x-99/");
-                    Article article3 = new Article();
-                    article3.setTitle("微信公众帐号开发教程C版");
-                    article3.setDescription("");
-                    article3.setPicUrl("http://pic.qiantucdn.com/58pic/26/10/40/58c04e46c2ffa_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw==/align/center");
-                    article3.setUrl("http://www.cnblogs.com/x-99/");
-                    
-                    articleList.add(article1);
-                    articleList.add(article2);
-                    articleList.add(article3);
-                    // 设置图文消息个数 
-                    newsMessage.setArticleCount(articleList.size());
-                    // 设置图文消息包含的图文集合 
-                    newsMessage.setArticles(articleList);
-                    // 将图文消息对象转换成xml字符串 
-                    respMessage = MessageUtil.messageToXml(newsMessage);
-                }
-                
+//                else if("3".equals(content)){
+//                    Article article1 = new Article();
+//                    article1.setTitle("微信公众帐号开发教程Java版");
+//                    article1.setDescription("");
+//                    article1.setPicUrl("http://pic.qiantucdn.com/58pic/26/10/40/58c04e46c2ffa_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw==/align/center");
+//                    article1.setUrl("http://www.cnblogs.com/x-99/");
+//                    Article article2 = new Article();
+//                    article2.setTitle("微信公众帐号开发教程.NET版");
+//                    article2.setDescription("");
+//                    article2.setPicUrl("http://pic.qiantucdn.com/58pic/26/10/40/58c04e46c2ffa_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw==/align/center");
+//                    article2.setUrl("http://www.cnblogs.com/x-99/");
+//                    Article article3 = new Article();
+//                    article3.setTitle("微信公众帐号开发教程C版");
+//                    article3.setDescription("");
+//                    article3.setPicUrl("http://pic.qiantucdn.com/58pic/26/10/40/58c04e46c2ffa_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw==/align/center");
+//                    article3.setUrl("http://www.cnblogs.com/x-99/");
+//                    
+//                    articleList.add(article1);
+//                    articleList.add(article2);
+//                    articleList.add(article3);
+//                    // 设置图文消息个数 
+//                    newsMessage.setArticleCount(articleList.size());
+//                    // 设置图文消息包含的图文集合 
+//                    newsMessage.setArticles(articleList);
+//                    // 将图文消息对象转换成xml字符串 
+//                    respMessage = MessageUtil.messageToXml(newsMessage);
+//                }
+//                
             }
             
             System.out.println("消息回复 "+respMessage);

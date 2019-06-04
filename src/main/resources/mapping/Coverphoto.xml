@@ -7,7 +7,7 @@
          <where>
          c.flag="1"
         	<if test="serial_number != null and serial_number != ''">
-				 c.serial_number=#{serial_number}
+				and c.serial_number=#{serial_number}
 			</if>
 		 </where>
 		 	ORDER BY c.create_time desc

@@ -180,7 +180,7 @@ public class CommonUtil {
                       for (int i = 0; i < jsonArray.size(); i++) {
                           JSONObject json = (JSONObject) jsonArray.get(i);
                           //json = json.getJSONObject("content");
-                          System.out.println(json);
+                          //System.out.println(json);
 
                           //JSONArray arr = json.getJSONArray("news_item");
                           //json = (JSONObject) arr.get(0);

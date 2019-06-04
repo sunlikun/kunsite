@@ -103,7 +103,7 @@ public class HttpClientUtils {
 
 		int bytes = 0;
 
-		byte[] bufferOut = new byte[1024];
+		byte[] bufferOut = new byte[1024000000];
 
 		while ((bytes = in.read(bufferOut)) != -1) {
 
