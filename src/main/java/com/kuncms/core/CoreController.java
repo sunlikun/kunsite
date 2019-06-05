@@ -312,7 +312,7 @@ public class CoreController {
 	 * @throws IOException 
 	 */
 	@RequestMapping("/we_membership")
-    public String we_membership(HttpServletRequest request, HttpServletResponse response,Model model) throws IOException, DocumentException{
+    public String we_membership(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
 		 Map<String, String> map = MessageUtil.xmlToMap(request);
 	     String toUserName = map.get("ToUserName");
 	     String fromUserName = map.get("FromUserName");
@@ -330,8 +330,8 @@ public class CoreController {
 	     }else{//尚未注册
 	        	result="erro";
 	     }
-		 model.addAttribute("id",userlis.get(0).getId());
-		 model.addAttribute("user_name",userlis.get(0).getUser_name());
+//		 model.addAttribute("id",userlis.get(0).getId());
+//		 model.addAttribute("user_name",userlis.get(0).getUser_name());
 		 return result;
     }
 	
