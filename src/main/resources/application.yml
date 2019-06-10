@@ -3,7 +3,7 @@ server:
 
 spring:
  profiles:
-    active: dev
+    active: prod
     datasource:
         name: kun_cms
         url: jdbc:mysql://localhost:3306/kun_cms?useUnicode=true&characterEncoding=utf8

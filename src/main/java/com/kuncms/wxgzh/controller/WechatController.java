@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -23,8 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
-
+import com.alibaba.fastjson.JSONException;
 import com.github.pagehelper.util.StringUtil;
 import com.kuncms.coverphoto.model.Coverphoto;
 import com.kuncms.coverphoto.service.CoverphotoService;
@@ -58,6 +60,68 @@ public class WechatController {
 	CoverphotoService coverphotoService;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private final String token = "1144954876";
+	
+	@ResponseBody
+	@RequestMapping(value = "/login")
+	public ModelAndView login(HttpServletRequest request) throws JSONException, IOException{
+    	String code = request.getParameter("code");
+    	System.out.println("终于获取到CODE了:"+code);
+    	 /**
+         * 第三步：通过code换取网页授权access_token
+         */
+        // 同意授权
+        if (code != null) {
+            // 拼接请求地址
+            String url = "https://api.weixin.qq.com/sns/oauth2/access_token?"
+                    + "appid=" + WeChatConfig.APP_ID + "&secret="
+                    + WeChatConfig.APP_SECRET
+                    + "&code=" + code
+                    + "&grant_type=authorization_code";
+            JSONObject json =ReadUrlUtil.readJsonFromUrl(url, "");// 拿去返回值
+            System.out.println("返回信息:"+json);
+            AutoWebParams autoWebParams = (AutoWebParams) JSONObject.toBean(json, AutoWebParams.class);
+            /**
+             * 第四步：拉取用户信息(需scope为 snsapi_userinfo)001MeAlp01IRjp1LlKkp0zPLlp0MeAl-
+             */
+            String url3 = "https://api.weixin.qq.com/sns/userinfo?access_token="
+                    + autoWebParams.getAccess_token()
+                    + "&openid="
+                    + autoWebParams.getOpenid() + "&lang=zh_CN";
+            JSONObject json1 =ReadUrlUtil.readJsonFromUrl(url3, "");// 拿去返回值
+//            UserInfo userInfo = (UserInfo) JSONObject.toBean(json1, UserInfo.class);
+//            System.out.println("用户信息:"+userInfo.toString());
+            System.out.println("用户信息:"+json1);
+
+        }
+	
+	
+	
+	@RequestMapping(value = "/auth")
+   	@ResponseBody
+   	public void GuideServlet(HttpServletRequest request,HttpServletResponse response) throws Exception {
+    	 // 设置编码
+    	request.setCharacterEncoding("utf-8");
+    	response.setContentType("text/html;charset=utf-8");
+    	response.setCharacterEncoding("utf-8");
+        /**
+         * 第一步：用户同意授权，获取code:https://open.weixin.qq.com/connect/oauth2/authorize
+         * ?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE
+         * &state=STATE#wechat_redirect
+         */
+        String redirect_uri = URLEncoder.encode(
+                "http://www.pergirls.com/WechatController/login", "UTF-8");// 授权后重定向的回调链接地址，请使用urlencode对链接进行处理（文档要求）
+        // 按照文档要求拼接访问地址
+        String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="
+                + WeChatConfig.APP_ID
+                + "&redirect_uri="
+                + redirect_uri
+                + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+        response.sendRedirect(url);// 跳转到要访问的地址
+        
+    }
+
+	
+	
 	
 	/**
 	 * 上传其他永久素材(图片素材的上限为5000，其他类型为1000)
