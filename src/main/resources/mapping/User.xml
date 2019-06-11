@@ -92,6 +92,9 @@
       	<if test="email != null and email !=''">
         		and u.email=#{email} 
       	</if>
+      	<if test="openid != null and openid !=''">
+        		and u.openid=#{openid} 
+      	</if>
      </select>
 
 

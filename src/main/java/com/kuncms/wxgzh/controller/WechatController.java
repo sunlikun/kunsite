@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -69,7 +70,7 @@ public class WechatController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/login")
-	public SNSUserInfo login(HttpServletRequest request) throws JSONException, IOException{
+	public SNSUserInfo login(HttpServletRequest request,Model model) throws JSONException, IOException{
 
 	        // 用户同意授权后，能获取到code
 	        String code = request.getParameter("code");
@@ -100,7 +101,6 @@ public class WechatController {
 	        requestUrl = requestUrl.replace("ACCESS_TOKEN", wat.getAccessToken()).replace("OPENID", wat.getOpenId());
 	        // 通过网页授权获取用户信息
 	        JSONObject jsonObject = CommonUtil.httpsRequest(requestUrl, "GET", null);
-
 	        if (null != jsonObject) {
 	            try {
 	                snsUserInfo = new SNSUserInfo();
@@ -120,6 +120,10 @@ public class WechatController {
 	                snsUserInfo.setHeadImgUrl(jsonObject.getString("headimgurl"));
 	                // 用户特权信息
 	                snsUserInfo.setPrivilegeList(JSONArray.toList(jsonObject.getJSONArray("privilege"), List.class));
+	                User user1=new User();
+	                user1.setOpenid(jsonObject.getString("openid"));
+	                ArrayList<User> user=userService.check_username(user1);
+	            	model.addAttribute("id",user.get(0).getId());
 	            } catch (Exception e) {
 	                snsUserInfo = null;
 	                int errorCode = jsonObject.getInt("errcode");
