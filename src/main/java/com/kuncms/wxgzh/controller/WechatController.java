@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -23,8 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
-
+import com.alibaba.fastjson.JSONException;
 import com.github.pagehelper.util.StringUtil;
 import com.kuncms.coverphoto.model.Coverphoto;
 import com.kuncms.coverphoto.service.CoverphotoService;
@@ -33,15 +35,18 @@ import com.kuncms.user.service.UserService;
 import com.kuncms.util.Decript;
 import com.kuncms.util.HttpClientUtils;
 import com.kuncms.wxgzh.model.AccessToken;
+import com.kuncms.wxgzh.model.AdvancedUtil;
 import com.kuncms.wxgzh.model.Article;
 import com.kuncms.wxgzh.model.CommonUtil;
 import com.kuncms.wxgzh.model.MessageUtil;
 import com.kuncms.wxgzh.model.NewsMessage;
+import com.kuncms.wxgzh.model.SNSUserInfo;
 import com.kuncms.wxgzh.model.TextMeaasge;
 import com.kuncms.wxgzh.model.Video;
 import com.kuncms.wxgzh.model.VideoMessage;
 import com.kuncms.wxgzh.model.WeChatConfig;
 import com.kuncms.wxgzh.model.WeiXinUserInfo;
+import com.kuncms.wxgzh.model.WeixinOauth2Token;
 import com.kuncms.wxgzh.model.WeixinUtil;
 
 import net.sf.json.JSONArray;
@@ -58,6 +63,137 @@ public class WechatController {
 	CoverphotoService coverphotoService;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private final String token = "1144954876";
+	
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/login")
+	public SNSUserInfo login(HttpServletRequest request) throws JSONException, IOException{
+
+	        // 用户同意授权后，能获取到code
+	        String code = request.getParameter("code");
+	        String state = request.getParameter("state");
+	        
+	        // 用户同意授权
+//	        if (!"authdeny".equals(code)) {
+//	            // 获取网页授权access_token
+//	            WeixinOauth2Token weixinOauth2Token = AdvancedUtil.getOauth2AccessToken(WeChatConfig.APP_ID,WeChatConfig.APP_SECRET, code);
+//	            // 网页授权接口访问凭证
+//	            String accessToken = weixinOauth2Token.getAccessToken();
+//	            // 用户标识
+//	            String openId = weixinOauth2Token.getOpenId();
+//	            // 获取用户信息
+//	            SNSUserInfo snsUserInfo = AdvancedUtil.getSNSUserInfo(accessToken, openId);
+//	
+//	            // 设置要传递的参数
+//	            request.setAttribute("snsUserInfo", snsUserInfo);
+//	            request.setAttribute("state", state);
+//	        }
+		  	
+	        WeixinOauth2Token wat = WechatController.getOauth2AccessToken(WeChatConfig.APP_ID, WeChatConfig.APP_SECRET, code);
+		 	
+		  	
+		  	SNSUserInfo snsUserInfo = null;
+	        // 拼接请求地址
+	        String requestUrl = "https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID";
+	        requestUrl = requestUrl.replace("ACCESS_TOKEN", wat.getAccessToken()).replace("OPENID", wat.getOpenId());
+	        // 通过网页授权获取用户信息
+	        JSONObject jsonObject = CommonUtil.httpsRequest(requestUrl, "GET", null);
+
+	        if (null != jsonObject) {
+	            try {
+	                snsUserInfo = new SNSUserInfo();
+	                // 用户的标识
+	                snsUserInfo.setOpenId(jsonObject.getString("openid"));
+	                // 昵称
+	                snsUserInfo.setNickname(jsonObject.getString("nickname"));
+	                // 性别（1是男性，2是女性，0是未知）
+	                snsUserInfo.setSex(jsonObject.getInt("sex"));
+	                // 用户所在国家
+	                snsUserInfo.setCountry(jsonObject.getString("country"));
+	                // 用户所在省份
+	                snsUserInfo.setProvince(jsonObject.getString("province"));
+	                // 用户所在城市
+	                snsUserInfo.setCity(jsonObject.getString("city"));
+	                // 用户头像
+	                snsUserInfo.setHeadImgUrl(jsonObject.getString("headimgurl"));
+	                // 用户特权信息
+	                snsUserInfo.setPrivilegeList(JSONArray.toList(jsonObject.getJSONArray("privilege"), List.class));
+	            } catch (Exception e) {
+	                snsUserInfo = null;
+	                int errorCode = jsonObject.getInt("errcode");
+	                String errorMsg = jsonObject.getString("errmsg");
+	                System.out.println("获取用户信息失败 errcode:{} errmsg:{}"+errorCode+errorMsg);
+	            }
+	        }
+	        return snsUserInfo;
+
+      }
+	
+	/**
+     * 获取网页授权凭证
+     * 
+     * @param appId 公众账号的唯一标识
+     * @param appSecret 公众账号的密钥
+     * @param code
+     * @return WeixinAouth2Token
+     */
+    public static WeixinOauth2Token getOauth2AccessToken(String appId, String appSecret, String code) {
+        WeixinOauth2Token wat = null;
+        // 拼接请求地址
+        String requestUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
+        requestUrl = requestUrl.replace("APPID", appId);
+        requestUrl = requestUrl.replace("SECRET", appSecret);
+        requestUrl = requestUrl.replace("CODE", code);
+        // 获取网页授权凭证
+        JSONObject jsonObject = CommonUtil.httpsRequest(requestUrl, "GET", null);
+        if (null != jsonObject) {
+            try {
+                wat = new WeixinOauth2Token();
+                wat.setAccessToken(jsonObject.getString("access_token"));
+                wat.setExpiresIn(jsonObject.getInt("expires_in"));
+                wat.setRefreshToken(jsonObject.getString("refresh_token"));
+                wat.setOpenId(jsonObject.getString("openid"));
+                wat.setScope(jsonObject.getString("scope"));
+            } catch (Exception e) {
+                wat = null;
+                int errorCode = jsonObject.getInt("errcode");
+                String errorMsg = jsonObject.getString("errmsg");
+                System.out.println("获取网页授权凭证失败 errcode:{} errmsg:{}"+errorCode+errorMsg);
+               
+            }
+        }
+        return wat;
+    }
+	
+	
+	@RequestMapping(value = "/auth")
+   	@ResponseBody
+   	public void GuideServlet(HttpServletRequest request,HttpServletResponse response) throws Exception {
+    	 // 设置编码
+    	request.setCharacterEncoding("utf-8");
+    	response.setContentType("text/html;charset=utf-8");
+    	response.setCharacterEncoding("utf-8");
+        /**
+         * 第一步：用户同意授权，获取code:https://open.weixin.qq.com/connect/oauth2/authorize
+         * ?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE
+         * &state=STATE#wechat_redirect
+         */
+        String redirect_uri = URLEncoder.encode(
+                "http://www.pergirls.com/WechatController/login", "UTF-8");// 授权后重定向的回调链接地址，请使用urlencode对链接进行处理（文档要求）
+        // 按照文档要求拼接访问地址
+        String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="
+                + WeChatConfig.APP_ID
+                + "&redirect_uri="
+                + redirect_uri
+                + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+        response.sendRedirect(url);// 跳转到要访问的地址
+        
+    }
+
+	
+	
 	
 	/**
 	 * 上传其他永久素材(图片素材的上限为5000，其他类型为1000)

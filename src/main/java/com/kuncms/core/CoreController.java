@@ -313,23 +313,23 @@ public class CoreController {
 	 */
 	@RequestMapping("/we_membership")
     public String we_membership(HttpServletRequest request, HttpServletResponse response) throws IOException, DocumentException{
-		 Map<String, String> map = MessageUtil.xmlToMap(request);
-	     String toUserName = map.get("ToUserName");
-	     String fromUserName = map.get("FromUserName");
-	     String msgType = map.get("MsgType");
-	     String content = map.get("Content");
-	     WeiXinUserInfo weiXinUserInfo = WeixinUtil.getUserInfo(WeixinUtil.getAccessToken(WeChatConfig.APP_ID, WeChatConfig.APP_SECRET).getAccessToken(),fromUserName);
-	     User user=new User();
-         user.setOpenid(weiXinUserInfo.getOpenid());
-         user.setIs_wechat("1");
-         user.setUser_name(weiXinUserInfo.getNickname());
-         ArrayList<User> userlis=userService.isRegister(user);
+//		 Map<String, String> map = MessageUtil.xmlToMap(request);
+//	     String toUserName = map.get("ToUserName");
+//	     String fromUserName = map.get("FromUserName");
+//	     String msgType = map.get("MsgType");
+//	     String content = map.get("Content");
+//	     WeiXinUserInfo weiXinUserInfo = WeixinUtil.getUserInfo(WeixinUtil.getAccessToken(WeChatConfig.APP_ID, WeChatConfig.APP_SECRET).getAccessToken(),fromUserName);
+//	     User user=new User();
+//         user.setOpenid(weiXinUserInfo.getOpenid());
+//         user.setIs_wechat("1");
+//         user.setUser_name(weiXinUserInfo.getNickname());
+//         ArrayList<User> userlis=userService.isRegister(user);
 		 String result="";
-		 if(userlis.size()>0){//已经注册
+//		 if(userlis.size()>0){//已经注册
 			 	result="membership";
-	     }else{//尚未注册
-	        	result="erro";
-	     }
+//	     }else{//尚未注册
+//	        	result="erro";
+//	     }
 //		 model.addAttribute("id",userlis.get(0).getId());
 //		 model.addAttribute("user_name",userlis.get(0).getUser_name());
 		 return result;

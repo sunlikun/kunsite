@@ -104,7 +104,7 @@ public class MenuManager {
         btn33.setName("账户中心");  
         btn33.setKey("33"); 
         btn33.setType("view");  
-        btn33.setUrl("http://www.pergirls.com/we_membership");
+        btn33.setUrl("http://www.pergirls.com/WechatController/auth");
   
 //        ComplexButton mainBtn1 = new ComplexButton();  
 //        mainBtn1.setName("在线点播");  
