@@ -181,6 +181,7 @@ public class CoreController {
 		        user.setOpenid(openid);
 		        user.setIs_wechat("1");
 		        user.setUser_name((String) userobj.get("nickname"));
+		        user.setHeadimgurl((String) userobj.get("headimgurl"));
 		        ArrayList<User> userlis=userService.isRegister(user);
 		        if(userlis.size()>0){//已经注册
 		        	  session.setAttribute("gold_coin",userlis.get(0).getGold_coin());
@@ -297,9 +298,9 @@ public class CoreController {
 	   //ArrayList<Coverphoto> list=thumbnailService.queryCoverPhoto();
 	   //com.alibaba.fastjson.JSONArray array= com.alibaba.fastjson.JSONArray.parseArray(JSON.toJSONString(list));
 	   //model.addAttribute("data", array.toJSONString());
-		HttpSession session=request.getSession();
-		String user_name=(String) session.getAttribute("loginName");
-		model.addAttribute("user_name",user_name);
+//		HttpSession session=request.getSession();
+//		String user_name=(String) session.getAttribute("loginName");
+//		model.addAttribute("user_name",user_name);
 		
        return "recharge";
     }

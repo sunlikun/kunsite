@@ -77,5 +77,9 @@ public class UserService {
 		// TODO Auto-generated method stub
 		userDao.updateAll(user);
 	}
+	public void update_offi_acc(User user) {
+		// TODO Auto-generated method stub
+		userDao.update_offi_acc(user);
+	}
 
 }

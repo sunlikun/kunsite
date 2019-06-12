@@ -27,6 +27,28 @@ public class MailController {
     
     
     /**
+     * 用户邮箱绑定及修改
+     * @param user
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("bindEmail")
+    @ResponseBody
+    public String bindEmail(User user,HttpServletRequest request,HttpServletResponse response){
+    	User loginuser=(User) request.getSession().getAttribute("user");
+    	user.setId(loginuser.getId());
+    	userService.bindEmail(user);
+    	JSONObject result=new JSONObject();
+    	result.put("result", "绑定成功");
+		return result.toJSONString();
+    	
+		
+    }
+	
+    
+    
+    /**
      * @param user
      * @param request
      * @param response

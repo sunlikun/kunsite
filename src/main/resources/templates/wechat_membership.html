@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>微信会员中心</title>
+<title>普格娱乐会员中心</title>
 
 	<link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <style>
-body { width:80%; margin:50px auto; }
+body { width:100%; margin:50px auto;font-size: 5rem; }
 
 </style>
 <body>
@@ -26,121 +26,119 @@ body { width:80%; margin:50px auto; }
 <div th:include="header :: header"></div> 
 -->
 
-<div class="container-fluid">
+<div class="container-fluid" style="margin-top: 30%">
 	<div class="row">
-		<div class="col-md-8">
+		<div class="col-md-12" align="center">
+						<img  src="" id="headimgurl"/> 
+		</div>
+		<div class="col-md-12">
 		
-		<div id="app1" style="margin-left: 40%">
-			<h3>
-				基本信息
-			</h3>
-			
-				<p>账户名称：{{user_name }}</p>
-				<!--  
-			  	<p>账户状态：{{ user_status }}</p>
-			  	<p>账户类型：{{ user_class }}</p>
-			  	-->
-			  	<p>注册日期：{{ dateFormat(create_time) }}</p>
-			
-			<h3>
-				我的资产
-				
-			</h3>
-			<p>我的金币：{{ gold_coin }}个                             <a href="recharge">金币充值</a></p>
-			<h3>
-				成长经验
-				
-			</h3>
-			<p>我的经验：{{ empirical_value }}(每消耗1金币经验值加1)</p>
-			<h3>
-				安全中心
-			</h3>
-				<p>电子邮箱：{{ email }}&nbsp;&nbsp;<a href='' data-toggle="modal" data-target="#myModal" v-show="b">绑定邮箱</a><a href='' data-toggle="modal" data-target="#myModal" v-show="u">修改邮箱</a></p>
-				<p>账户密码：{{ password }}&nbsp;&nbsp;<a href='' data-toggle="modal" data-target="#myModal1">修改密码</a></p>
-				<p v-if="user_name === 'admin'"><a href='/SysManagementController/toSysManagement'>网站监控</a>&nbsp;&nbsp;<a href='/frame'>网站管理</a></p>
-				<!-- 邮箱 -->
-				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 15%;">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-									&times;
-								</button>
-								<h4 class="modal-title" id="myModalLabel">
-									绑定邮箱/修改邮箱
-								</h4>
-							</div>
-							<div class="modal-body" align="center">
-								<table   style="border-collapse:separate; border-spacing:0px 10px;">
-								
-								<tr>
-								<td><label>请输入邮箱地址:</label></td>
-								<td><input type="text" class="form-control"  id="nemail" name="nemail" style="width: 200px" v-model="nemail"/></td>
-								<td><span>{{message}}</span></td>
-								</tr>
-								<tr style="display: none" id="checkcodetr">
-								<td><label>验证码:</label></td>
-								<td align="right"><input type="text" class="form-control"  id="checkcode" name="checkcode" style="width: 80px;" v-model="checkcode"/></td>
-								<td><span>{{message1}}</span></td>
-								</tr>
-								</table>
-								<br><br>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">关闭
-								</button>
-								<button type="button" class="btn btn-primary" v-on:click="checkEmail" id="check">
-									验证
-								</button>
-								<button type="button" class="btn btn-primary" v-on:click="bindEmail" id="submit" style="display: none">
-									提交
-								</button>
-							</div>
-						</div><!-- /.modal-content -->
-					</div><!-- /.modal -->
+			<div id="app1" style="margin-left: 10%">
+				<div style="color:#828282 ">
+					基本信息
 				</div>
 				
-				<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 15%;">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-									&times;
-								</button>
-								<h4 class="modal-title" id="myModalLabel">
-									修改密码
-								</h4>
-							</div>
-							<div class="modal-body" align="center">
-								<table   style="border-collapse:separate; border-spacing:0px 10px;">
-								
-								<tr>
-								<td><label>请输入新的密码:</label></td>
-								<td><input type="text" class="form-control"  id="npass" name="npass" style="width: 200px" v-model="npass" onkeyup="this.value=this.value.replace(/[^a-z0-9_]/g,'');" maxlength="16"/></td>
-								<td><span>{{message2}}</span></td>
-								</tr>
-								</table>
-								<br><br>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">关闭
-								</button>
-								<button type="button" class="btn btn-primary" v-on:click="upPass" id="submit">
-									提交
-								</button>
-							</div>
-						</div><!-- /.modal-content -->
-					</div><!-- /.modal -->
+					<p>账户名称：{{user_name }}</p>
+					<!--  
+				  	<p>账户状态：{{ user_status }}</p>
+				  	<p>账户类型：{{ user_class }}</p>
+				  	-->
+				  	<p>注册日期：{{create_time}}</p>
+				
+				<div style="color:#828282 ">
+					我的资产
+					
 				</div>
-		</div>
-		
-		</div>
-		<div class="col-md-4" align="center">
-			<img alt="Bootstrap Image Preview" src="https://www.layoutit.com/img/sports-q-c-140-140-3.jpg" /> 
-			<address>
-				  普通会员
-			</address>
-		</div>
+				<p>我的金币：{{ gold_coin }}个                             <a href="/recharge">金币充值</a></p>
+				<div style="color:#828282 ">
+					成长经验
+					
+				</div>
+				<p>我的经验：{{ empirical_value }}(每消耗1金币经验值加1)</p>
+				<div style="color:#828282 ">
+					安全中心
+				</div>
+					<p>电子邮箱：{{ email }}&nbsp;&nbsp;<a href='' data-toggle="modal" data-target="#myModal" v-show="b">绑定邮箱</a><a href='' data-toggle="modal" data-target="#myModal" v-show="u">修改邮箱</a></p>
+					<p>账户密码：{{ password }}&nbsp;&nbsp;<a href='' data-toggle="modal" data-target="#myModal1">修改密码</a></p>
+					<p v-if="user_name === 'admin'"><a href='/SysManagementController/toSysManagement'>网站监控</a>&nbsp;&nbsp;<a href='/frame'>网站管理</a></p>
+					<!-- 邮箱 -->
+					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 15%;">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+										&times;
+									</button>
+									<h4 class="modal-title" id="myModalLabel">
+										绑定邮箱/修改邮箱
+									</h4>
+								</div>
+								<div class="modal-body" align="center">
+									<table   style="border-collapse:separate; border-spacing:0px 10px;">
+									
+									<tr>
+									<td><label style="font-size: 2rem">请输入邮箱地址:</label></td>
+									<td><input type="text" class="form-control"  id="nemail" name="nemail" style="width: 200px" v-model="nemail"/></td>
+									<td><span>{{message}}</span></td>
+									</tr>
+									<tr style="display: none" id="checkcodetr">
+									<td><label style="font-size: 2rem">验证码:</label></td>
+									<td align="right"><input type="text" class="form-control"  id="checkcode" name="checkcode" style="width: 80px;" v-model="checkcode"/></td>
+									<td><span>{{message1}}</span></td>
+									</tr>
+									</table>
+									<br><br>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+									</button>
+									<button type="button" class="btn btn-primary" v-on:click="checkEmail" id="check">
+										验证
+									</button>
+									<button type="button" class="btn btn-primary" v-on:click="bindEmail" id="submit" style="display: none">
+										提交
+									</button>
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal -->
+					</div>
+					
+					<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 15%;">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+										&times;
+									</button>
+									<h4 class="modal-title" id="myModalLabel">
+										修改密码
+									</h4>
+								</div>
+								<div class="modal-body" align="center">
+									<table   style="border-collapse:separate; border-spacing:0px 10px;">
+									
+									<tr>
+									<td><label style="font-size: 2rem">请输入新的密码:</label></td>
+									<td><input type="text" class="form-control"  id="npass" name="npass" style="width: 200px" v-model="npass" onkeyup="this.value=this.value.replace(/[^a-z0-9_]/g,'');" maxlength="16"/></td>
+									<td><span>{{message2}}</span></td>
+									</tr>
+									</table>
+									<br><br>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+									</button>
+									<button type="button" class="btn btn-primary" v-on:click="upPass" id="submit">
+										提交
+									</button>
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal -->
+					</div>
+				</div>
+					
+				</div>
+				
 	</div>
 	
 </div>
@@ -198,6 +196,7 @@ var app1=new Vue({
 		      u:"",
 		      npass:"",
 		      message2:""
+		   
 			  
 	  },
 	  methods:{
@@ -218,7 +217,8 @@ var app1=new Vue({
 	                	  this.gold_coin=res.body.gold_coin,
 	                	  this.empirical_value=res.body.empirical_value,
 	                	  this.email=res.body.email,
-	                	  this.password=res.body.password
+	                	  this.password=res.body.password,
+	                	  $('#headimgurl').attr("src", res.body.headimgurl);
 	                	  if(this.email!=null&&this.email!=''){
 	                		  this.u=true;
 	                		  this.b=false;

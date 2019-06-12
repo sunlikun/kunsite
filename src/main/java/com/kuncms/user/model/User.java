@@ -16,9 +16,16 @@ private String flag;
 private String openid;       //普通用户的标识(wecaht)
 private String headimgurl;      //用户头像
 private String is_wechat;	 //是否是微信用户
+private String official_account;//是否关注了公众号
 
 
 
+public String getOfficial_account() {
+	return official_account;
+}
+public void setOfficial_account(String official_account) {
+	this.official_account = official_account;
+}
 public String getOpenid() {
 	return openid;
 }

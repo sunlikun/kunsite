@@ -33,5 +33,7 @@ public interface UserDao {
 
 	void updateAll(User user);
 
+	public void update_offi_acc(User user);
+
 
 }
