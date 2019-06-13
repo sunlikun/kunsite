@@ -67,6 +67,58 @@ public class WechatController {
 	private final String token = "1144954876";
 	
 	
+	
+	/**
+	 * 公众号跳转到网站首页
+	 * @param map
+	 * @param request
+	 * @param model
+	 * @param code
+	 * @return
+	 */
+	@RequestMapping("/index")
+    public String index(Map<String,Object> map,HttpServletRequest request,Model model,String code){
+       String videocode=request.getParameter("videocode");
+       //Videoinfo  videoinfo=videoInfoService.serachvideo("videocode");
+       System.out.println("首页");
+       HttpSession session=request.getSession();
+       String user_name=(String) session.getAttribute("loginName");
+	   model.addAttribute("user_name",user_name);
+	   model.addAttribute("code",code);
+       //map.put("hello",videoinfo);
+       return "index";
+    }
+	
+	
+	
+	
+	/**
+	 * 跳转到充值页面
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping("/we_recharge")
+    public String we_recharge(Map<String,Object> map,Model model,HttpServletRequest request){
+	   //ArrayList<Coverphoto> list=thumbnailService.queryCoverPhoto();
+	   //com.alibaba.fastjson.JSONArray array= com.alibaba.fastjson.JSONArray.parseArray(JSON.toJSONString(list));
+	   //model.addAttribute("data", array.toJSONString());
+		HttpSession session=request.getSession();
+		User user=(User) session.getAttribute("user");
+//		String currTime = PayToolUtil.getCurrTime();
+//		String strRandom = String.valueOf(PayToolUtil.buildRandom(4));
+//		String strTime = currTime.substring(8, currTime.length());
+//	    String nonce_str = strTime + strRandom;
+	    
+//		model.addAttribute("user_name",user.getUser_name());
+//		model.addAttribute("id",user.getId());
+//		model.addAttribute("appId",APPID);
+//		model.addAttribute("timestamp",PayToolUtil.getCurrTime());
+//		model.addAttribute("nonceStr",nonce_str);
+//		model.addAttribute("signature",signature);
+		
+       return "we_recharge";
+    }
+	
 	@RequestMapping(value = "/login")
 	public String login(HttpServletRequest request,Model model) throws JSONException, IOException{
 
@@ -90,54 +142,54 @@ public class WechatController {
 //	            request.setAttribute("state", state);
 //	        }
 		  	
-//	        WeixinOauth2Token wat = WechatController.getOauth2AccessToken(WeChatConfig.APP_ID, WeChatConfig.APP_SECRET, code);
-//		 	
-//		  	
-//		  	SNSUserInfo snsUserInfo = null;
-//	        // 拼接请求地址
-//	        String requestUrl = "https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID";
-//	        requestUrl = requestUrl.replace("ACCESS_TOKEN", wat.getAccessToken()).replace("OPENID", wat.getOpenId());
-//	        // 通过网页授权获取用户信息
-//	        JSONObject jsonObject = CommonUtil.httpsRequest(requestUrl, "GET", null);
-//	        if (null != jsonObject) {
-//	            try {
-//	                snsUserInfo = new SNSUserInfo();
-//	                // 用户的标识
-//	                snsUserInfo.setOpenId(jsonObject.getString("openid"));
-//	                // 昵称
-//	                snsUserInfo.setNickname(jsonObject.getString("nickname"));
-//	                // 性别（1是男性，2是女性，0是未知）
-//	                snsUserInfo.setSex(jsonObject.getInt("sex"));
-//	                // 用户所在国家
-//	                snsUserInfo.setCountry(jsonObject.getString("country"));
-//	                // 用户所在省份
-//	                snsUserInfo.setProvince(jsonObject.getString("province"));
-//	                // 用户所在城市
-//	                snsUserInfo.setCity(jsonObject.getString("city"));
-//	                // 用户头像
-//	                snsUserInfo.setHeadImgUrl(jsonObject.getString("headimgurl"));
-//	                // 用户特权信息
-//	                snsUserInfo.setPrivilegeList(JSONArray.toList(jsonObject.getJSONArray("privilege"), List.class));
-//	                User user1=new User();
-//	                user1.setOpenid(jsonObject.getString("openid"));
-//	                ArrayList<User> user=userService.check_username(user1);
-//	                if(user.size()>0) {
-//	                	model.addAttribute("id",user.get(0).getId());
-//	                	model.addAttribute("user_name",user.get(0).getUser_name());
-//	                	HttpSession session = request.getSession();
-//	 	    	        session.setAttribute("loginName",user.get(0).getUser_name());
-//	 	    	        session.setAttribute("gold_coin",user.get(0).getGold_coin());
-//	 	    	        session.setAttribute("user",user.get(0));
-//	                }
-//	               
-//	            	
-//	            } catch (Exception e) {
-//	                snsUserInfo = null;
-//	                int errorCode = jsonObject.getInt("errcode");
-//	                String errorMsg = jsonObject.getString("errmsg");
-//	                System.out.println("获取用户信息失败 errcode:{} errmsg:{}"+errorCode+errorMsg);
-//	            }
-//	        }
+	        WeixinOauth2Token wat = WechatController.getOauth2AccessToken(WeChatConfig.APP_ID, WeChatConfig.APP_SECRET, code);
+		 	
+		  	
+		  	SNSUserInfo snsUserInfo = null;
+	        // 拼接请求地址
+	        String requestUrl = "https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID";
+	        requestUrl = requestUrl.replace("ACCESS_TOKEN", wat.getAccessToken()).replace("OPENID", wat.getOpenId());
+	        // 通过网页授权获取用户信息
+	        JSONObject jsonObject = CommonUtil.httpsRequest(requestUrl, "GET", null);
+	        if (null != jsonObject) {
+	            try {
+	                snsUserInfo = new SNSUserInfo();
+	                // 用户的标识
+	                snsUserInfo.setOpenId(jsonObject.getString("openid"));
+	                // 昵称
+	                snsUserInfo.setNickname(jsonObject.getString("nickname"));
+	                // 性别（1是男性，2是女性，0是未知）
+	                snsUserInfo.setSex(jsonObject.getInt("sex"));
+	                // 用户所在国家
+	                snsUserInfo.setCountry(jsonObject.getString("country"));
+	                // 用户所在省份
+	                snsUserInfo.setProvince(jsonObject.getString("province"));
+	                // 用户所在城市
+	                snsUserInfo.setCity(jsonObject.getString("city"));
+	                // 用户头像
+	                snsUserInfo.setHeadImgUrl(jsonObject.getString("headimgurl"));
+	                // 用户特权信息
+	                snsUserInfo.setPrivilegeList(JSONArray.toList(jsonObject.getJSONArray("privilege"), List.class));
+	                User user1=new User();
+	                user1.setOpenid(jsonObject.getString("openid"));
+	                ArrayList<User> user=userService.check_username(user1);
+	                if(user.size()>0) {
+	                	model.addAttribute("id",user.get(0).getId());
+	                	model.addAttribute("user_name",user.get(0).getUser_name());
+	                	HttpSession session = request.getSession();
+	 	    	        session.setAttribute("loginName",user.get(0).getUser_name());
+	 	    	        session.setAttribute("gold_coin",user.get(0).getGold_coin());
+	 	    	        session.setAttribute("user",user.get(0));
+	                }
+	               
+	            	
+	            } catch (Exception e) {
+	                snsUserInfo = null;
+	                int errorCode = jsonObject.getInt("errcode");
+	                String errorMsg = jsonObject.getString("errmsg");
+	                System.out.println("获取用户信息失败 errcode:{} errmsg:{}"+errorCode+errorMsg);
+	            }
+	        }
 	        return "wechat_membership";
 
       }

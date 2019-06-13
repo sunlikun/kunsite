@@ -19,6 +19,7 @@ import com.kuncms.user.service.UserService;
 
 import org.jdom.JDOMException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
  
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import java.io.*;
 import java.text.ParseException;
 import java.util.*;
@@ -43,6 +46,108 @@ public class WxpayController extends PayBaseController {
 	UserService userService;
 	@Autowired
 	WechatpayTradeinfoService wechatpayTradeinfoService;
+	
+	
+	/**
+	 * 微信浏览器内微信支付/公众号支付(JSAPI)
+	 * @param response
+	 * @param total_fee
+	 * @param request
+	 * @return 
+	 * @throws ParseException
+	 */
+	@GetMapping("/jsapipay")
+	public Map<String, String> jsapipay(HttpServletResponse response,String total_fee,HttpServletRequest request) throws ParseException {
+		
+		System.out.println("total_fee："+total_fee);
+    	User user=(User) request.getSession().getAttribute("user");
+    	
+    	String attach=user.getId();
+    	
+    	String urlCode = null;
+        WechatpayTradeinfo wechatpayTradeinfo=new WechatpayTradeinfo();
+        // 获取订单信息
+        WxpayVo vo = new WxpayVo();
+        String out_trade_no = UUID.randomUUID().toString().replace("-", ""); 
+        vo.setOut_trade_no(out_trade_no);
+        // 账号信息
+        vo.setApp_id(APPID);
+        vo.setMch_id(MCHID);
+        vo.setKey(KEY);
+        String currTime = PayToolUtil.getCurrTime();
+        vo.setCurrTime(currTime);
+        String strTime = currTime.substring(8, currTime.length());
+        vo.setStrTime(strTime);
+        String strRandom = String.valueOf(PayToolUtil.buildRandom(4));
+        vo.setStrRandom(strRandom);
+        String nonce_str = strTime + strRandom;
+        vo.setNonce_str(nonce_str);
+        vo.setSpbill_create_ip(CREATE_IP);
+        vo.setNotify_url(NOTIFY_URL);
+        vo.setTrade_type("JSAPI");
+      
+        vo.setTotal_fee(total_fee);
+        wechatpayTradeinfo.setTotalFee(Integer.parseInt(total_fee));
+        wechatpayTradeinfo.setOutTradeNo(out_trade_no);
+        wechatpayTradeinfo.setBody("普格娱乐金币充值");
+        wechatpayTradeinfo.setNonceStr(nonce_str);
+        wechatpayTradeinfo.setStatus("0");
+        total_fee=String.valueOf(Integer.parseInt(total_fee)*100);
+        SortedMap<Object,Object> packageParams = new TreeMap<Object,Object>();
+        packageParams.put("appid", APPID);//公众账号ID
+        packageParams.put("mch_id", MCHID);//商户号
+        packageParams.put("openid", user.getOpenid());//openid
+        packageParams.put("nonce_str", nonce_str);//随机字符串
+        packageParams.put("body", "普格娱乐金币充值");  //商品描述
+        packageParams.put("out_trade_no", out_trade_no);//商户订单号
+        packageParams.put("total_fee", total_fee); //标价金额 订单总金额，单位为分
+        packageParams.put("spbill_create_ip", CREATE_IP);//终端IP APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP
+        packageParams.put("notify_url", NOTIFY_URL);//通知地址 异步接收微信支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数
+        packageParams.put("trade_type", "JSAPI");//交易类型 JSAPI
+        packageParams.put("attach", attach);
+        // 签名
+        String sign = PayToolUtil.createSign("UTF-8", packageParams, KEY);
+        packageParams.put("sign", sign);
+ 
+        // 将请求参数转换为xml格式的string
+        String requestXML = PayToolUtil.getRequestXml(packageParams);
+        //logger.info("requestXML:{}", requestXML);
+ 
+        // 调用微信支付统一下单接口
+        String resXml = HttpUtil.postData(PayConfigUtil.UFDODER_URL, requestXML);
+        //logger.info("resXml: {}", resXml);
+        System.out.println(resXml);
+        // 解析微信支付结果
+        Map map = null;
+        try {
+            map = XMLUtil4jdom.doXMLParse(resXml);
+            //logger.info("map: {}", map);
+        } catch (JDOMException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+ 
+        // 返回微信支付的二维码连接
+        urlCode = (String) map.get("code_url");
+        String prepay_id=(String) map.get("prepay_id");
+        //logger.info("urlCode:{}", urlCode);
+        wechatpayTradeinfo.setCodeUrl(urlCode);
+        wechatpayTradeinfoService.insert(wechatpayTradeinfo,request);
+        
+        Map<String, String> payMap = new HashMap<String, String>();
+		payMap.put("appId", APPID);  
+		payMap.put("timeStamp", PayToolUtil.getCurrTime()+"");  
+		payMap.put("nonceStr",nonce_str);  
+		payMap.put("signType", "MD5");  
+		payMap.put("package", "prepay_id=" + prepay_id);  
+		payMap.put("paySign", sign);
+		return payMap;
+     }
+	
+	
+	
+	
     /**
      * 微信支付->扫码支付(模式二)->统一下单->微信二维码
      * @return

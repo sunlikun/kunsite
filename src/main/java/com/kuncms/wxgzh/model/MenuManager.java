@@ -68,7 +68,7 @@ public class MenuManager {
         btn21.setName("官方网址"); 
         btn21.setType("view");  
         btn21.setKey("21");
-        btn21.setUrl("http://www.pergirls.com");
+        btn21.setUrl("http://www.pergirls.com/WechatController/index");
 //  
 //        CommonButton btn22 = new CommonButton();  
 //        btn22.setName("经典游戏");  

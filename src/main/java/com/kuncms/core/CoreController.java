@@ -298,9 +298,9 @@ public class CoreController {
 	   //ArrayList<Coverphoto> list=thumbnailService.queryCoverPhoto();
 	   //com.alibaba.fastjson.JSONArray array= com.alibaba.fastjson.JSONArray.parseArray(JSON.toJSONString(list));
 	   //model.addAttribute("data", array.toJSONString());
-//		HttpSession session=request.getSession();
-//		String user_name=(String) session.getAttribute("loginName");
-//		model.addAttribute("user_name",user_name);
+		HttpSession session=request.getSession();
+		String user_name=(String) session.getAttribute("loginName");
+		model.addAttribute("user_name",user_name);
 		
        return "recharge";
     }
