@@ -4,6 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
  
 public class PayToolUtil {
+	
+	
+	 
+	
+	
  
 	/** 
      * 是否签名正确,规则是:按参数名称a-z排序,遇到空值的参数不参加签名。 
@@ -106,5 +111,16 @@ public class PayToolUtil {
         SimpleDateFormat outFormat = new SimpleDateFormat("yyyyMMddHHmmss");  
         return outFormat.format(now);
     }
+    
+    /**
+     * 获取当前时间戳，单位秒
+     * @return
+     */
+    public static long getCurrentTimestamp() {
+        return System.currentTimeMillis()/1000;
+    }
+    
+ 
+
 	
 }

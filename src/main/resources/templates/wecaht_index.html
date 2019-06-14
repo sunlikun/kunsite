@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+ 	<meta name="baidu-site-verification" content="EuNPeTHGFx" />
+    <title>首页</title>
+
+    <meta name="description" content="普格娱乐提供优质女团视频,饭拍视频,车模视频,模特视频,写真,高清美女图片,是一个综合性性感美女视频">
+    <meta name="author" content="普格娱乐">
+    <meta name=”keywords” content=”女团,车模,性感美女,av,韩国女团,饭拍,饭拍秀,韩国娱乐新闻,国内娱乐新闻,韩国女团饭拍,国内女明星,韩国美女,饭拍视频,韩国车模饭拍,fancam,免费饭拍下载”/>
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/button.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../jqwidgets/styles/jqx.base.css" type="text/css" />
+    <script type="text/javascript" src="/scripts/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/js/jqthumb.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+   
+  
+     
+	<style>
+	body { width:80%; margin:50px auto; }
+	// Extra small devices (portrait phones, less than 576px)
+	@media (max-width: 575.98px) { ... }
+	
+	// Small devices (landscape phones, 576px and up)
+	@media (min-width: 576px) and (max-width: 767.98px) { ... }
+	
+	// Medium devices (tablets, 768px and up)
+	@media (min-width: 768px) and (max-width: 991.98px) { ... }
+	
+	// Large devices (desktops, 992px and up)
+	@media (min-width: 992px) and (max-width: 1199.98px) { ... }
+	
+	// Extra large devices (large desktops, 1200px and up)
+	@media (min-width: 1200px) { ... }
+	ul {
+    display: block;
+    overflow: hidden;
+    white-space:nowrap;
+	}
+	li{
+    list-style: none;
+    display: inline-block;
+    margin-left: 15px;
+    width: 130px;
+	}
+	.cp{
+
+	width: 450px;
+	height: 470px;
+	overflow: hidden;
+	display: table-cell;
+	vertical-align: middle;
+	border:3px solid #000;
+	text-align: center;
+	}
+	.cpimg{
+	
+	max-width: 100%;
+	max-height: 100%;（或者max-height: 100%;）
+	display: block;
+	margin: 0 auto;
+	
+	}
+	.gimg{
+	
+	max-width: 10%;
+	max-height: 10%;
+	margin: 0 auto;
+	
+	}
+	.cdiv{ border:3px solid #000} 
+	
+	</style>
+	
+	<script type="text/javascript">
+	
+	  $(document).ready(function () {
+		  $('#myTab li:eq(1) a').tab('show');
+          // prepare the data
+          var user_name=$("#user_name").val();
+          //alert(user_name)
+          if(user_name!=null&&user_name!==''){
+        	  $("#login").html("你好   "+user_name);
+          }
+          queryData('1');
+          queryData('2');
+          
+      });
+      //查询展示内容 
+	  function queryData(category){
+		  var data=null
+          $.ajaxSetup({
+
+          	async:false
+
+          });
+          $.ajax({
+              type: "post",
+              url: "/queryIndexCoverPhoto",
+              data: {"category":category},
+              dataType: "json",
+              success: function(data){
+            	var coverphotoArr = data;
+            	var converGroup="";
+            	for(var i=0;i<coverphotoArr.length;i++){
+            		　　//alert(coverphotoArr[i].coverphotoid);
+            		var id=coverphotoArr[i].id;
+            		var baiduyun_pass=coverphotoArr[i].baiduyun_pass;
+            		var baiduyun_address=coverphotoArr[i].baiduyun_address;
+            		//alert(baiduyun_address)
+            		//alert(coverphotoArr[i].coverphotoid)
+            		var tableContent="";
+                  	tableContent += '<div class="col-sm-6 col-md-4">';
+                    tableContent += '<div class="thumbnail">';
+                  
+                    tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'">';
+                    var coverid="/images/"+coverphotoArr[i].coverphotoid.substring(30);
+                   // alert(coverid)
+                    tableContent += '<img  class="img-responsive"   src="' + coverid+ '" >';
+                    tableContent += '</a>';
+                    
+                    tableContent += '<div class="caption">';
+                  	tableContent += '<p>' + coverphotoArr[i].video_name.substring(0, 25)+ '...</p>';
+                  	tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币&nbsp;&nbsp;人气值:'+coverphotoArr[i].clicks+'</p>';
+                  	tableContent += '<p>公众号点播编号:'+coverphotoArr[i].serial_number+'</p>';
+                    tableContent += ' <p><a href="/WechatController/wechat_details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-primary" role="button"> 查看</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default" role="button">  下载</a></p> ';
+                  
+                    tableContent += '</p>';
+                    tableContent += '<div>';
+                    tableContent += '</div></div></div></div>';
+                    
+                   
+                  
+                    converGroup+=tableContent;
+                    
+            	}
+            	
+            	if(category=='1'){
+            		$("#part1").append(converGroup);
+            	}
+            	if(category=='2'){
+            		$("#part2").append(converGroup);
+            	}
+            	
+            	
+           	   
+              	
+             }
+              
+             
+          });
+      }
+	
+	</script>
+  </head>
+  <body bgcolor="#DDDDDD">
+	<div th:include="header :: header"></div> 
+	<div class="container-fluid">
+  		<div class="row" style="margin-top: 10px;">
+				<div class="col-md-8">
+					<nav class="navbar navbar-default" role="navigation">
+					    <div class="container-fluid">
+						    <div>
+						    <!-- 
+						        <ul class="nav navbar-nav">
+						            <li> <a href="/more?flag=1" class="navbar-brand">韩国女团&nbsp;》</a></li>
+						        </ul>
+						         -->
+						    </div>
+					    </div>
+					</nav>
+					<div class="row" id="part1">
+					
+					</div>
+					<div align="center"><a href="/more?flag=1"><font size="5">点击查看更多</font></a></div>
+					
+					
+					<nav class="navbar navbar-default" role="navigation">
+					    <div class="container-fluid">
+						    <div>
+						    <!--  
+						        <ul class="nav navbar-nav">
+						            <li> <a href="/more?flag=2" class="navbar-brand">性感车模&nbsp;》</a></li>
+						        </ul>
+						    </div>
+						    -->
+					    </div>
+					</nav>
+					<div class="row" id="part2">
+					
+					</div>
+					<div align="center"><a href="/more?flag=2"><font size="5">点击查看更多</font></a></div>
+				</div>
+	  	
+				<div class="col-md-4">
+						<nav class="navbar navbar-default" role="navigation">
+						    <div class="container-fluid">
+							    <div>
+							        <ul class="nav navbar-nav">
+							            <li> <a href="" class="navbar-brand">精彩推荐</a></li>
+							        </ul>
+							    </div>
+						    </div>
+						</nav>
+						<div align="center">
+								<h2>
+									欢迎访问普格娱乐
+								</h2>
+								<p>
+									扫码关注公众号享更多精彩内容
+									公众号可线播放哦!
+									<img  class="img-responsive"   src="/img/wechat/qrcode_for_gh_65045f61e850_258.jpg" >
+								</p>
+								<center>
+									<ul id="myTab" class="nav nav-tabs">
+										<li class="active">
+											<a href="#home" data-toggle="tab" onclick="createrankingList(1)">
+												 当天排行
+											</a>
+										</li>
+										<li><a href="#home" data-toggle="tab" onclick="createrankingList(2)">本周排行</a></li>
+										<li><a href="#home" data-toggle="tab" onclick="createrankingList(3)">本月排行</a></li>
+										
+									</ul>
+								</center>
+								<div id="myTabContent" class="tab-content">
+									<div class="tab-pane fade in active" id="home">
+										
+										
+											<div class="container-fluid">
+												<div class="row">
+													<div id="rank" style=" width: 30rem;height: 100%;">
+														<!-- 
+														<div class="col-md-12">
+															<div style="display:inline-block;background:#f00;"><img alt="Bootstrap Image Preview" src="https://www.layoutit.com/img/sports-q-c-140-140-3.jpg" /></div>
+															
+															<div style="display:inline-block;margin-left:0px;">div2</div>
+														
+														 -->
+														
+														</div>
+													</div>
+												</div>
+											</div>
+									</div>
+								</div>
+								
+								
+							</div>
+								
+								
+						</div>
+					
+				
+		</div>
+		
+		
+	</div>
+	
+			
+   </div>
+   <div th:include="footer :: footer"></div> 
+   <input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none"> 
+   <input id="code" th:value="${code}" name="code" type="text" style="display: none">
+  
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+   
+    
+    <script type="text/javascript">
+    
+    
+	   
+	    function  createrankingList(flag){
+	   	 //alert(flag)
+	   	 	 $("#rank").empty();
+	   		 $.ajax({
+	               type: "post",
+	               url: "/queryrankingList",
+	               data: {"flag":flag},
+	               dataType: "json",
+	               success: function(data){
+	              	var coverphotoArr = data;
+	              	var converGroup="";
+	            	
+	              	for(var i=0;i<coverphotoArr.length;i++){
+	              		　　//alert(coverphotoArr[i].coverphotoid);
+	              		var id=coverphotoArr[i].id;
+	              		var baiduyun_pass=coverphotoArr[i].baiduyun_pass;
+	              		var baiduyun_address=coverphotoArr[i].baiduyun_address;
+	              		//alert(baiduyun_address)
+	              		//alert(coverphotoArr[i].coverphotoid)
+	              		var tableContent="";
+	                    	tableContent += '<div class="col-md-12">';
+	                    	tableContent += '<div style="display:inline-block;background:#f00;">';
+	                    	tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'">';
+	                    	var coverid="/images/"+coverphotoArr[i].coverphotoid.substring(30);
+	                   	tableContent += '<img  class="img-responsive"   src="' + coverid+ '" ></div>';
+	                      	tableContent += '</a>';
+	                      	tableContent += '<div style="display:inline-block;margin-left:0px;">' + coverphotoArr[i].video_name.substring(0, 25)+ '</div>';
+	                    	tableContent += '</div>';
+	                      converGroup+=tableContent;
+	                      
+	              	}
+	              	$("#rank").append(converGroup);
+	             	   
+	                	
+	               }
+	            });
+	    }
+    
+	    createrankingList('1');
+        var user_name=$("#user_name").val();
+        var code=$("#code").val();
+        //alert(code)
+		var app=new Vue({
+			  el: '#app',
+			  data: {
+				  
+					  content: user_name,
+					  plays:true
+			  },
+			  methods:{
+				  islogin: function () {
+					  
+					  if(user_name!=null&&user_name!=''){
+						  
+						  this.plays=false;
+					  }
+				  },
+				  wechat_login: function () {
+					 
+					  if(code!=null&&code!=''){
+						
+						  this.$http.post("get_access_token",{code:code},{emulateJSON:true}).then(function(res){
+			                	
+			                		var access_token=res.body.access_token;
+			                		var expires_in=res.body.expires_in;
+			                		var refresh_token=res.body.refresh_token;
+			                		var openid=res.body.openid;
+			                		var scope=res.body.scope;
+			                		var unionid=res.body.unionid;
+			                		//alert(openid)
+			                		//alert(access_token)
+			                		//获取用户基本信息并完成登陆操作
+			                		var form=$("<form>");//定义一个form表单
+			            			form.attr("style","display:none");
+			            			form.attr("target","");
+			            			form.attr("method","post");
+			            			form.attr("action","get_user_info");
+			            			var input1=$("<input>");
+			            			input1.attr("type","hidden");
+			            			input1.attr("name","access_token");
+			            			input1.attr("value",access_token);
+			            			var input2=$("<input>");
+			            			input2.attr("type","hidden");
+			            			input2.attr("name","openid");
+			            			input2.attr("value",openid);
+			            			$("body").append(form);//将表单放置在web中
+			            			form.append(input1);  
+			            			form.append(input2);  
+			            			form.submit();//表单提交  
+			            	      
+			                		
+			                	
+			                },function(res){
+			                    console.log(res.data);
+			                });
+						  
+					  }
+				  }
+			    }
+			
+			})
+		
+		  app.islogin();
+          //判断是否已经登陆从而进行判断是否进行微信登陆的相关查询
+          
+          //if(user_name==null||user_name==''){
+        	
+        	  app.wechat_login();
+          //}
+		  
+	
+	</script>
+  </body>
+</html>

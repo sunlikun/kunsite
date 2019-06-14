@@ -326,11 +326,11 @@
 				    		
 		                	
 		                	 wx.config({
-		         			    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+		         			    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 		         			    appId: res.body.appId, // 必填，公众号的唯一标识
 		         			    timestamp: res.body.timestamp, // 必填，生成签名的时间戳
 		         			    nonceStr: res.body.nonceStr, // 必填，生成签名的随机串
-		         			    signature: res.body.signature,// 必填，签名
+		         			    signature: res.body.paySign,// 必填，签名
 		         			   	jsApiList: [
 		         			       	'chooseWXPay']// 必填，需要使用的JS接口列表
 		         			});
@@ -341,24 +341,35 @@
 									    success: function(res) {
 									    // 以键值对的形式返回，可用的api值true，不可用为false
 									    // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
-									    alert(res)
+									    //alert(res)
 									    }
 									});
-		                		    
-		                		    
+		                			alert(res.body.timeStamp)
+		                			alert(res.body.package)
+		                			alert(res.body.paySign)
+		                			alert( res.body.nonceStr)
+		                			 //for(s in res.body){
+		                		    //	alert(res.body.s)
+		                		    //}
 		                		    wx.chooseWXPay({
-			         				  timestamp: res.body.timestamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+		                		      timeStamp: res.body.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
 			         				  nonceStr: res.body.nonceStr, // 支付签名随机串，不长于 32 位
 			         				  package: res.body.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
-			         				  signType: MD5, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-			         				  paySign: res.body.signature, // 支付签名
+			         				  signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+			         				  paySign: res.body.paySign, // 支付签名
 			         				  success: function (res) {
-			         				  // 支付成功后的回调函数
-			         				  alert(res.return_msg+"  "+res.return_code)
-			         				  alert("支付成功");
+				         				  // 支付成功后的回调函数
+				         				  alert(res.return_msg+"  "+res.return_code)
+				         				  alert("支付成功");
 			         				  }
 			         			});
 		                	 });
+		                	 
+		                	 
+		                	 wx.error(function(res){
+	                			    // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+	                			    alert("有错误！"+res.errMsg);
+	                		 });
 		         		  	
 		                	
 		                	

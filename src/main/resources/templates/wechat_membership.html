@@ -49,18 +49,22 @@ body { width:100%; margin:50px auto;font-size: 5rem; }
 					我的资产
 					
 				</div>
-				<p>我的金币：{{ gold_coin }}个                      <a href="/WechatController/we_recharge">金币充值</a></p>
+				<p>我的金币：{{ gold_coin }}个                     <a href="/WechatController/we_recharge">金币充值</a></p>
 				<div style="color:#828282 ">
 					成长经验
 					
 				</div>
 				<p>我的经验：{{ empirical_value }}(每消耗1金币经验值加1)</p>
-				<div style="color:#828282 ">
-					安全中心
-				</div>
+				<!--  
+					<div style="color:#828282 ">
+						安全中心
+					</div>
 					<p>电子邮箱：{{ email }}&nbsp;&nbsp;<a href='' data-toggle="modal" data-target="#myModal" v-show="b">绑定邮箱</a><a href='' data-toggle="modal" data-target="#myModal" v-show="u">修改邮箱</a></p>
+					-->
 					<p>账户密码：{{ password }}&nbsp;&nbsp;<a href='' data-toggle="modal" data-target="#myModal1">修改密码</a></p>
+					<!--  
 					<p v-if="user_name === 'admin'"><a href='/SysManagementController/toSysManagement'>网站监控</a>&nbsp;&nbsp;<a href='/frame'>网站管理</a></p>
+					-->
 					<!-- 邮箱 -->
 					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 15%;">
 						<div class="modal-dialog">
@@ -296,7 +300,7 @@ var app1=new Vue({
 			    	
 			    	this.$http.post('/MailController/upPass',{password:this.npass},{emulateJSON:true}).then(function(res){
 			    		alert(res.data.result)
-			    		location.reload();
+			    		location.reload(force);
 		                },function(res){
 		                   console.log(res.data);
 		             });

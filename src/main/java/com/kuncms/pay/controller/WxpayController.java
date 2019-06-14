@@ -1,5 +1,6 @@
 package com.kuncms.pay.controller;
  
+import com.github.wxpay.sdk.WXPayUtil;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -54,10 +55,10 @@ public class WxpayController extends PayBaseController {
 	 * @param total_fee
 	 * @param request
 	 * @return 
-	 * @throws ParseException
+	 * @throws Exception 
 	 */
 	@GetMapping("/jsapipay")
-	public Map<String, String> jsapipay(HttpServletResponse response,String total_fee,HttpServletRequest request) throws ParseException {
+	public Map<String, String> jsapipay(HttpServletResponse response,String total_fee,HttpServletRequest request) throws Exception {
 		
 		System.out.println("total_fee："+total_fee);
     	User user=(User) request.getSession().getAttribute("user");
@@ -93,11 +94,11 @@ public class WxpayController extends PayBaseController {
         wechatpayTradeinfo.setNonceStr(nonce_str);
         wechatpayTradeinfo.setStatus("0");
         total_fee=String.valueOf(Integer.parseInt(total_fee)*100);
-        SortedMap<Object,Object> packageParams = new TreeMap<Object,Object>();
+        SortedMap<String, String> packageParams = new TreeMap<String, String>();
         packageParams.put("appid", APPID);//公众账号ID
         packageParams.put("mch_id", MCHID);//商户号
         packageParams.put("openid", user.getOpenid());//openid
-        packageParams.put("nonce_str", nonce_str);//随机字符串
+        packageParams.put("nonce_str",  WXPayUtil.generateNonceStr());//随机字符串
         packageParams.put("body", "普格娱乐金币充值");  //商品描述
         packageParams.put("out_trade_no", out_trade_no);//商户订单号
         packageParams.put("total_fee", total_fee); //标价金额 订单总金额，单位为分
@@ -106,11 +107,11 @@ public class WxpayController extends PayBaseController {
         packageParams.put("trade_type", "JSAPI");//交易类型 JSAPI
         packageParams.put("attach", attach);
         // 签名
-        String sign = PayToolUtil.createSign("UTF-8", packageParams, KEY);
+        String sign = WXPayUtil.generateSignature(packageParams, KEY);
         packageParams.put("sign", sign);
  
         // 将请求参数转换为xml格式的string
-        String requestXML = PayToolUtil.getRequestXml(packageParams);
+        String requestXML = WXPayUtil.mapToXml(packageParams);
         //logger.info("requestXML:{}", requestXML);
  
         // 调用微信支付统一下单接口
@@ -134,14 +135,13 @@ public class WxpayController extends PayBaseController {
         //logger.info("urlCode:{}", urlCode);
         wechatpayTradeinfo.setCodeUrl(urlCode);
         wechatpayTradeinfoService.insert(wechatpayTradeinfo,request);
-        
         Map<String, String> payMap = new HashMap<String, String>();
 		payMap.put("appId", APPID);  
-		payMap.put("timeStamp", PayToolUtil.getCurrTime()+"");  
-		payMap.put("nonceStr",nonce_str);  
+		payMap.put("timeStamp",PayToolUtil.getCurrentTimestamp()+"");  
+		payMap.put("nonceStr",WXPayUtil.generateNonceStr());  
 		payMap.put("signType", "MD5");  
 		payMap.put("package", "prepay_id=" + prepay_id);  
-		payMap.put("paySign", sign);
+		payMap.put("paySign", WXPayUtil.generateSignature(payMap, KEY));
 		return payMap;
      }
 	
