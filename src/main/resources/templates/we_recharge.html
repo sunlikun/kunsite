@@ -181,7 +181,7 @@
 					              </label>
 					            </div>
 					          </div>
-					          <p>请选择充值方式</p>
+					          <p></p>
 					          <div class="charge-group">
 					            <div class="charge-group__inner">
 					              <label class="charge-item">
@@ -209,12 +209,11 @@
 					           -->
 					          <div class="charge-group">
 					            <div class="charge-group__inner">
-					              <label class="charge-item">
-					                <input type="radio" name="payType">
-					                <div class="charge-item__inner">
+					            
+					             
 					                  <button type="button" class="btn btn-info btn-lg" @click="pay()">去支付</button>
-					                </div>
-					              </label>
+					             
+					              
 					            </div>
 					          </div>
 					        </div>
@@ -241,7 +240,7 @@
 		
    </div>
 </div>
-   
+   <!--  
  	<div  style="width:100%; height:90%;left:0;top:0; position:fixed;background:rgba(0,0,0,0.3);display: none" id="payimg">
  			
 	    	<div class="point">
@@ -256,7 +255,8 @@
 	    		</center>
 				</div>
 	      	</div>
-   </div>  
+   </div>
+--> 
    <!--  
    <div th:include="footer :: footer"></div> 
    -->
@@ -311,7 +311,7 @@
 						return false;
 					}
 				    //获取支付方式,并根据支付方式选取不同的方法处理
-				    var type = $('#type').val();
+				    var type = "1";
 				    var url="";
 				    if(type==""||type==null){
 				    	alert("请选择支付方式");
@@ -344,23 +344,34 @@
 									    //alert(res)
 									    }
 									});
-		                			alert(res.body.timeStamp)
-		                			alert(res.body.package)
-		                			alert(res.body.paySign)
-		                			alert( res.body.nonceStr)
+		                			//alert(res.body.timeStamp)
+		                			//alert(res.body.package)
+		                			//alert(res.body.paySign)
+		                			//alert( res.body.nonceStr)
 		                			 //for(s in res.body){
 		                		    //	alert(res.body.s)
 		                		    //}
 		                		    wx.chooseWXPay({
-		                		      timeStamp: res.body.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+		                		      timestamp: res.body.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
 			         				  nonceStr: res.body.nonceStr, // 支付签名随机串，不长于 32 位
 			         				  package: res.body.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
-			         				  signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+			         				  signType:res.body.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
 			         				  paySign: res.body.paySign, // 支付签名
 			         				  success: function (res) {
 				         				  // 支付成功后的回调函数
-				         				  alert(res.return_msg+"  "+res.return_code)
-				         				  alert("支付成功");
+				         				 if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+				         					 
+				         					//支付成功后跳转的页面
+				         					 window.location.href="http://www.pergirls.com/WechatController/auth?timestamp="+ new Date().getTime()+Math.random();
+				         					 
+				         				 }else if(res.err_msg == "get_brand_wcpay_request:cancel"){
+				         					 
+				         				
+				         					 
+				         				 }else if(res.err_msg == "get_brand_wcpay_request:fail"){
+				         					 
+				         					WeixinJSBridge.call('closeWindow');
+			         				     }
 			         				  }
 			         			});
 		                	 });
