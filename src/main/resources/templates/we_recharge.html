@@ -358,6 +358,7 @@
 			         				  signType:res.body.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
 			         				  paySign: res.body.paySign, // 支付签名
 			         				  success: function (res) {
+			         					  alert()
 				         				  // 支付成功后的回调函数
 				         				 if(res.err_msg == "get_brand_wcpay_request:ok" ) {
 				         					 
