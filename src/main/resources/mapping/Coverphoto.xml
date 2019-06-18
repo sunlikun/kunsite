@@ -52,7 +52,7 @@
          <where>
          c.flag="1"
         	<if test="category != null and category != ''">
-				 c.category=#{category}
+				and c.category=#{category}
 			</if>
 		 </where>
 		 	ORDER BY c.create_time desc

@@ -130,27 +130,27 @@ public class CoverphotoController {
 	}
 	
 	
-//	@RequestMapping("queryAllCoverPhoto")
-//	public void queryAllCoverPhoto(HttpServletResponse response,Coverphoto coverphoto) throws IOException {
-//		    //查询微信支付记录
-//			ArrayList<Coverphoto> list=coverphotoService.queryCoverPhoto(coverphoto);
-//		
-//		 	response.setContentType("application/json");
-//	        response.setHeader("Pragma", "No-cache");
-//	        response.setHeader("Cache-Control", "no-cache");
-//	        response.setCharacterEncoding("UTF-8");
-//	        
-//	        JSONArray listArray=JSONArray.fromObject(list);     
-//	        PrintWriter out= null;
-//	        out = response.getWriter();
-//	        out.print(listArray.toString());
-//	        System.out.println(listArray.toString());
-//	        out.flush();
-//	        out.close();
-//	
-//		
-//		
-//	}
+	@RequestMapping("queryAllCoverPhoto")
+	public void queryAllCoverPhoto(HttpServletResponse response,Coverphoto coverphoto) throws IOException {
+		    //查询微信支付记录
+			ArrayList<Coverphoto> list=coverphotoService.queryCoverPhoto(coverphoto);
+		
+		 	response.setContentType("application/json");
+	        response.setHeader("Pragma", "No-cache");
+	        response.setHeader("Cache-Control", "no-cache");
+	        response.setCharacterEncoding("UTF-8");
+	        
+	        JSONArray listArray=JSONArray.fromObject(list);     
+	        PrintWriter out= null;
+	        out = response.getWriter();
+	        out.print(listArray.toString());
+	        System.out.println(listArray.toString());
+	        out.flush();
+	        out.close();
+	
+		
+		
+	}
 	
 	
 	

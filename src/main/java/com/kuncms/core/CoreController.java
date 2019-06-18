@@ -172,6 +172,7 @@ public class CoreController {
 				//将用户信息放入session
 				HttpSession session = request.getSession();
 		        session.setAttribute("loginName",userobj.get("nickname"));
+		       
 		    	System.out.println(userobj.get("nickname"));
 		        session.setAttribute("sex",userobj.get("sex"));
 		        session.setAttribute("gold_coin",0);
@@ -184,6 +185,7 @@ public class CoreController {
 		        user.setHeadimgurl((String) userobj.get("headimgurl"));
 		        ArrayList<User> userlis=userService.isRegister(user);
 		        if(userlis.size()>0){//已经注册
+		        	  session.setAttribute("user",userlis.get(0));
 		        	  session.setAttribute("gold_coin",userlis.get(0).getGold_coin());
 		        }else{//尚未注册
 		        	userService.newsignup(user);
