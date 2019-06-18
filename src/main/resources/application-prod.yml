@@ -68,7 +68,7 @@ WXPAY:
     MCHID: 1529797251
     KEY: kungedeapimiyaoKg123456789056321
     APPSECRET: 396e3058561fd53fa8120faf57ced10a  
-    NOTIFY_URL: http://39.98.164.226:8082/wxpay/we_notify
+    NOTIFY_URL: http://39.98.164.226:8081/wxpay/we_notify
     CREATE_IP: 39.98.164.226
  
    

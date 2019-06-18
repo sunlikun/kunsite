@@ -67,6 +67,11 @@ public class ThumbnailController {
 		DownloadRecord downloadRecord=new DownloadRecord();
 	    coverphoto.setId(id);
 	    ArrayList<Coverphoto> list=coverphotoService.queryCoverPhotoById(coverphoto);
+	    
+	   
+ 	    HttpSession session=request.getSession();
+ 	    User loginuser=(User) session.getAttribute("user");
+ 	    ArrayList<User> userl=(ArrayList<User>) userService.check_username(loginuser);
 	    if(list.size()>0){
 	       Coverphoto coverphoto1=list.get(0);
  		   String url=list.get(0).getBaiduyun_address();
@@ -77,13 +82,12 @@ public class ThumbnailController {
  		   //增加下载记录
  		   String videoId=list.get(0).getId();
  		   downloadRecord.setVideo_id(videoId); 
- 		   downloadRecordService.insert(downloadRecord, request);
+ 		   downloadRecord.setUser_name(user.getUser_name());
+ 		   downloadRecord.setUser_id(user.getId());
+ 		   downloadRecordService.insert(downloadRecord);
  	   };
  	   
- 	   //扣除用户对应的金币
- 	   HttpSession session=request.getSession();
- 	   User loginuser=(User) session.getAttribute("user");
- 	   ArrayList<User> userl=(ArrayList<User>) userService.check_username(loginuser);
+ 	  //扣除用户对应的金币
 		
 		if(userl.size()>0){
 			 User loginuser1=userl.get(0);
