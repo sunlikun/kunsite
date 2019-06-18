@@ -27,7 +27,7 @@ public class DownloadRecordController {
 	DownloadRecordService downloadRecordService;
 	
 	@RequestMapping("insert")
-	public void insert( DownloadRecord record,HttpServletRequest request) throws IOException, ParseException {
-		downloadRecordService.insert(record,request);
+	public void insert( DownloadRecord record) throws IOException, ParseException {
+		downloadRecordService.insert(record);
 	}
 }

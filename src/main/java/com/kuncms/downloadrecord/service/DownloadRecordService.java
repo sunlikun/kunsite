@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.kuncms.downloadrecord.dao.DownloadRecordDao;
 import com.kuncms.downloadrecord.model.DownloadRecord;
+import com.kuncms.user.model.User;
 import com.kuncms.util.DateUtil;
 
 
@@ -22,7 +23,7 @@ public class DownloadRecordService {
 	@Autowired
 	DownloadRecordDao downloadRecordDao;
 	
-	public void insert(DownloadRecord record,HttpServletRequest request) throws ParseException {
+	public void insert(DownloadRecord record) throws ParseException {
 		// TODO Auto-generated method stub
 		
 		String id=UUID.randomUUID().toString().replace("-", "").toLowerCase();
@@ -30,10 +31,6 @@ public class DownloadRecordService {
 		DateUtil dateUtil=new DateUtil();
 		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		record.setDownload_time(format.parse(dateUtil.getNow()));
-		HttpSession session = request.getSession();
-		String userName=(String) session.getAttribute("loginName");
-		record.setUser_name(userName);
-		
 		downloadRecordDao.insert(record);
 	}
 

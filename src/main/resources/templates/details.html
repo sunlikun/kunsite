@@ -266,7 +266,7 @@
 						                		 // 打开页面，此处最好使用提示页面  
 						                		//location.href=res.body.url;
 						                		 //alert(res.body.url)
-						                		  if(gold_coin>=t_gold_coin){//用户金币数足够
+						                		  if(parseInt(gold_coin)>=parseInt(t_gold_coin)){//用户金币数足够
 						    	 						var msg=confirm("当前拥有"+gold_coin+"金币，下载需要"+t_gold_coin+"金币");
 		
 								    					if(msg==true)

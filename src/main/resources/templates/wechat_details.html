@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>详情页</title>
+    <title>内容详情</title>
 
     <meta name="description" content="Source code generated using layoutit.com">
     <meta name="author" content="LayoutIt!">
@@ -19,8 +19,10 @@
 
     <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 	<style>
-	body { width:80%; margin:50px auto; }
+	body { width:90%; margin:40px auto; }
 	ul {
     display: block;
     overflow: hidden;
@@ -151,15 +153,29 @@
 	</script>
   </head>
   <body>
-
+	<!-- 
     <div th:include="header :: header"></div> 
-	<p>
-	<div  style="margin-top: 130px;width: 200px">
+     -->
+    <nav class="navbar navbar-default" role="navigation">
+					    <div class="container-fluid">
+						    <div>
+						        <ul class="nav navbar-nav">
+						            <li> <a href="/more?flag=2" class="navbar-brand">下载中心</a></li>
+						        </ul>
+						    </div>
+						   
+					    </div>
+	</nav>
+    <p>
+	<div  style="margin-top: 30px">
 	 	<div id="app1">
 				<input id="id" th:value="${id}" name="id" type="text" style="display: none">
 				<input id="baiduyun_address"  name="baiduyun_address" type="text" style="display: none" v-model="baiduyun_address" >
-				<input id="baiduyun_pass" th:value="${baiduyun_pass}" name="baiduyun_pass" type="text">
-				<input type="button" @click="download()" value="点我下载 ">&nbsp;&nbsp;人气:<input id="clicks"  name="clicks" type="text"  th:value="${clicks}" style="border: none;">
+				提取码:<input id="baiduyun_pass" th:value="${baiduyun_pass}" name="baiduyun_pass" type="text" style="width: 2.5rem;border: none;">
+				<!--  <input type="button" @click="download()" value="点我下载 ">-->
+				<button type="button" class="btn btn-default"  @click="download()">
+				下载
+				</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人气:<input id="clicks"  name="clicks" type="text"  th:value="${clicks}" style="border: none;width: 2rem">
 		 </div>
 		
 			
@@ -229,8 +245,9 @@
 							    	var baiduyun_pass=document.getElementById("baiduyun_pass");  
 							    	baiduyun_pass.select(); // 选择对象  
 							    	document.execCommand("Copy"); // 执行浏览器复制命令  
-							    	
+							    	*/
 							    	//手机端
+							    	/*
 							    	var clipboard = new Clipboard('#baiduyun_pass')
 							        clipboard.on('success', e => {
 							          console.log('复制成功')
@@ -242,8 +259,8 @@
 							          console.log('该浏览器不支持自动复制')
 							          // 释放内存
 							          clipboard.destroy()
-							        })
-									*/
+							        })*/
+							
 							    	
 							    	/* var form=$("<form>");//定义一个form表单
 									form.attr("style","display:none");
@@ -267,24 +284,22 @@
 						                		 // 打开页面，此处最好使用提示页面  
 						                		//location.href=res.body.url;
 						                		 //alert(res.body.url)
-						                		  if(gold_coin>=t_gold_coin){//用户金币数足够
+						                		  if(parseInt(gold_coin)>=parseInt(t_gold_coin)){//用户金币数足够
 						    	 						var msg=confirm("当前拥有"+gold_coin+"金币，下载需要"+t_gold_coin+"金币");
 		
-								    					if(msg==true)
-		
-								     					{ 
+								    					if(msg==true){ 
 								    						 //this.baiduyun_address=res.body.url;
 									        					//window.open(res.data); 
 									        				// 重定向到目标页面  
-									        				 var newWin=window.open();
-							                                 newWin.location.href = "/todown?t_gold_coin="+t_gold_coin+"&id="+id;  
+									        				 //var newWin=window.open();
+									        				 window.location.href = "/todown?t_gold_coin="+t_gold_coin+"&id="+id;  
 							                                 //location.reload()
 									                		//window.open("/todown");
 								     					}
 								    					
 						                		  }else{//用户金币数不足
 						 					    	 alert("当前拥有"+gold_coin+"金币，下载需要"+t_gold_coin+"金币，金币不足请前往充值！");
-						 					     	}	
+						 					      }	
 									}else{
 											  				//var newWin=window.open();
 									                		//newWin.close();
