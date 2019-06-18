@@ -66,7 +66,48 @@ public class WechatController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private final String token = "1144954876";
 	
-	
+	/**
+	 * @param map
+	 * @param id
+	 * @param baiduyun_pass
+	 * @param baiduyun_address
+	 * @param t_gold_coin
+	 * @param model
+	 * @param request
+	 * @return
+	 * 跳转到详情页
+	 */
+	@RequestMapping("/wechat_details")
+    public String details(Map<String,Object> map,String id,String baiduyun_pass,String baiduyun_address,String t_gold_coin,Model model,HttpServletRequest request){
+	  
+		//取出当前作品的点击率并加1
+		Coverphoto coverphoto=new Coverphoto();
+		coverphoto.setId(id);
+		ArrayList<Coverphoto> list=coverphotoService.queryCoverPhotoById(coverphoto);
+		Coverphoto coverphoto1=list.get(0);
+		coverphoto1.setClicks(coverphoto1.getClicks()+1);
+		coverphotoService.updateCoverPhotoById(coverphoto1);
+	   
+		
+		model.addAttribute("id",id);
+		model.addAttribute("t_gold_coin",t_gold_coin);
+		model.addAttribute("clicks",coverphoto1.getClicks());
+
+		HttpSession session=request.getSession();
+		if(session.getAttribute("loginName")!=null){
+			String user_name=(String) session.getAttribute("loginName");
+			int gold_coin=(int) session.getAttribute("gold_coin");
+			model.addAttribute("user_name",user_name);
+			model.addAttribute("gold_coin",gold_coin);
+		}
+		
+		
+		System.out.println("t_gold_coin"+t_gold_coin);
+		model.addAttribute("baiduyun_pass",baiduyun_pass);
+		
+		model.addAttribute("baiduyun_address",baiduyun_address);
+       return "wechat_details";
+    }
 	
 	/**
 	 * 公众号跳转到网站首页
@@ -76,20 +117,90 @@ public class WechatController {
 	 * @param code
 	 * @return
 	 */
-	@RequestMapping("/index")
-    public String index(Map<String,Object> map,HttpServletRequest request,Model model,String code){
-       String videocode=request.getParameter("videocode");
-       //Videoinfo  videoinfo=videoInfoService.serachvideo("videocode");
-       System.out.println("首页");
-       HttpSession session=request.getSession();
-       String user_name=(String) session.getAttribute("loginName");
-	   model.addAttribute("user_name",user_name);
-	   model.addAttribute("code",code);
-       //map.put("hello",videoinfo);
-       return "index";
+	@RequestMapping(value = "/index")
+	public String index(HttpServletRequest request,Model model) throws JSONException, IOException{
+
+	        // 用户同意授权后，能获取到code
+	        String code = request.getParameter("code");
+	        String state = request.getParameter("state");
+	        
+	    
+	        WeixinOauth2Token wat = WechatController.getOauth2AccessToken(WeChatConfig.APP_ID, WeChatConfig.APP_SECRET, code);
+		 	
+		  	
+		  	SNSUserInfo snsUserInfo = null;
+	        // 拼接请求地址
+	        String requestUrl = "https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID";
+	        requestUrl = requestUrl.replace("ACCESS_TOKEN", wat.getAccessToken()).replace("OPENID", wat.getOpenId());
+	        // 通过网页授权获取用户信息
+	        JSONObject jsonObject = CommonUtil.httpsRequest(requestUrl, "GET", null);
+	        if (null != jsonObject) {
+	            try {
+	                snsUserInfo = new SNSUserInfo();
+	                // 用户的标识
+	                snsUserInfo.setOpenId(jsonObject.getString("openid"));
+	                // 昵称
+	                snsUserInfo.setNickname(jsonObject.getString("nickname"));
+	                // 性别（1是男性，2是女性，0是未知）
+	                snsUserInfo.setSex(jsonObject.getInt("sex"));
+	                // 用户所在国家
+	                snsUserInfo.setCountry(jsonObject.getString("country"));
+	                // 用户所在省份
+	                snsUserInfo.setProvince(jsonObject.getString("province"));
+	                // 用户所在城市
+	                snsUserInfo.setCity(jsonObject.getString("city"));
+	                // 用户头像
+	                snsUserInfo.setHeadImgUrl(jsonObject.getString("headimgurl"));
+	                // 用户特权信息
+	                snsUserInfo.setPrivilegeList(JSONArray.toList(jsonObject.getJSONArray("privilege"), List.class));
+	                User user1=new User();
+	                user1.setOpenid(jsonObject.getString("openid"));
+	                ArrayList<User> user=userService.check_username(user1);
+	                if(user.size()>0) {
+	                	model.addAttribute("id",user.get(0).getId());
+	                	model.addAttribute("user_name",user.get(0).getUser_name());
+	                	HttpSession session = request.getSession();
+	 	    	        session.setAttribute("loginName",user.get(0).getUser_name());
+	 	    	        session.setAttribute("gold_coin",user.get(0).getGold_coin());
+	 	    	        session.setAttribute("user",user.get(0));
+	                }
+	               
+	            	
+	            } catch (Exception e) {
+	                snsUserInfo = null;
+	                int errorCode = jsonObject.getInt("errcode");
+	                String errorMsg = jsonObject.getString("errmsg");
+	                System.out.println("获取用户信息失败 errcode:{} errmsg:{}"+errorCode+errorMsg);
+	            }
+	        }
+	        return "wecaht_index";
+
+      }
+	
+	
+	@RequestMapping(value = "/index_auth")
+   	@ResponseBody
+   	public void index_auth(HttpServletRequest request,HttpServletResponse response) throws Exception {
+    	 // 设置编码
+    	request.setCharacterEncoding("utf-8");
+    	response.setContentType("text/html;charset=utf-8");
+    	response.setCharacterEncoding("utf-8");
+        /**
+         * 第一步：用户同意授权，获取code:https://open.weixin.qq.com/connect/oauth2/authorize
+         * ?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE
+         * &state=STATE#wechat_redirect
+         */
+        String redirect_uri = URLEncoder.encode(
+                "http://www.pergirls.com/WechatController/index", "UTF-8");// 授权后重定向的回调链接地址，请使用urlencode对链接进行处理（文档要求）
+        // 按照文档要求拼接访问地址
+        String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="
+                + WeChatConfig.APP_ID
+                + "&redirect_uri="
+                + redirect_uri
+                + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+        response.sendRedirect(url);// 跳转到要访问的地址
+        
     }
-	
-	
 	
 	
 	/**

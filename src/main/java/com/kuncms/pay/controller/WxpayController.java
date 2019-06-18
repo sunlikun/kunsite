@@ -1,17 +1,17 @@
 package com.kuncms.pay.controller;
- 
 import com.github.wxpay.sdk.WXPayUtil;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
-import com.kuncms.core.CoreController;
+
 import com.kuncms.pay.HttpUtil;
 import com.kuncms.pay.PayConfigUtil;
 import com.kuncms.pay.PayToolUtil;
 import com.kuncms.pay.QRUtil;
 import com.kuncms.pay.XMLUtil4jdom;
+import com.kuncms.pay.controller.PayBaseController;
 import com.kuncms.pay.model.WechatpayTradeinfo;
 import com.kuncms.pay.model.WxpayVo;
 import com.kuncms.pay.service.WechatpayTradeinfoService;
@@ -20,16 +20,15 @@ import com.kuncms.user.service.UserService;
 
 import org.jdom.JDOMException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
- 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
 
 import java.io.*;
 import java.text.ParseException;
@@ -99,13 +98,14 @@ public class WxpayController extends PayBaseController {
         packageParams.put("mch_id", MCHID);//商户号
         packageParams.put("openid", user.getOpenid());//openid
         packageParams.put("nonce_str",  WXPayUtil.generateNonceStr());//随机字符串
-        packageParams.put("body", "普格娱乐金币充值");  //商品描述
+        packageParams.put("body", "普格娱乐充值");  //商品描述
         packageParams.put("out_trade_no", out_trade_no);//商户订单号
         packageParams.put("total_fee", total_fee); //标价金额 订单总金额，单位为分
         packageParams.put("spbill_create_ip", CREATE_IP);//终端IP APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP
         packageParams.put("notify_url", NOTIFY_URL);//通知地址 异步接收微信支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数
         packageParams.put("trade_type", "JSAPI");//交易类型 JSAPI
         packageParams.put("attach", attach);
+        //packageParams.put("signtype", "MD5");
         // 签名
         String sign = WXPayUtil.generateSignature(packageParams, KEY);
         packageParams.put("sign", sign);
