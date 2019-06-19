@@ -40,6 +40,7 @@ import com.kuncms.wxgzh.model.AccessToken;
 import com.kuncms.wxgzh.model.AdvancedUtil;
 import com.kuncms.wxgzh.model.Article;
 import com.kuncms.wxgzh.model.CommonUtil;
+import com.kuncms.wxgzh.model.CustomerMessage;
 import com.kuncms.wxgzh.model.MessageUtil;
 import com.kuncms.wxgzh.model.NewsMessage;
 import com.kuncms.wxgzh.model.SNSUserInfo;
@@ -155,6 +156,7 @@ public class WechatController {
 	                snsUserInfo.setPrivilegeList(JSONArray.toList(jsonObject.getJSONArray("privilege"), List.class));
 	                User user1=new User();
 	                user1.setOpenid(jsonObject.getString("openid"));
+	                user1.setUnionid(jsonObject.getString("unionid"));
 	                ArrayList<User> user=userService.check_username(user1);
 	                if(user.size()>0) {
 	                	model.addAttribute("id",user.get(0).getId());
@@ -283,6 +285,7 @@ public class WechatController {
 	                snsUserInfo.setPrivilegeList(JSONArray.toList(jsonObject.getJSONArray("privilege"), List.class));
 	                User user1=new User();
 	                user1.setOpenid(jsonObject.getString("openid"));
+	                user1.setUnionid(jsonObject.getString("unionid"));
 	                ArrayList<User> user=userService.check_username(user1);
 	                if(user.size()>0) {
 	                	model.addAttribute("id",user.get(0).getId());
@@ -480,10 +483,13 @@ public class WechatController {
     		        user.setIs_wechat("1");
     		        user.setHeadimgurl(weiXinUserInfo.getHeadimgurl());
     		        user.setUser_name(weiXinUserInfo.getNickname());
+    		        user.setUnionid(weiXinUserInfo.getUnionid());
     		        user.setOfficial_account("1");
+    		        System.out.println(weiXinUserInfo.getUnionid()+"=======");
     		        ArrayList<User> userlis=userService.isRegister(user);
     		        if(userlis.size()>0){//已经注册
-    		        	  
+    		        	 user.setOfficial_account("1");
+    	    		     userService.update_offi_acc(user);
     		        }else{//尚未注册
     		        	userService.newsignup(user);
     		        }
@@ -497,6 +503,7 @@ public class WechatController {
                 	User user=new User();
     		        user.setOpenid(weiXinUserInfo.getOpenid());
     		        user.setOfficial_account("0");
+    		        user.setUnionid(weiXinUserInfo.getUnionid());
     		        userService.update_offi_acc(user);
     		        
     		        respMessage = MessageUtil.messageToXml(text);
@@ -511,7 +518,9 @@ public class WechatController {
                     }
                     
                     respMessage = MessageUtil.messageToXml(text);
-                  }
+                 }
+                
+                
             }
           
             
@@ -534,7 +543,19 @@ public class WechatController {
                 //if ("1".equals(content)) {
                     //text.setContent("今天的天气真不错！");
                     //respMessage = MessageUtil.messageToXml(text);
-        		if(list.size()>0) {
+        		 if (serial_number.equals("客服")) {  
+                     // 事件KEY值，与创建自定义菜单时指定的KEY值对应  
+                   
+                     	String openid=map.get("FromUserName"); //用户openid
+                     	String mpid=map.get("ToUserName"); //公众号原始ID
+                 	    CustomerMessage customer=new CustomerMessage();
+                 	    customer.setToUserName(fromUserName);
+                 	    customer.setFromUserName(toUserName);
+                 	    customer.setCreateTime(new Date().getTime());
+                 	    customer.setMsgType("transfer_customer_service");
+                 	    text.setContent("请输入您所要咨询的或遇到的问题，客服会在24小时内给您处理回复");
+                 	    respMessage = MessageUtil.messageToXml(text);
+                  }else if(list.size()>0) {
         			Coverphoto c=list.get(0);
         			VideoMessage  video=new VideoMessage();
                     video.setToUserName(fromUserName);

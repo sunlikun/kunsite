@@ -43,6 +43,33 @@ public class CoreController {
 	UserService userService;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
+	
+	/**
+	 * 跳转到联系我们
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping("/contact")
+    public String contact(Map<String,Object> map,Model model,HttpServletRequest request){
+	   //ArrayList<Coverphoto> list=thumbnailService.queryCoverPhoto();
+	   //com.alibaba.fastjson.JSONArray array= com.alibaba.fastjson.JSONArray.parseArray(JSON.toJSONString(list));
+	   //model.addAttribute("data", array.toJSONString());
+//		HttpSession session=request.getSession();
+//		User user=(User) session.getAttribute("user");
+//		String result="";
+//		if(user.getUser_name()==null){
+//			result="login";
+//		}else{
+//			result="membership";
+//		}
+//		model.addAttribute("user_name",user.getUser_name());
+//		model.addAttribute("id",user.getId());
+		
+       return "contact";
+    }
+	
+	
+	
 	/**
 	 * 跳转到微信内容上传页面
 	 * @param map

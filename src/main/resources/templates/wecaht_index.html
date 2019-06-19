@@ -165,7 +165,7 @@
 	</script>
   </head>
   <body bgcolor="#DDDDDD">
-	<div th:include="header :: header"></div> 
+	<div th:include="we_header :: we_header"></div> 
 	<div class="container-fluid">
   		<div class="row" style="margin-top: 10px;">
 				<div class="col-md-8">
@@ -223,7 +223,7 @@
 									<img  class="img-responsive"   src="/img/wechat/qrcode_for_gh_65045f61e850_258.jpg" >
 								</p>
 								<center>
-									<ul id="myTab" class="nav nav-tabs">
+									<ul id="myTab" class="nav nav-tabs" style="width: 25rem">
 										<li class="active">
 											<a href="#home" data-toggle="tab" onclick="createrankingList(1)">
 												 当天排行
@@ -270,7 +270,7 @@
 	
 			
    </div>
-   <div th:include="footer :: footer"></div> 
+   <div th:include="we_footer :: we_footer"></div> 
    <input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none"> 
    <input id="code" th:value="${code}" name="code" type="text" style="display: none">
   
@@ -310,7 +310,8 @@
 	                   	tableContent += '<img  class="img-responsive"   src="' + coverid+ '" ></div>';
 	                      	tableContent += '</a>';
 	                      	tableContent += '<div style="display:inline-block;margin-left:0px;">' + coverphotoArr[i].video_name.substring(0, 25)+ '</div>';
-	                    	tableContent += '</div>';
+	                      	tableContent += '<p>视频点播号:'+coverphotoArr[i].serial_number+'</p>';
+	                      	tableContent += '</div>';
 	                      converGroup+=tableContent;
 	                      
 	              	}

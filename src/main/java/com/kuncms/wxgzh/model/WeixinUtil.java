@@ -168,6 +168,8 @@ public class WeixinUtil {
           weixinUserInfo.setLanguage(jsonObject.getString("language"));
           // 用户头像
           weixinUserInfo.setHeadimgurl(jsonObject.getString("headimgurl"));
+          //unionid
+          weixinUserInfo.setUnionid(jsonObject.getString("unionid"));
         } catch (Exception e) {
           if (0 == weixinUserInfo.getSubscribe()) {
             log.error("用户{}已取消关注", weixinUserInfo.getOpenid());

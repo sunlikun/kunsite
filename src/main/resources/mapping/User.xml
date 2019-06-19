@@ -3,7 +3,7 @@
 <mapper namespace="com.kuncms.user.dao.UserDao" >
 	<update id="update_offi_acc"  parameterType="com.kuncms.user.model.User">
 		update user_info u set u.official_account=#{official_account} where flag='1'
-		
+		<!-- 
 		<if test="user_name != null and user_name !=''">
         		and u.user_name=#{user_name} 
       	</if>
@@ -12,6 +12,10 @@
       	</if>
       	<if test="openid != null and openid !=''">
         		and u.openid=#{openid}
+      	</if>
+      	 -->
+      	 <if test="unionid != null and unionid !=''">
+        		and u.unionid=#{unionid}
       	</if>
  	</update>
 
@@ -76,8 +80,13 @@
 
  	<select id="isRegister"  parameterType="com.kuncms.user.model.User"  resultType="com.kuncms.user.model.User">
         SELECT*FROM user_info u where flag='1'
+         <!--  
          <if test="openid != null and openid !=''">
         		and u.openid=#{openid} 
+      	</if>
+      	-->
+      	 <if test="unionid != null and unionid !=''">
+        		and u.unionid=#{unionid} 
       	</if>
      </select>
 
@@ -107,6 +116,9 @@
       	<if test="openid != null and openid !=''">
         		and u.openid=#{openid} 
       	</if>
+      	<if test="unionid != null and unionid !=''">
+        		and u.unionid=#{unionid} 
+      	</if>
      </select>
 
 
@@ -123,8 +135,8 @@
     
     
     <insert id="newsignup"  parameterType="com.kuncms.user.model.User">
-		insert into user_info(id,user_name,password,create_time,update_time,flag,gold_coin,user_status,user_class,empirical_value,openid,is_wechat,headimgurl,official_account) 
-		   values(#{id},#{user_name},#{password},#{create_time},#{update_time},#{flag},#{gold_coin},#{user_status},#{user_class},#{empirical_value},#{openid},#{is_wechat},#{headimgurl},#{official_account})
+		insert into user_info(id,user_name,password,create_time,update_time,flag,gold_coin,user_status,user_class,empirical_value,openid,is_wechat,headimgurl,official_account,unionid) 
+		   values(#{id},#{user_name},#{password},#{create_time},#{update_time},#{flag},#{gold_coin},#{user_status},#{user_class},#{empirical_value},#{openid},#{is_wechat},#{headimgurl},#{official_account},#{unionid})
  	</insert>
   
 

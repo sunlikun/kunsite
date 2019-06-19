@@ -17,9 +17,15 @@ private String openid;       //普通用户的标识(wecaht)
 private String headimgurl;      //用户头像
 private String is_wechat;	 //是否是微信用户
 private String official_account;//是否关注了公众号
+private String unionid;// 微信联合id
 
 
-
+public String getUnionid() {
+	return unionid;
+}
+public void setUnionid(String unionid) {
+	this.unionid = unionid;
+}
 public String getOfficial_account() {
 	return official_account;
 }
