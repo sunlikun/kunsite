@@ -545,7 +545,7 @@ public class WechatController {
                     //respMessage = MessageUtil.messageToXml(text);
         		 if (serial_number.equals("客服")) {  
                      // 事件KEY值，与创建自定义菜单时指定的KEY值对应  
-                   
+        			 System.out.println("转发");
                      	String openid=map.get("FromUserName"); //用户openid
                      	String mpid=map.get("ToUserName"); //公众号原始ID
                  	    CustomerMessage customer=new CustomerMessage();
@@ -553,8 +553,8 @@ public class WechatController {
                  	    customer.setFromUserName(toUserName);
                  	    customer.setCreateTime(new Date().getTime());
                  	    customer.setMsgType("transfer_customer_service");
-                 	    text.setContent("请输入您所要咨询的或遇到的问题，客服会在24小时内给您处理回复");
-                 	    respMessage = MessageUtil.messageToXml(text);
+                 	    
+                 	    
                   }else if(list.size()>0) {
         			Coverphoto c=list.get(0);
         			VideoMessage  video=new VideoMessage();
@@ -570,7 +570,7 @@ public class WechatController {
 	              
 	              	respMessage = MessageUtil.messageToXml(video);
         		}else {
-        			text.setContent("内容编号有误，没有此资源！");
+        			text.setContent("系统收到非点播编号信息,客服将在24小时内对您的发送的信息进行处理并给您回复,如果您想点播视频，请输入正确的点播编号");
         			respMessage = MessageUtil.messageToXml(text);
         		}
                 	
