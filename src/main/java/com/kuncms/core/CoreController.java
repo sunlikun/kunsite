@@ -182,9 +182,12 @@ public class CoreController {
 		        user.setIs_wechat("1");
 		        user.setUser_name((String) userobj.get("nickname"));
 		        user.setHeadimgurl((String) userobj.get("headimgurl"));
+		        user.setUnionid((String) userobj.get("unionid"));
 		        ArrayList<User> userlis=userService.isRegister(user);
 		        if(userlis.size()>0){//已经注册
+		        	  session.setAttribute("user",userlis.get(0));
 		        	  session.setAttribute("gold_coin",userlis.get(0).getGold_coin());
+		        	 
 		        }else{//尚未注册
 		        	userService.newsignup(user);
 		        }
@@ -369,9 +372,13 @@ public class CoreController {
 	 * @return
 	 */
 	@RequestMapping("/more")
-    public String more(Map<String,Object> map,String flag,Model model){
+    public String more(Map<String,Object> map,String flag,Model model,HttpServletRequest request){
 	   //ArrayList<Coverphoto> list=thumbnailService.queryCoverPhoto();
 	   //com.alibaba.fastjson.JSONArray array= com.alibaba.fastjson.JSONArray.parseArray(JSON.toJSONString(list));
+	   HttpSession session=request.getSession();
+	   User user=(User) session.getAttribute("user");
+	   model.addAttribute("user_name",user.getUser_name());
+	   model.addAttribute("id",user.getId());
 	   model.addAttribute("flag", flag);
 	   return "more";
     }
