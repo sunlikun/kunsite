@@ -155,7 +155,7 @@ public class WechatController {
 	                // 用户特权信息
 	                snsUserInfo.setPrivilegeList(JSONArray.toList(jsonObject.getJSONArray("privilege"), List.class));
 	                User user1=new User();
-	                user1.setOpenid(jsonObject.getString("openid"));
+	                //user1.setOpenid(jsonObject.getString("openid"));
 	                user1.setUnionid(jsonObject.getString("unionid"));
 	                ArrayList<User> user=userService.check_username(user1);
 	                if(user.size()>0) {
@@ -284,7 +284,7 @@ public class WechatController {
 	                // 用户特权信息
 	                snsUserInfo.setPrivilegeList(JSONArray.toList(jsonObject.getJSONArray("privilege"), List.class));
 	                User user1=new User();
-	                user1.setOpenid(jsonObject.getString("openid"));
+	                //user1.setOpenid(jsonObject.getString("openid"));
 	                user1.setUnionid(jsonObject.getString("unionid"));
 	                ArrayList<User> user=userService.check_username(user1);
 	                if(user.size()>0) {
@@ -570,7 +570,15 @@ public class WechatController {
 	              
 	              	respMessage = MessageUtil.messageToXml(video);
         		}else {
-        			text.setContent("系统收到非点播编号信息,客服将在24小时内对您的发送的信息进行处理并给您回复,如果您想点播视频，请输入正确的点播编号");
+        			System.out.println("转发");
+                 	String openid=map.get("FromUserName"); //用户openid
+                 	String mpid=map.get("ToUserName"); //公众号原始ID
+             	    CustomerMessage customer=new CustomerMessage();
+             	    customer.setToUserName(fromUserName);
+             	    customer.setFromUserName(toUserName);
+             	    customer.setCreateTime(new Date().getTime());
+             	    customer.setMsgType("transfer_customer_service");
+        			text.setContent("已经收到您的反馈信息,客服将在24小时内对您的发送的信息进行处理并给您回复,如果您想点播视频，请输入正确的点播编号");
         			respMessage = MessageUtil.messageToXml(text);
         		}
                 	
