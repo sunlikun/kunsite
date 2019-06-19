@@ -172,6 +172,7 @@ public class CoreController {
 				//将用户信息放入session
 				HttpSession session = request.getSession();
 		        session.setAttribute("loginName",userobj.get("nickname"));
+		       
 		    	System.out.println(userobj.get("nickname"));
 		        session.setAttribute("sex",userobj.get("sex"));
 		        session.setAttribute("gold_coin",0);

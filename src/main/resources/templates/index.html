@@ -133,7 +133,7 @@
                     tableContent += '<div class="caption">';
                   	tableContent += '<p>' + coverphotoArr[i].video_name.substring(0, 25)+ '...</p>';
                   	tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币&nbsp;&nbsp;人气值:'+coverphotoArr[i].clicks+'</p>';
-                  	tableContent += '<p>公众号点播编号:'+coverphotoArr[i].serial_number+'</p>';
+                  	tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
                     tableContent += ' <p><a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-primary" role="button"> 查看</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default" role="button">  下载</a></p> ';
                   
                     tableContent += '</p>';
@@ -172,11 +172,11 @@
 					<nav class="navbar navbar-default" role="navigation">
 					    <div class="container-fluid">
 						    <div>
-						    <!-- 
+						    
 						        <ul class="nav navbar-nav">
 						            <li> <a href="/more?flag=1" class="navbar-brand">韩国女团&nbsp;》</a></li>
 						        </ul>
-						         -->
+						        
 						    </div>
 					    </div>
 					</nav>
@@ -189,12 +189,12 @@
 					<nav class="navbar navbar-default" role="navigation">
 					    <div class="container-fluid">
 						    <div>
-						    <!--  
+						     
 						        <ul class="nav navbar-nav">
 						            <li> <a href="/more?flag=2" class="navbar-brand">性感车模&nbsp;》</a></li>
 						        </ul>
 						    </div>
-						    -->
+						   
 					    </div>
 					</nav>
 					<div class="row" id="part2">
@@ -310,7 +310,8 @@
 	                   	tableContent += '<img  class="img-responsive"   src="' + coverid+ '" ></div>';
 	                      	tableContent += '</a>';
 	                      	tableContent += '<div style="display:inline-block;margin-left:0px;">' + coverphotoArr[i].video_name.substring(0, 25)+ '</div>';
-	                    	tableContent += '</div>';
+	                      	tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
+	                      	tableContent += '</div>';
 	                      converGroup+=tableContent;
 	                      
 	              	}
