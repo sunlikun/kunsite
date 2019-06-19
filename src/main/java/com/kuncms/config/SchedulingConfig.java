@@ -32,7 +32,7 @@ public class SchedulingConfig {
 	@Autowired
 	CoverphotoService coverphotoService;
 	
-	@Scheduled(cron="0 */10 * * * ?")    // 
+	@Scheduled(cron="0 */1 * * * ?")    // 
     public void scheduler() {
         System.out.println("定时任务开始");
       //查询视频库，如果存在MediaId为空的项，则调用微信接口，进行MediaId绑定
