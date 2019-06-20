@@ -27,55 +27,35 @@
 	<body class="text-center">
 		
 
-	<script type="text/javascript">
-    
-        var user_name=$("#user_name").val();
-		var app=new Vue({
-			  el: '#app',
-			  data: {
-				      user_name:"",
-					  password:"",
-			  },
-			  methods:{ 
-				 
-			  	login_check: function (event) {
-				       //alert(this.user_name)
-				       if (this.user_name && this.password) {
-				    	   //发送 post 请求
-			                this.$http.post('/login_check',{user_name:this.user_name,password:this.password},{emulateJSON:true}).then(function(res){
-			                	 
-			                	if(res.body.msg=='ok'){
-			                		alert(res.body.result);
-			                		var form=$("form");
-			                		form.submit();
-			                	}else{
-			                		//alert(res.body.result);
-			                		this.logerror=true;
-			                	}
-			                },function(res){
-			                    console.log(res.data);
-			                });
-				      }else{
-				    	  this.errors = [];
-
-					      if (!this.user_name) {
-					        this.errors.push('用户名不能为空');
-					       
-					      }
-					      if (!this.password) {
-					        this.errors.push('密码不能为空');
-					       
-					      }
-					      
-					      event.preventDefault();
-				      }
-
-				  }
-			})
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<dl>
+						<dt>
+							方式1：微信搜索“普格娱乐”公众号并关注
+						</dt>
+						<dd>
+							<img alt="Bootstrap Image Preview" src="/img/wechat/IMG_1443(20190620-100445).jpg" style="width: 23rem;height: 40rem"/>
+						</dd>
+						<dd>
+							在输入框中输入你想咨询（反馈的信息），客服会在24小时内处理您的留言并回复
+						</dd>
+						<dt>
+							方式2：邮箱
+						</dt>
+						<dd>
+							您也可以发送邮件至     likun@pergirls.com 进行问题咨询和反馈。
+						</dd>
+						
+						
+					</dl>
+				</div>
+			</div>
+		</div>
 		
 		
 	
-	</script>
+	
 
 	</body>
 

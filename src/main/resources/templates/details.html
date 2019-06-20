@@ -13,11 +13,11 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
-    <script type="text/javascript" src="/js/jquery.js"></script>
-    
-    <script src="https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js"></script>    
-
-    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-1.7.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-3.4.1.js"></script>
+    <script src="/js/clipboard.min.js"></script>
+    <script src="/js/layer-v3.1.1/layer/layer.js"></script>  
+	<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
 	<style>
 	body { width:80%; margin:50px auto; }
@@ -54,112 +54,21 @@
 	}
 	
 	</style>
-	<script type="text/javascript">
 	
-	  $(document).ready(function () {
-		  var user_name=$("#user_name").val();
-		  var baiduyun_address=$("#baiduyun_address").val();
-		  //$('#download').attr('href',baiduyun_address);
-          //alert(user_name)
-          if(user_name!=null&&user_name!==''){
-        	  $("#login").html("你好   "+user_name);
-          }
-          // prepare the data
-          var data=null
-          $.ajaxSetup({
-
-          	async:false
-
-          });
-          //根据coverid查询详情图
-          var id=$("#coverid").val();
-          $.ajax({
-              type: "post",
-              url: "/queryThumbnail",
-              data: {id,id},
-              dataType: "json",
-              success: function(data){
-            	var thumbnailArr = data;
-            	var thumbnailGroup="";
-            	for(var i=0;i<thumbnailArr.length;i++){
-            		　　//alert(coverphotoArr[i].coverphotoid);
-            		var tableContent="";
-            		var thumbnailid="/images/"+thumbnailArr[i].thumbnailid.substring(24);
-                 	//tableContent += '<div id="img" class="cp"><img class="img-responsive"  src="' + thumbnailArr[i].thumbnailid+ '"/><div>';
-                 	
-                 	tableContent += '<img src="'+thumbnailid+'" class="img-responsive"  width="95%" height="100%"><br>';
-                 	thumbnailGroup+=tableContent;
-                 	
-            	}
-              	
-                
-                $("#thumbnail").append(thumbnailGroup);
-               
-              	
-             }
-              
-              
-          });
-          
-          
-      });
-        
-	  /* function download(){
-    	  //var baiduyun_pass=$("#baiduyun_pass").val();
-    	  var id=$("#id").val();
-    	  //alert(baiduyun_pass)
-    	  var baiduyun_pass=document.getElementById("baiduyun_pass");  
-    	  baiduyun_pass.select(); // 选择对象  
-    	  document.execCommand("Copy"); // 执行浏览器复制命令  
-  		  //alert(baiduyun_address)
-    	  //window.location.href=baiduyun_address; 
-    	  //window.open(baiduyun_address);  
-    	  var form=$("<form>");//定义一个form表单
-			form.attr("style","display:none");
-			form.attr("target","");
-			form.attr("method","post");
-			form.attr("action","/download");
-			var input1=$("<input>");
-			input1.attr("type","hidden");
-			input1.attr("name","id");
-			input1.attr("value",id);
-			$("body").append(form);//将表单放置在web中
-			form.append(input1);  
-			form.submit();//表单提交   
-	 } */
-      
-	 
-	  function getlogin_info(){
-		  $.ajax({
-	            type : "get",
-	            url : "/getlogin_info",
-	            dataType : "text",
-	            success : function(result) {
-	               alert()
-	            },
-	            error : function() {
-	                alert("請求登陆信息失败");
-	            }
-	            });
-	 }
-	 
-	
-
-	
-
-	  
-	</script>
   </head>
   <body>
-
+<!--  
     <div th:include="header :: header"></div> 
+    -->
 	<p>
 	<div  style="margin-top: 130px">
 	 	<div id="app1">
+	 	
 				<input id="id" th:value="${id}" name="id" type="text" style="display: none">
 				<input id="baiduyun_address"  name="baiduyun_address" type="text" style="display: none" v-model="baiduyun_address" >
-				提取码:<input id="baiduyun_pass" th:value="${baiduyun_pass}" name="baiduyun_pass" type="text" style="border: none;">
-				<input type="button" @click="download()" value="复制下载 ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人气:<input id="clicks"  name="clicks" type="text"  th:value="${clicks}" style="border: none;">
+				提取码:<input id="baiduyun_pass" th:value="${baiduyun_pass}" name="baiduyun_pass" type="text" style="width: 5rem;border: none;" readonly="readonly">
+				<button @click="download()" class="btn btn-default" id="d" data-clipboard-text="1">点击下载</button>
+				&nbsp;&nbsp;&nbsp;人气:<input id="clicks"  name="clicks" type="text"  th:value="${clicks}" style="border: none;width: 5rem">
 		 </div>
 		
 			
@@ -177,14 +86,63 @@
 	<input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none"> 
 	<input id="gold_coin" th:value="${gold_coin}" name="gold_coin" type="text" style="display: none">
 	<input id="t_gold_coin"  th:value="${t_gold_coin}"  name="t_gold_coin" type="text" style="display: none">  
-	
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
     <script src="js/scripts.js"></script>
     
     <script type="text/javascript">
-    
+    $(document).ready(function () {
+		  var user_name=$("#user_name").val();
+		  var baiduyun_address=$("#baiduyun_address").val();
+		  //$('#download').attr('href',baiduyun_address);
+        //alert(user_name)
+        if(user_name!=null&&user_name!==''){
+      	  $("#login").html("你好   "+user_name);
+        }
+        
+        
+        var btn = document.getElementById('d');
+		var clipboard = new ClipboardJS(btn);
+		var copynum = 0;
+        // prepare the data
+        var data=null
+        $.ajaxSetup({
+
+        	async:false
+
+        });
+        //根据coverid查询详情图
+        var id=$("#coverid").val();
+        $.ajax({
+            type: "post",
+            url: "/queryThumbnail",
+            data: {id,id},
+            dataType: "json",
+            success: function(data){
+          	var thumbnailArr = data;
+          	var thumbnailGroup="";
+          	for(var i=0;i<thumbnailArr.length;i++){
+          		　　//alert(coverphotoArr[i].coverphotoid);
+          		var tableContent="";
+          		var thumbnailid="/images/"+thumbnailArr[i].thumbnailid.substring(24);
+               	//tableContent += '<div id="img" class="cp"><img class="img-responsive"  src="' + thumbnailArr[i].thumbnailid+ '"/><div>';
+               	
+               	tableContent += '<img src="'+thumbnailid+'" class="img-responsive"  width="95%" height="100%"><br>';
+               	thumbnailGroup+=tableContent;
+               	
+          	}
+            	
+              
+              $("#thumbnail").append(thumbnailGroup);
+             
+            	
+           }
+            
+            
+        });
+        
+        
         var user_name=$("#user_name").val();
+        
 		var app=new Vue({
 			  el: '#app',
 			  data: {
@@ -204,7 +162,7 @@
 			
 			})
 		  
-		  app.islogin();
+		app.islogin();
 		
 		
 		var app1=new Vue({
@@ -220,31 +178,37 @@
 					     //验证当前用户的金币数是否足够
 					     var gold_coin=$("#gold_coin").val();//用户金币数
 				    	 var t_gold_coin=$("#t_gold_coin").val();//下载所需金币
-					    
-
+				    	 $.ajax({
+				             url:'/get_user',//url路径
+				             type:'POST', //GET
+				             async:false, //或false,是否异步
+				             data:{//参数
+				            	 user_name:user_name
+				             },
+				             timeout:5000, //超时时间
+				             dataType:'json', //返回的数据格式：
+				             beforeSend:function(xhr){
+				             },
+				             success:function(data,textStatus,jqXHR){
+				            	 var gold_coin=data.gold_coin;
+					    	     $("#gold_coin").val(gold_coin);
+				            	 var gold_coin=$("#gold_coin").val();
+				             },
+				             error:function(xhr,textStatus){
+				                 console.log('小程序cookie获取失败---->'+textStatus);
+				             },
+				             complete:function(){
+				             }
+				        })
+				
 						    	//alert(this.user_name)
 							        var id=$("#id").val();
 							    	//alert(baiduyun_pass)
-							    	var baiduyun_pass=document.getElementById("baiduyun_pass");  
+							    	/* var baiduyun_pass=document.getElementById("baiduyun_pass");  
 							    	baiduyun_pass.select(); // 选择对象  
-							    	document.execCommand("Copy"); // 执行浏览器复制命令  
+							    	document.execCommand("Copy"); // 执行浏览器复制命令  */ 
 							    	
-							    	//手机端
-							    	var clipboard = new Clipboard('#baiduyun_pass')
-							        clipboard.on('success', e => {
-							          console.log('复制成功')
-							          // 释放内存
-							          clipboard.destroy()
-							        })
-							        clipboard.on('error', e => {
-							          // 不支持复制
-							          console.log('该浏览器不支持自动复制')
-							          // 释放内存
-							          clipboard.destroy()
-							        })
-							
-							    	
-							    	/* var form=$("<form>");//定义一个form表单
+							       /* var form=$("<form>");//定义一个form表单
 									form.attr("style","display:none");
 									form.attr("target","");
 									form.attr("method","post");
@@ -274,11 +238,46 @@
 								     					{ 
 								    						 //this.baiduyun_address=res.body.url;
 									        					//window.open(res.data); 
-									        				// 重定向到目标页面  
-									        				 var newWin=window.open();
-							                                 newWin.location.href = "/todown?t_gold_coin="+t_gold_coin+"&id="+id;  
-							                                 //location.reload()
-									                		//window.open("/todown");
+									        					//手机端
+													    	
+													    	clipboard.on('success', function(e) {
+						    								        console.log(e);
+						    								        //layer.msg("提取码已复制成功" + e.text);
+						    								      	//询问框
+																	layer.confirm('提取码已复制成功', {
+						    								          btn: ['继续','取消'] //按钮
+						    								        }, function(){
+						    								          //layer.msg('的确很重要', {icon: 1});
+						    								       // 重定向到目标页面  
+												        				var newWin=window.open();
+										                                newWin.location.href = "/todown?t_gold_coin="+t_gold_coin+"&id="+id;  
+										                                //location.reload()
+												                		//window.open("/todown");
+										                                layer.closeAll();
+										                                copynum++;
+								                                        if(copynum >= 1){
+								                                            clipboard.destroy();
+								                                            var btn = document.getElementById('d');
+																			var clipboard = new ClipboardJS(btn);
+								                                        };
+																		
+						    								        }, function(){
+						    								         
+						    								        });
+						    								        //e.clearSelection();
+						    								     	
+						    								});
+						
+						    								clipboard.on('error', function(e) {
+						    								        console.log(e);
+						    								        layer.open({
+						    						                    title: '提示',
+						    						                    content: '您的浏览器可能不支持自动复制提取码，请手动复制~'
+						    						                });
+						    								        clipboard.destroy();
+						    								});
+							        
+									        				
 								     					}
 								    					
 						                		  }else{//用户金币数不足
@@ -292,16 +291,6 @@
 				               // },function(res){
 				               //     console.log(res.data);
 				               // }); 
-
-						    
-					    
-					     
-					  
-					  	
-					  
-					  
-				       
-				       
 				   },
 				   getUser: function () {
 				       
@@ -318,6 +307,51 @@
 			
 			})
 		 app1.getUser();
+        
+        
+    });
+      
+	  /* function download(){
+  	  //var baiduyun_pass=$("#baiduyun_pass").val();
+  	  var id=$("#id").val();
+  	  //alert(baiduyun_pass)
+  	  var baiduyun_pass=document.getElementById("baiduyun_pass");  
+  	  baiduyun_pass.select(); // 选择对象  
+  	  document.execCommand("Copy"); // 执行浏览器复制命令  
+		  //alert(baiduyun_address)
+  	  //window.location.href=baiduyun_address; 
+  	  //window.open(baiduyun_address);  
+  	  var form=$("<form>");//定义一个form表单
+			form.attr("style","display:none");
+			form.attr("target","");
+			form.attr("method","post");
+			form.attr("action","/download");
+			var input1=$("<input>");
+			input1.attr("type","hidden");
+			input1.attr("name","id");
+			input1.attr("value",id);
+			$("body").append(form);//将表单放置在web中
+			form.append(input1);  
+			form.submit();//表单提交   
+	 } */
+    
+	 
+	  function getlogin_info(){
+		  $.ajax({
+	            type : "get",
+	            url : "/getlogin_info",
+	            dataType : "text",
+	            success : function(result) {
+	               alert()
+	            },
+	            error : function() {
+	                alert("請求登陆信息失败");
+	            }
+	            });
+	 }
+	 
+	
+        
 	
   </script>
   </body>

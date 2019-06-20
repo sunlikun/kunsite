@@ -171,10 +171,10 @@
 	 	<div id="app1">
 				<input id="id" th:value="${id}" name="id" type="text" style="display: none">
 				<input id="baiduyun_address"  name="baiduyun_address" type="text" style="display: none" v-model="baiduyun_address" >
-				提取码:<input id="baiduyun_pass" th:value="${baiduyun_pass}" name="baiduyun_pass" type="text" style="width: 5rem;border: none;">
+				提取码:<input id="baiduyun_pass" th:value="${baiduyun_pass}" name="baiduyun_pass" type="text" style="width: 5rem;border: none;" readonly="readonly">
 				<!--  <input type="button" @click="download()" value="点我下载 ">-->
 				<button type="button" class="btn btn-default"  @click="download()">
-				下载
+				点击复制下载
 				</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人气:<input id="clicks"  name="clicks" type="text"  th:value="${clicks}" style="border: none;width: 5rem">
 		 </div>
 		
@@ -236,7 +236,28 @@
 					     //验证当前用户的金币数是否足够
 					     var gold_coin=$("#gold_coin").val();//用户金币数
 				    	 var t_gold_coin=$("#t_gold_coin").val();//下载所需金币
-					    
+				    	 $.ajax({
+				             url:'/get_user',//url路径
+				             type:'POST', //GET
+				             async:false, //或false,是否异步
+				             data:{//参数
+				            	 user_name:user_name
+				             },
+				             timeout:5000, //超时时间
+				             dataType:'json', //返回的数据格式：
+				             beforeSend:function(xhr){
+				             },
+				             success:function(data,textStatus,jqXHR){
+				            	 var gold_coin=data.gold_coin;
+					    	     $("#gold_coin").val(gold_coin);
+				            	 var gold_coin=$("#gold_coin").val();
+				             },
+				             error:function(xhr,textStatus){
+				                 console.log('小程序cookie获取失败---->'+textStatus);
+				             },
+				             complete:function(){
+				             }
+				        })
 
 						    	//alert(this.user_name)
 							        var id=$("#id").val();
