@@ -158,8 +158,8 @@
 	 	<div id="app1">
 				<input id="id" th:value="${id}" name="id" type="text" style="display: none">
 				<input id="baiduyun_address"  name="baiduyun_address" type="text" style="display: none" v-model="baiduyun_address" >
-				<input id="baiduyun_pass" th:value="${baiduyun_pass}" name="baiduyun_pass" type="text">
-				<input type="button" @click="download()" value="点我下载 ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人气:<input id="clicks"  name="clicks" type="text"  th:value="${clicks}" style="border: none;">
+				提取码:<input id="baiduyun_pass" th:value="${baiduyun_pass}" name="baiduyun_pass" type="text" style="border: none;">
+				<input type="button" @click="download()" value="复制下载 ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人气:<input id="clicks"  name="clicks" type="text"  th:value="${clicks}" style="border: none;">
 		 </div>
 		
 			
