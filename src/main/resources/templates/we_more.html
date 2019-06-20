@@ -212,7 +212,7 @@
 
   </head>
   <body bgcolor="#DDDDDD">
-	<div th:include="header :: header"></div> 
+	<div th:include="we_header :: we_header"></div> 
 	<p></p><p></p>
 	<div class="container-fluid">
 		<div class="row" style="margin-top: 10px;">
@@ -365,7 +365,7 @@
                      	tableContent += '<div class="col-sm-6 col-md-4">';
                        tableContent += '<div class="thumbnail">';
                      
-                       tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'">';
+                       tableContent += '<a href="/WechatController/wechat_details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'">';
                        var coverid="/images/"+coverphotoArr[i].coverphotoid.substring(30);
                       // alert(coverid)
                        tableContent += '<img  class="img-responsive"   src="' + coverid+ '" >';
@@ -375,7 +375,7 @@
                      	tableContent += '<p>' + coverphotoArr[i].video_name+ '</p>';
                      	tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币</p>';
                         tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
-                       tableContent += ' <p><a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'" class="btn btn-primary" role="button"> 查看</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default" role="button">  下载</a></p> ';
+                       tableContent += ' <p><a href="/WechatController/wechat_details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-primary" role="button"> 查看</a> <a href="/WechatController/wechat_details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default" role="button">  下载</a></p> ';
                         tableContent += '</p>';
                     
                        tableContent += '<div>';

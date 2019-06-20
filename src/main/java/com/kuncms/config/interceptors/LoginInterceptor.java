@@ -103,6 +103,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         notLoginPaths.add("/membership");  
         notLoginPaths.add("/frame");  
         notLoginPaths.add("/recharge");  
+        notLoginPaths.add("/more");
         //notLoginPaths.add("/loginTimeout");  
           
         if(notLoginPaths.contains(path)) return false;  

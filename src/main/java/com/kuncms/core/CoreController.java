@@ -392,7 +392,22 @@ public class CoreController {
        return result;
     }
 	
-	
+	/**
+	 * 跳转到更多饭拍
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping("/we_more")
+    public String we_more(Map<String,Object> map,String flag,Model model,HttpServletRequest request){
+	   //ArrayList<Coverphoto> list=thumbnailService.queryCoverPhoto();
+	   //com.alibaba.fastjson.JSONArray array= com.alibaba.fastjson.JSONArray.parseArray(JSON.toJSONString(list));
+	   HttpSession session=request.getSession();
+	   User user=(User) session.getAttribute("user");
+	   model.addAttribute("user_name",user.getUser_name());
+	   model.addAttribute("id",user.getId());
+	   model.addAttribute("flag", flag);
+	   return "we_more";
+    }
 	
 	/**
 	 * 跳转到更多饭拍
