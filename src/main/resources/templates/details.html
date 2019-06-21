@@ -57,17 +57,16 @@
 	
   </head>
   <body>
-<!--  
+ 
     <div th:include="header :: header"></div> 
-    -->
-	<p>
+    <p>
 	<div  style="margin-top: 130px">
 	 	<div id="app1">
 	 	
 				<input id="id" th:value="${id}" name="id" type="text" style="display: none">
 				<input id="baiduyun_address"  name="baiduyun_address" type="text" style="display: none" v-model="baiduyun_address" >
 				提取码:<input id="baiduyun_pass" th:value="${baiduyun_pass}" name="baiduyun_pass" type="text" style="width: 5rem;border: none;" readonly="readonly">
-				<button @click="download()" class="btn btn-default" id="d" data-clipboard-text="1">点击下载</button>
+				<button class="btn btn-default" id="d" >点击下载</button>
 				&nbsp;&nbsp;&nbsp;人气:<input id="clicks"  name="clicks" type="text"  th:value="${clicks}" style="border: none;width: 5rem">
 		 </div>
 		
@@ -84,12 +83,17 @@
 <div th:include="footer :: footer"></div> 
 	<input id="coverid" th:value="${id}" name="coverid" type="text" style="display: none"> 
 	<input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none"> 
+	<input id="user_id" th:value="${user_id}" name="user_id" type="text" style="display: none">  
 	<input id="gold_coin" th:value="${gold_coin}" name="gold_coin" type="text" style="display: none">
 	<input id="t_gold_coin"  th:value="${t_gold_coin}"  name="t_gold_coin" type="text" style="display: none">  
 	<script src="js/bootstrap.min.js"></script>
     <script src="js/scripts.js"></script>
     
     <script type="text/javascript">
+    
+   
+    
+    
     $(document).ready(function () {
 		  var user_name=$("#user_name").val();
 		  var baiduyun_address=$("#baiduyun_address").val();
@@ -99,10 +103,6 @@
       	  $("#login").html("你好   "+user_name);
         }
         
-        
-        var btn = document.getElementById('d');
-		var clipboard = new ClipboardJS(btn);
-		var copynum = 0;
         // prepare the data
         var data=null
         $.ajaxSetup({
@@ -174,10 +174,15 @@
 			  methods:{
 				 
 				  download: function (event) {
-					  
+					 
 					     //验证当前用户的金币数是否足够
-					     var gold_coin=$("#gold_coin").val();//用户金币数
+					     var gold_coin=0;//用户金币数
 				    	 var t_gold_coin=$("#t_gold_coin").val();//下载所需金币
+				    	 $.ajaxSetup({
+
+				           	async:false
+
+				         });
 				    	 $.ajax({
 				             url:'/get_user',//url路径
 				             type:'POST', //GET
@@ -190,107 +195,63 @@
 				             beforeSend:function(xhr){
 				             },
 				             success:function(data,textStatus,jqXHR){
-				            	 var gold_coin=data.gold_coin;
-					    	     $("#gold_coin").val(gold_coin);
-				            	 var gold_coin=$("#gold_coin").val();
+				            	 gold_coin=data.gold_coin;
+					    	    
 				             },
 				             error:function(xhr,textStatus){
-				                 console.log('小程序cookie获取失败---->'+textStatus);
+				                 console.log(textStatus);
 				             },
 				             complete:function(){
 				             }
 				        })
 				
-						    	//alert(this.user_name)
-							        var id=$("#id").val();
-							    	//alert(baiduyun_pass)
-							    	/* var baiduyun_pass=document.getElementById("baiduyun_pass");  
-							    	baiduyun_pass.select(); // 选择对象  
-							    	document.execCommand("Copy"); // 执行浏览器复制命令  */ 
-							    	
-							       /* var form=$("<form>");//定义一个form表单
-									form.attr("style","display:none");
-									form.attr("target","");
-									form.attr("method","post");
-									form.attr("action","/download");
-									var input1=$("<input>");
-									input1.attr("type","hidden");
-									input1.attr("name","id");
-									input1.attr("value",id);
-									$("body").append(form);//将表单放置在web中
-									form.append(input1);  
-									form.submit();//表单提交    */
-							     	//发送 post 请求
-						     	   
-								
-				                   // this.$http.post('/download',{id:id},{emulateJSON:true}).then(function(res){
-				                    	
-						           if(user_name!=''&&user_name!=null){
-						                		//window.open(res.body.url);
-						                		 // 打开页面，此处最好使用提示页面  
-						                		//location.href=res.body.url;
-						                		 //alert(res.body.url)
-						                		  if(parseInt(gold_coin)>=parseInt(t_gold_coin)){//用户金币数足够
-						    	 						var msg=confirm("当前拥有"+gold_coin+"金币，下载需要"+t_gold_coin+"金币");
+						    	
+				        var id=$("#id").val();
+				    	if(user_name!=''&&user_name!=null){
+			                		
+			                if(parseInt(gold_coin)>=parseInt(t_gold_coin)){//用户金币数足够
+			    	 						var btn = document.getElementById('d');
+											var clipboard = new ClipboardJS(btn,{
+										        target: function() {
+										            return document.querySelector('#baiduyun_pass');
+										        }
+										    });
+									    	clipboard.on('success', function(e) {
+		    								        console.log(e);
+		    								        //layer.msg("提取码已复制成功" + e.text);
+		    								      	//询问框
+													layer.confirm("提取码已复制，当前拥有"+gold_coin+"金币，下载需要"+t_gold_coin+"金币 ", {
+		    								          btn: ['继续','取消'] //按钮
+		    								        }, function(){
+		    								          //layer.msg('的确很重要', {icon: 1});
+		    								       // 重定向到目标页面  
+								        				var newWin=window.open();
+						                                newWin.location.href = "/todown?t_gold_coin="+t_gold_coin+"&id="+id;  
+						                                layer.closeAll();
+						                                clipboard.destroy();
+				                                    }, function(){
+				                                    	 clipboard.destroy();
+		    								        });
+		    								        
+		    								     	
+		    								});
 		
-								    					if(msg==true)
-		
-								     					{ 
-								    						 //this.baiduyun_address=res.body.url;
-									        					//window.open(res.data); 
-									        					//手机端
-													    	
-													    	clipboard.on('success', function(e) {
-						    								        console.log(e);
-						    								        //layer.msg("提取码已复制成功" + e.text);
-						    								      	//询问框
-																	layer.confirm('提取码已复制成功', {
-						    								          btn: ['继续','取消'] //按钮
-						    								        }, function(){
-						    								          //layer.msg('的确很重要', {icon: 1});
-						    								       // 重定向到目标页面  
-												        				var newWin=window.open();
-										                                newWin.location.href = "/todown?t_gold_coin="+t_gold_coin+"&id="+id;  
-										                                //location.reload()
-												                		//window.open("/todown");
-										                                layer.closeAll();
-										                                copynum++;
-								                                        if(copynum >= 1){
-								                                            clipboard.destroy();
-								                                            var btn = document.getElementById('d');
-																			var clipboard = new ClipboardJS(btn);
-								                                        };
-																		
-						    								        }, function(){
-						    								         
-						    								        });
-						    								        //e.clearSelection();
-						    								     	
-						    								});
-						
-						    								clipboard.on('error', function(e) {
-						    								        console.log(e);
-						    								        layer.open({
-						    						                    title: '提示',
-						    						                    content: '您的浏览器可能不支持自动复制提取码，请手动复制~'
-						    						                });
-						    								        clipboard.destroy();
-						    								});
-							        
-									        				
-								     					}
-								    					
-						                		  }else{//用户金币数不足
-						 					    	 alert("当前拥有"+gold_coin+"金币，下载需要"+t_gold_coin+"金币，金币不足请前往充值！");
-						 					     	}	
-									}else{
-											  				//var newWin=window.open();
-									                		//newWin.close();
-									                		alert("请先登陆");
-						            };    
-				               // },function(res){
-				               //     console.log(res.data);
-				               // }); 
+		    								clipboard.on('error', function(e) {
+		    								        console.log(e);
+		    								        layer.open({
+		    						                    title: '提示',
+		    						                    content: '您的浏览器可能不支持自动复制提取码，请手动复制~'
+		    						                });
+		    								        clipboard.destroy();
+		    								});
+					    		}else{//用户金币数不足
+			 					    alert("当前拥有"+gold_coin+"金币，下载需要"+t_gold_coin+"金币，金币不足请前往充值！");
+			 					}	
+						}else{
+								  				
+						        alert("请先登陆");
+			            };    
+				              
 				   },
 				   getUser: function () {
 				       
@@ -306,37 +267,12 @@
 			    }
 			
 			})
-		 app1.getUser();
+		 //app1.getUser();
         
         
     });
       
-	  /* function download(){
-  	  //var baiduyun_pass=$("#baiduyun_pass").val();
-  	  var id=$("#id").val();
-  	  //alert(baiduyun_pass)
-  	  var baiduyun_pass=document.getElementById("baiduyun_pass");  
-  	  baiduyun_pass.select(); // 选择对象  
-  	  document.execCommand("Copy"); // 执行浏览器复制命令  
-		  //alert(baiduyun_address)
-  	  //window.location.href=baiduyun_address; 
-  	  //window.open(baiduyun_address);  
-  	  var form=$("<form>");//定义一个form表单
-			form.attr("style","display:none");
-			form.attr("target","");
-			form.attr("method","post");
-			form.attr("action","/download");
-			var input1=$("<input>");
-			input1.attr("type","hidden");
-			input1.attr("name","id");
-			input1.attr("value",id);
-			$("body").append(form);//将表单放置在web中
-			form.append(input1);  
-			form.submit();//表单提交   
-	 } */
-    
-	 
-	  function getlogin_info(){
+	function getlogin_info(){
 		  $.ajax({
 	            type : "get",
 	            url : "/getlogin_info",
@@ -350,7 +286,78 @@
 	            });
 	 }
 	 
-	
+	 var clipboard = new ClipboardJS('#d', {
+	        target: function() {
+	            return document.querySelector('#baiduyun_pass');
+	        }
+	    });
+
+	    clipboard.on('success', function(e) {
+	    	console.log(e);
+	    	 var user_name=$("#user_name").val();
+	    	 //验证当前用户的金币数是否足够
+		     var gold_coin=0;//用户金币数
+	   	 	 var t_gold_coin=$("#t_gold_coin").val();//下载所需金币
+	   	  	 var user_id=$("#user_id").val();
+	   	 	 $.ajaxSetup({
+	   	 		 async:false
+			 });
+	   	 	 $.ajax({
+	            url:'/get_user',//url路径
+	            type:'POST', //GET
+	            async:false, //或false,是否异步
+	            data:{//参数
+	           	 user_name:user_name,
+	           	 id:user_id
+	            },
+	            timeout:5000, //超时时间
+	            dataType:'json', //返回的数据格式：
+	            beforeSend:function(xhr){
+	            },
+	            success:function(data,textStatus,jqXHR){
+	           	 gold_coin=data.gold_coin;
+		    	    
+	            },
+	            error:function(xhr,textStatus){
+	                console.log(textStatus);
+	            },
+	            complete:function(){
+	            }
+	       })
+		   var id=$("#id").val();
+	   	   if(user_name!=''&&user_name!=null){
+	           		
+	           if(parseInt(gold_coin)>=parseInt(t_gold_coin)){//用户金币数足够
+		 						
+					    layer.confirm("提取码已复制，当前拥有"+gold_coin+"金币，下载需要"+t_gold_coin+"金币 ", {
+							          btn: ['继续','取消'] //按钮
+							       }, function(){
+							         // 重定向到目标页面  
+				        				var newWin=window.open();
+		                                newWin.location.href = "/todown?t_gold_coin="+t_gold_coin+"&id="+id;  
+		                                layer.closeAll();
+		                                //clipboard.destroy();
+	                                  }, function(){
+	                                  	//clipboard.destroy();
+						});
+			   }else{//用户金币数不足
+					    alert("当前拥有"+gold_coin+"金币，下载需要"+t_gold_coin+"金币，金币不足请前往充值！");
+						
+			   }	
+			}else{
+					  				
+			        alert("请先登陆");
+	       }; 
+	    });
+
+	    clipboard.on('error', function(e) {
+	        console.log(e);
+	        layer.open({
+	            title: '提示',
+	            content: '您的浏览器可能不支持自动复制提取码，请手动复制~'
+	        });
+	        //clipboard.destroy();
+	    });
         
 	
   </script>

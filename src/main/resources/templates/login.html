@@ -178,7 +178,7 @@
 				</center>
 				</div>
 			</div>
-			<div class="jumbotron">
+			<div class="jumbotron" id="otherway">
 				<h2>
 					第三方账号登陆
 				</h2>
@@ -192,6 +192,41 @@
 </div>
 
 	<script type="text/javascript">
+	function browserRedirect() {
+
+        var sUserAgent = navigator.userAgent.toLowerCase();
+
+        var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+
+        var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+
+        var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+
+        var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+
+        var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+
+        var bIsAndroid = sUserAgent.match(/android/i) == "android";
+
+        var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+
+        var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+
+        document.writeln("您的浏览设备为：");
+
+        if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+
+            $("#otherway").hide();
+
+        } else {
+
+            
+
+        }
+
+    }
+
+    browserRedirect();
     
         var user_name=$("#user_name").val();
 		var app=new Vue({

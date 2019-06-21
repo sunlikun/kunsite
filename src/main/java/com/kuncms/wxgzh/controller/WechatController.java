@@ -97,7 +97,10 @@ public class WechatController {
 		HttpSession session=request.getSession();
 		if(session.getAttribute("loginName")!=null){
 			String user_name=(String) session.getAttribute("loginName");
+			User user_login=(User) session.getAttribute("user");
+			String user_id=user_login.getId();
 			int gold_coin=(int) session.getAttribute("gold_coin");
+			model.addAttribute("user_id",user_id);
 			model.addAttribute("user_name",user_name);
 			model.addAttribute("gold_coin",gold_coin);
 		}
