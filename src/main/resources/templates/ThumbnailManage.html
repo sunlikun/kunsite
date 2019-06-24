@@ -20,128 +20,278 @@
     <script type="text/javascript" src="/jqwidgets/jqxgrid.selection.js"></script> 
     <script type="text/javascript" src="/scripts/demos.js"></script>
     <script type="text/javascript" src="/jqwidgets/jqxwindow.js"></script>
+   	<script src="https://cdn.bootcss.com/layer/2.3/layer.js"></script>
+   	 <style>
+
+    .add_div {
+        width: 400px;
+        height: 500px;
+        border: solid #ccc 1px;
+        margin-top: 10px;
+        margin-left: 10px;
+        padding-left: 20px;
+    }
+
+    .file-list {
+        height: 125px;
+        display: none;
+        list-style-type: none;
+    }
+
+    .file-list img {
+        max-width: 70px;
+        vertical-align: middle;
+    }
+
+    .file-list .file-item {
+        margin-bottom: 10px;
+        float: left;
+        margin-left: 20px;
+    }
+
+
+    .file-list .file-item .file-del {
+        display: block;
+        margin-left: 20px;
+        margin-top: 5px;
+        cursor: pointer;
+    }
+
+
+	</style>
     <script type="text/javascript">
    
         $(document).ready(function () {
-            // prepare the data
-            var data=null
-            $.ajaxSetup({
+        	init();
+        	function init(){
+        		 // prepare the data
+                var data=null
+                $.ajaxSetup({
 
-            	async:false
+                	async:false
 
-            });
-            var id=$("#id").val();
-           alert(id)
-            $.ajax({
-                type: "post",
-                url: "/queryThumbnail",
-                data: {id:id},
-                dataType: "json",
-                success: function(data){
-                	//alert(data)
-                	var source =
-                    {
-                        localdata: data,
-                        datatype: "local",
-                        datafields:
-                        [
-                            { name: 'id', type: 'string' },
-                            { name: 'coverid', type: 'string' },
-                          
-                        ],
-                        addrow: function (rowid, rowdata, position, commit) {
-                            // synchronize with the server - send insert command
-                            // call commit with parameter true if the synchronization with the server is successful 
-                            //and with parameter false if the synchronization failed.
-                            // you can pass additional argument to the commit callback which represents the new ID if it is generated from a DB.
-                            commit(true);
-                        },
-                        deleterow: function (rowid, commit) {
-                            // synchronize with the server - send delete command
-                            // call commit with parameter true if the synchronization with the server is successful 
-                            //and with parameter false if the synchronization failed.
-                            commit(true);
-                        },
-                        updaterow: function (rowid, newdata, commit) {
-                            // synchronize with the server - send update command
-                            // call commit with parameter true if the synchronization with the server is successful 
-                            // and with parameter false if the synchronization failed.
-                            commit(true);
-                        }
-                    };
-                    var dataAdapter = new $.jqx.dataAdapter(source);
-                    // initialize jqxGrid
-                    $("#grid").jqxGrid(
-                    {
-                        width: getWidth('Grid'),
-                        height: 350,
-                     	source: dataAdapter,
-                        showtoolbar: true,
-                        rendertoolbar: function (toolbar) {
-                            var me = this;
-                            var container = $("<div style='margin: 5px;'></div>");
-                            toolbar.append(container);
-                            container.append('<input id="addrowbutton" type="button" value="Add Video" />');
-                            container.append('<input style="margin-left: 5px;" id="addmultiplerowsbutton" type="button" value="Add Multiple New Rows" />');
-                            container.append('<input style="margin-left: 5px;" id="deleterowbutton" type="button" value="Delete Selected Row" />');
-                            container.append('<input style="margin-left: 5px;" id="updaterowbutton" type="button" value="Update Selected Row" />');
-                            $("#addrowbutton").jqxButton();
-                            $("#addmultiplerowsbutton").jqxButton();
-                            $("#deleterowbutton").jqxButton();
-                            $("#updaterowbutton").jqxButton();
-                            // update row.
-                            $("#updaterowbutton").on('click', function () {
-                                var datarow = generaterow();
-                                var selectedrowindex = $("#grid").jqxGrid('getselectedrowindex');
-                                var rowscount = $("#grid").jqxGrid('getdatainformation').rowscount;
-                                if (selectedrowindex >= 0 && selectedrowindex < rowscount) {
-                                    var id = $("#grid").jqxGrid('getrowid', selectedrowindex);
-                                    var commit = $("#grid").jqxGrid('updaterow', id, datarow);
-                                    $("#grid").jqxGrid('ensurerowvisible', selectedrowindex);
-                                }
-                            });
-                            // create new row.
-                            $("#addrowbutton").on('click', function () {
-                                //var datarow = generaterow();
-                                //var commit = $("#grid").jqxGrid('addrow', null, datarow);
-                               	createWindow();
-                                $("#ww").css("display","show");
-                                $('#window1').jqxWindow('open');
-                               
-                                
-                            });
-                            // create new rows.
-                            $("#addmultiplerowsbutton").on('click', function () {
-                                $("#grid").jqxGrid('beginupdate');
-                                for (var i = 0; i < 10; i++) {
+                });
+                var id=$("#id").val();
+               //alert(id)
+                $.ajax({
+                    type: "post",
+                    url: "/queryThumbnail",
+                    data: {id:id},
+                    dataType: "json",
+                    success: function(data){
+                    	//alert(data)
+                    	var source =
+                        {
+                            localdata: data,
+                            datatype: "local",
+                            datafields:
+                            [
+                                { name: 'id', type: 'string' },
+                                { name: 'coverid', type: 'string' },
+                              
+                            ],
+                            addrow: function (rowid, rowdata, position, commit) {
+                                // synchronize with the server - send insert command
+                                // call commit with parameter true if the synchronization with the server is successful 
+                                //and with parameter false if the synchronization failed.
+                                // you can pass additional argument to the commit callback which represents the new ID if it is generated from a DB.
+                                commit(true);
+                            },
+                            deleterow: function (rowid, commit) {
+                                // synchronize with the server - send delete command
+                                // call commit with parameter true if the synchronization with the server is successful 
+                                //and with parameter false if the synchronization failed.
+                                commit(true);
+                            },
+                            updaterow: function (rowid, newdata, commit) {
+                                // synchronize with the server - send update command
+                                // call commit with parameter true if the synchronization with the server is successful 
+                                // and with parameter false if the synchronization failed.
+                                commit(true);
+                            }
+                        };
+                        var dataAdapter = new $.jqx.dataAdapter(source);
+                        // initialize jqxGrid
+                        $("#grid").jqxGrid(
+                        {
+                            width: getWidth('Grid'),
+                            height: 350,
+                         	source: dataAdapter,
+                            showtoolbar: true,
+                            rendertoolbar: function (toolbar) {
+                                var me = this;
+                                var container = $("<div style='margin: 5px;'></div>");
+                                toolbar.append(container);
+                                container.append('<input id="addrowbutton" type="button" value="Add Video" />');
+                                container.append('<input style="margin-left: 5px;" id="addmultiplerowsbutton" type="button" value="Add Multiple New Rows" />');
+                                container.append('<input style="margin-left: 5px;" id="deleterowbutton" type="button" value="Delete Selected Row" />');
+                                container.append('<input style="margin-left: 5px;" id="updaterowbutton" type="button" value="Update Selected Row" />');
+                                $("#addrowbutton").jqxButton();
+                                $("#addmultiplerowsbutton").jqxButton();
+                                $("#deleterowbutton").jqxButton();
+                                $("#updaterowbutton").jqxButton();
+                                // update row.
+                                $("#updaterowbutton").on('click', function () {
                                     var datarow = generaterow();
-                                    var commit = $("#grid").jqxGrid('addrow', null, datarow);
-                                }
-                                $("#grid").jqxGrid('endupdate');
-                            });
-                            // delete row.
-                            $("#deleterowbutton").on('click', function () {
-                                var selectedrowindex = $("#grid").jqxGrid('getselectedrowindex');
-                                var rowscount = $("#grid").jqxGrid('getdatainformation').rowscount;
-                                if (selectedrowindex >= 0 && selectedrowindex < rowscount) {
-                                    var id = $("#grid").jqxGrid('getrowid', selectedrowindex);
-                                    var commit = $("#grid").jqxGrid('deleterow', id);
-                                }
-                            });
-                        },
-                        columns: [
-                          { text: 'id', datafield: 'id', width: 200 },
-                          { text: 'coverid', datafield: 'coverid', width: 200 },
-                          { text: 'thumbnail', datafield: 'thumbnail', columntype: 'button',width: 200 ,cellsrenderer: function () {
-                              return "缩略图";
-                           }, buttonclick: function (row) {
-                             
-                          }
-                          }
-                        ]
-                    });    
-                         }
+                                    var selectedrowindex = $("#grid").jqxGrid('getselectedrowindex');
+                                    var rowscount = $("#grid").jqxGrid('getdatainformation').rowscount;
+                                    if (selectedrowindex >= 0 && selectedrowindex < rowscount) {
+                                        var id = $("#grid").jqxGrid('getrowid', selectedrowindex);
+                                        var commit = $("#grid").jqxGrid('updaterow', id, datarow);
+                                        $("#grid").jqxGrid('ensurerowvisible', selectedrowindex);
+                                    }
+                                });
+                                // create new row.
+                                $("#addrowbutton").on('click', function () {
+                                    //var datarow = generaterow();
+                                    //var commit = $("#grid").jqxGrid('addrow', null, datarow);
+                                   	createWindow();
+                                    $("#ww").css("display","show");
+                                    $('#window1').jqxWindow('open');
+                                   
+                                    
+                                });
+                                // create new rows.
+                                $("#addmultiplerowsbutton").on('click', function () {
+                                    $("#grid").jqxGrid('beginupdate');
+                                    for (var i = 0; i < 10; i++) {
+                                        var datarow = generaterow();
+                                        var commit = $("#grid").jqxGrid('addrow', null, datarow);
+                                    }
+                                    $("#grid").jqxGrid('endupdate');
+                                });
+                                // delete row.
+                                $("#deleterowbutton").on('click', function () {
+                                    var selectedrowindex = $("#grid").jqxGrid('getselectedrowindex');
+                                    var rowscount = $("#grid").jqxGrid('getdatainformation').rowscount;
+                                    if (selectedrowindex >= 0 && selectedrowindex < rowscount) {
+                                        var id = $("#grid").jqxGrid('getrowid', selectedrowindex);
+                                        var commit = $("#grid").jqxGrid('deleterow', id);
+                                    }
+                                });
+                            },
+                            columns: [
+                              { text: 'id', datafield: 'id', width: 200 },
+                              { text: 'coverid', datafield: 'coverid', width: 200 },
+                              { text: 'thumbnail', datafield: 'thumbnail', columntype: 'button',width: 200 ,cellsrenderer: function () {
+                                  return "缩略图";
+                               }, buttonclick: function (row) {
+                                 
+                              }
+                              }
+                            ]
+                        });    
+                             }
+                });
+        	}
+        	 ////////////////////////////////////////////////图片上传//////////////////////////////////////////////
+            //声明变量
+            var $button = $('#upload'),
+                //选择文件按钮
+                $file = $("#choose-file"),
+                //回显的列表
+                $list = $('.file-list'),
+                //选择要上传的所有文件
+                fileList = [];
+            //当前选择上传的文件
+            var curFile;
+            // 选择按钮change事件，实例化fileReader,调它的readAsDataURL并把原生File对象传给它，
+            // 监听它的onload事件，load完读取的结果就在它的result属性里了。它是一个base64格式的，可直接赋值给一个img的src.
+            $file.on('change', function (e) {
+                //上传过图片后再次上传时限值数量
+                var numold = $('li').length;
+                if(numold >= 6){
+                    layer.alert('最多上传6张图片');
+                    return;
+                }
+                //限制单次批量上传的数量
+                var num = e.target.files.length;
+                var numall = numold + num;
+                if(num >6 ){
+                   layer.alert('最多上传6张图片');
+                   return;
+                }else if(numall > 6){
+                    layer.alert('最多上传6张图片');
+                    return;
+                }
+                //原生的文件对象，相当于$file.get(0).files;//files[0]为第一张图片的信息;
+                curFile = this.files;
+                //curFile = $file.get(0).files;
+                //console.log(curFile);
+                //将FileList对象变成数组
+                fileList = fileList.concat(Array.from(curFile));
+                //console.log(fileList);
+                for (var i = 0, len = curFile.length; i < len; i++) {
+                    reviewFile(curFile[i])
+                }
+                $('.file-list').fadeIn(2500);
+            })
+
+
+            function reviewFile(file) {
+                //实例化fileReader,
+                var fd = new FileReader();
+                //获取当前选择文件的类型
+                var fileType = file.type;
+                //调它的readAsDataURL并把原生File对象传给它，
+                fd.readAsDataURL(file);//base64
+                //监听它的onload事件，load完读取的结果就在它的result属性里了
+                fd.onload = function () {
+                    if (/^image\/[jpeg|png|jpg|gif]/.test(fileType)) {
+                        $list.append('<li style="border:solid red px; margin:5px 5px;" class="file-item"><img src="' + this.result + '" alt="" height="70"><span class="file-del">删除</span></li>').children(':last').hide().fadeIn(2500);
+                    } else {
+                        $list.append('<li class="file-item"><span class="file-name">' + file.name + '</span><span class="file-del">删除</span></li>')
+                    }
+
+                }
+            }
+
+            //点击删除按钮事件：
+            $(".file-list").on('click', '.file-del', function () {
+                let $parent = $(this).parent();
+                console.log($parent);
+                let index = $parent.index();
+                fileList.splice(index, 1);
+                $parent.fadeOut(850, function () {
+                    $parent.remove()
+                });
+               
             });
+            //点击上传按钮事件：
+            $button.on('click', function () {
+               
+               
+                 if(fileList.length > 6){
+                        layer.alert('最多允许上传6张图片');
+                        return;
+                } else {
+                    var formData = new FormData();
+                    for (var i = 0, len = fileList.length; i < len; i++) {
+                        //console.log(fileList[i]);
+                        formData.append('fileName', fileList[i]);
+                    }
+                   
+                    var coverid=$("#coverid").val();
+                    formData.append('coverid', coverid);
+                    $.ajax({
+                        url: 'picturesUpload',
+                        type: 'post',
+                        data: formData,
+                        dataType: 'json',
+                        processData: false,
+                        contentType: false,
+                        success: function (data) {
+                            if (data.status == '1') {
+                                layer.msg(data.content, {icon: 6});
+                                init();
+                            } else if (data.status == '2') {
+                                layer.msg(data.content, {icon: 1});
+                                init();
+                            }
+                        }
+                    })
+                }
+            })
           
         
             
@@ -152,8 +302,8 @@
             var jqxWidget = $('#jqxWidget');
             var offset = jqxWidget.offset();
             $('#window1').jqxWindow({
-                position: { x: offset.left + 1150, y: offset.top + 150} ,
-                showCollapseButton: true, height: 250, width:400,
+                position: { x: offset.left + 500, y: offset.top + 150} ,
+                showCollapseButton: true, height: 550, width:450,
                 initContent: function () {
                    
                     $('#window1').jqxWindow('focus');
@@ -190,7 +340,23 @@
             <div id="window1">
                 <div id="windowHeader">文件上传</div>
                 <div style="overflow: hidden;" id="windowContent">
-                    
+                    <div class="add_div">
+						    <p>
+						        <span>图片：</span>
+						        <input type="file" name="" id="choose-file" multiple="multiple"/>
+						       
+						    </p>
+						    <p>
+						    <ul class="file-list ">
+						
+						    </ul>
+						    </p>
+						   
+						    <button style="cursor: pointer;margin-left: 150px;" href="javascript:;" id="upload">上传</button>
+						
+						</div>
+						 <input id="coverid" th:value="${id}" name="coverid" type="text"> 
+						<!--  
 					    <form action="picturesUpload" method="post" enctype="multipart/form-data" >
 					        <p>选择文件1: <input type="file" name="fileName"/></p>
 					        <p>选择文件2: <input type="file" name="fileName"/></p>
@@ -198,6 +364,7 @@
 					        <input id="coverid" th:value="${id}" name="coverid" type="text"> 
 					        <p><input type="submit" value="提交"/></p>
 					    </form>
+					    -->
                 </div>
             </div>
         </div>
@@ -205,6 +372,8 @@
     </div>
     
  </div>  
+ 
+
  
  	
 </body>

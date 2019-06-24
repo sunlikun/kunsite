@@ -2,7 +2,10 @@ package com.kuncms.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Calendar;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import com.alibaba.fastjson.JSONObject;
 import com.kuncms.coverphoto.dao.CoverphotoDao;
 import com.kuncms.coverphoto.model.Coverphoto;
 import com.kuncms.coverphoto.service.CoverphotoService;
@@ -25,6 +32,122 @@ public class FileUploadController {
 	private CoverphotoService coverphotoService;
 	@Autowired
 	private ThumbnailService thumbnailService;
+	
+	
+	  /**
+     * 缩略图上传（centos使用）
+	 * @throws IOException 
+     * */
+    @RequestMapping("picturesUpload")
+     
+    public void picturesUpload(@RequestParam("fileName") MultipartFile[] fileArr,HttpServletRequest request,Thumbnail thumbnail,HttpServletResponse response) throws IOException{
+        
+        String status="";
+        for(int i=0;i<fileArr.length;i++) {
+        	if(!(fileArr[i].isEmpty())){
+        		String fileName = fileArr[i].getOriginalFilename();
+                int size = (int) fileArr[i].getSize();
+                //System.out.println(fileName + "-->" + size);
+                String filePath = ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/img/";
+                //String path = "/img/"+fileName ;
+                fileName =generateRandomFilename() + fileName.substring(fileName.lastIndexOf("."));
+                String path = "/usr/local/kun_cms/thun";
+                File dest = new File(path + "/" + fileName);
+                //File dest = new File(filePath + "/" + fileName);
+                //String filepath=filePath + "/" + fileName;
+                if(!dest.getParentFile().exists()){ //判断文件父目录是否存在
+                    dest.getParentFile().mkdir();
+                }
+                try {
+               	 fileArr[i].transferTo(dest); //保存文件
+                    //保存文件进入数据库
+                    thumbnailService.insert(path+"/"+fileName,fileName,thumbnail,request);
+                    status="1";
+                } catch (IllegalStateException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    status="2";
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    status="2";
+                }
+        	}
+        	 
+        }
+        
+        JSONObject json=new JSONObject();
+        json.put("status", status);
+        response.setContentType("application/json");
+        response.setHeader("Pragma", "No-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out= null;
+        out = response.getWriter();
+        out.print(json.toString());
+        System.out.println(json.toString());
+        out.flush();
+        out.close();
+       
+    }
+	
+	/**
+     * 图上传（windows使用）
+	 * @throws IOException 
+     * */
+    @RequestMapping("test_picturesUpload")
+     
+    public void test_picturesUpload(@RequestParam("fileName") MultipartFile[] fileArr,HttpServletRequest request,Thumbnail thumbnail,HttpServletResponse response) throws IOException{
+    	
+        String status="";
+        for(int i=0;i<fileArr.length;i++) {
+        	if(!(fileArr[i].isEmpty())){
+        		 String fileName = fileArr[i].getOriginalFilename();
+                 int size = (int) fileArr[i].getSize();
+                 System.out.println(fileName + "-->" + size);
+                 String filePath = ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/img/";
+                 String path = "/img/"+fileName ;
+                 File dest = new File(filePath + "/" + fileName);
+                 String filepath=filePath + "/" + fileName;
+                 if(!dest.getParentFile().exists()){ //判断文件父目录是否存在
+                     dest.getParentFile().mkdir();
+                 }
+                 try {
+               	  fileArr[i].transferTo(dest); //保存文件
+                     //保存文件进入数据库
+                     thumbnailService.insert(path,fileName,thumbnail,request);
+                     status="1";
+                 } catch (IllegalStateException e) {
+                     // TODO Auto-generated catch block
+                     e.printStackTrace();
+                     status="2";
+                 } catch (IOException e) {
+                     // TODO Auto-generated catch block
+                     e.printStackTrace();
+                     status="2";
+                 }
+        		
+               
+            }
+        	 
+        }
+        
+        JSONObject json=new JSONObject();
+        json.put("status", status);
+        response.setContentType("application/json");
+        response.setHeader("Pragma", "No-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out= null;
+        out = response.getWriter();
+        out.print(json.toString());
+        System.out.println(json.toString());
+        out.flush();
+        out.close();
+		
+      
+       
+    }
 	
 	/**
      * 多图上传（windows使用）
@@ -73,48 +196,48 @@ public class FileUploadController {
     /**
      * 缩略图上传（centos使用）
      * */
-    @RequestMapping("picturesUpload")
+//    @RequestMapping("picturesUpload")
      
-    public String picturesUpload(@RequestParam("fileName") MultipartFile[] fileArr,HttpServletRequest request,Thumbnail thumbnail){
-        if(fileArr[0].isEmpty()){
-            return "false";
-        }
-        String result="";
-        for(int i=0;i<fileArr.length;i++) {
-        	if(!(fileArr[i].isEmpty())){
-        		String fileName = fileArr[i].getOriginalFilename();
-                int size = (int) fileArr[i].getSize();
-                //System.out.println(fileName + "-->" + size);
-                String filePath = ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/img/";
-                //String path = "/img/"+fileName ;
-                fileName =generateRandomFilename() + fileName.substring(fileName.lastIndexOf("."));
-                String path = "/usr/local/kun_cms/thun";
-                File dest = new File(path + "/" + fileName);
-                //File dest = new File(filePath + "/" + fileName);
-                //String filepath=filePath + "/" + fileName;
-                if(!dest.getParentFile().exists()){ //判断文件父目录是否存在
-                    dest.getParentFile().mkdir();
-                }
-                try {
-               	 fileArr[i].transferTo(dest); //保存文件
-                    //保存文件进入数据库
-                    thumbnailService.insert(path+"/"+fileName,fileName,thumbnail,request);
-                    result="frame";
-                } catch (IllegalStateException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    result="false";
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    result="false";
-                }
-        	}
-        	 
-        }
-		return result;
-       
-    }
+//    public String picturesUpload(@RequestParam("fileName") MultipartFile[] fileArr,HttpServletRequest request,Thumbnail thumbnail){
+//        if(fileArr[0].isEmpty()){
+//            return "false";
+//        }
+//        String result="";
+//        for(int i=0;i<fileArr.length;i++) {
+//        	if(!(fileArr[i].isEmpty())){
+//        		String fileName = fileArr[i].getOriginalFilename();
+//                int size = (int) fileArr[i].getSize();
+//                //System.out.println(fileName + "-->" + size);
+//                String filePath = ClassUtils.getDefaultClassLoader().getResource("").getPath()+"static/img/";
+//                //String path = "/img/"+fileName ;
+//                fileName =generateRandomFilename() + fileName.substring(fileName.lastIndexOf("."));
+//                String path = "/usr/local/kun_cms/thun";
+//                File dest = new File(path + "/" + fileName);
+//                //File dest = new File(filePath + "/" + fileName);
+//                //String filepath=filePath + "/" + fileName;
+//                if(!dest.getParentFile().exists()){ //判断文件父目录是否存在
+//                    dest.getParentFile().mkdir();
+//                }
+//                try {
+//               	 fileArr[i].transferTo(dest); //保存文件
+//                    //保存文件进入数据库
+//                    thumbnailService.insert(path+"/"+fileName,fileName,thumbnail,request);
+//                    result="frame";
+//                } catch (IllegalStateException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                    result="false";
+//                } catch (IOException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                    result="false";
+//                }
+//        	}
+//        	 
+//        }
+//		return result;
+//       
+//    }
     
     
 	
