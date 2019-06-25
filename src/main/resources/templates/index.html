@@ -127,7 +127,8 @@
                     tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'">';
                     var coverid="/images/"+coverphotoArr[i].coverphotoid.substring(30);
                    // alert(coverid)
-                    tableContent += '<img  class="img-responsive"   src="' + coverid+ '" >';
+                    //tableContent += '<img  class="img-responsive"   src="' + coverid+ '" >';
+                    tableContent += '<img  class="img-responsive"   src="/img/test.jpg" width="300vw" height="450vh">';
                     tableContent += '</a>';
                     
                     tableContent += '<div>';
@@ -165,16 +166,16 @@
 	</script>
   </head>
   <body bgcolor="#DDDDDD">
-  <!--  
+  
     <div th:include="header :: header"></div> 
-    -->
+   
 	<div class="container-fluid">
   		<div class="row" style="margin-top: 10px;">
 				<div class="col-md-8  col-xs-12">
 					
 					    
 						    <div style="width: 100%;height: 6vh;background:#f8f8f8;">
-							     <div style="display:inline-block;margin-top: 1.2rem;margin-left: 1vw"><a href="/more?flag=1" style="text-decoration: none"><font size="3" color="#414141" style="font-family:微软雅黑 ">测试测试</font></a></div>
+							     <div style="display:inline-block;margin-top: 1.2rem;margin-left: 1.5vw"><a href="/more?flag=1" style="text-decoration: none"><font size="3" color="#414141" style="font-family:微软雅黑 ">女团饭拍</font></a></div>
 								 <div style="display:inline-block;margin-left:45vw;margin-top: 1rem"><a href="/more?flag=1" style="text-decoration: none"><font size="3" color="#414141" style="font-family:微软雅黑 ">more➡</font></a></div>
 						    </div>
 					   
@@ -185,17 +186,10 @@
 					<div align="center"><a href="/more?flag=1"><font size="5">点击查看更多</font></a></div>
 					
 					
-					<nav class="navbar navbar-default" role="navigation">
-					    <div class="container-fluid">
-						    <div>
-						     
-						        <ul class="nav navbar-nav">
-						            <li>。。。。<a href="/more?flag=2" class="navbar-brand">more➡</a></li>
-						        </ul>
-						    </div>
-						   
-					    </div>
-					</nav>
+					 <div style="width: 100%;height: 6vh;background:#f8f8f8;">
+							     <div style="display:inline-block;margin-top: 1.2rem;margin-left: 1.5vw"><a href="/more?flag=2" style="text-decoration: none"><font size="3" color="#414141" style="font-family:微软雅黑 ">车模饭拍</font></a></div>
+								 <div style="display:inline-block;margin-left:45vw;margin-top: 1rem"><a href="/more?flag=2" style="text-decoration: none"><font size="3" color="#414141" style="font-family:微软雅黑 ">more➡</font></a></div>
+					</div>
 					<div class="row" id="part2">
 					
 					</div>
