@@ -28,7 +28,7 @@
   
      
 	<style>
-	body { width:80%; margin:50px auto; }
+	body { width:90%; margin:50px auto; }
 	// Extra small devices (portrait phones, less than 576px)
 	@media (max-width: 575.98px) { ... }
 	
@@ -121,7 +121,7 @@
             		//alert(baiduyun_address)
             		//alert(coverphotoArr[i].coverphotoid)
             		var tableContent="";
-                  	tableContent += '<div class="col-sm-6 col-md-4">';
+                  	tableContent += '<div class="col-sm-4 col-md-3 col-xs-6">';
                     tableContent += '<div class="thumbnail">';
                   
                     tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'">';
@@ -134,7 +134,7 @@
                   	tableContent += '<p>' + coverphotoArr[i].video_name.substring(0, 25)+ '...</p>';
                   	tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币&nbsp;&nbsp;人气值:'+coverphotoArr[i].clicks+'</p>';
                   	tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
-                    tableContent += ' <p><a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-primary" role="button"> 查看</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default" role="button">  下载</a></p> ';
+                    tableContent += ' <p><a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-primary btn-sm" role="button"> 查看</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default  btn-sm" role="button">  下载</a></p> ';
                   
                     tableContent += '</p>';
                     tableContent += '<div>';
@@ -170,7 +170,7 @@
 	
 	<div class="container-fluid">
   		<div class="row" style="margin-top: 10px;">
-				<div class="col-md-8">
+				<div class="col-md-8  col-xs-12">
 					<nav class="navbar navbar-default" role="navigation">
 					    <div class="container-fluid">
 						    <div>
@@ -205,7 +205,7 @@
 					<div align="center"><a href="/more?flag=2"><font size="5">点击查看更多</font></a></div>
 				</div>
 	  	
-				<div class="col-md-4">
+				<div class="col-md-4 col-xs-12">
 						<nav class="navbar navbar-default" role="navigation">
 						    <div class="container-fluid">
 							    <div>
@@ -224,7 +224,7 @@
 									公众号可线播放哦!
 									<img  class="img-responsive"   src="/img/wechat/qrcode_for_gh_65045f61e850_258.jpg" >
 								</p>
-								<center>
+								<div align="center">
 									<ul id="myTab" class="nav nav-tabs">
 										<li class="active" style="width: 7.5rem">
 											<a href="#home" data-toggle="tab" onclick="createrankingList(1)">
@@ -235,7 +235,7 @@
 										<li style="width: 7.5rem"><a href="#home" data-toggle="tab" onclick="createrankingList(3)">本月排行</a></li>
 										
 									</ul>
-								</center>
+								</div>
 								<div id="myTabContent" class="tab-content">
 									<div class="tab-pane fade in active" id="home">
 										
