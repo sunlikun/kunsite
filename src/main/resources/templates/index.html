@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
  	<meta name="baidu-site-verification" content="EuNPeTHGFx" />
-    <title>普格娱乐-官网首页</title>
+    <title>官网首页</title>
 
     <meta name="description" content="普格娱乐提供优质女团视频,饭拍视频,车模视频,模特视频,写真,高清美女图片,是一个综合性性感美女视频">
     <meta name="author" content="普格娱乐">
@@ -130,9 +130,9 @@
                     tableContent += '<img  class="img-responsive"   src="' + coverid+ '" >';
                     tableContent += '</a>';
                     
-                    tableContent += '<div class="caption">';
+                    tableContent += '<div>';
                   	tableContent += '<p>' + coverphotoArr[i].video_name.substring(0, 25)+ '...</p>';
-                  	tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币&nbsp;&nbsp;人气值:'+coverphotoArr[i].clicks+'</p>';
+                  	tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币&nbsp;<img src="/img/eye.jpg" width="20vw" height="20vh">'+coverphotoArr[i].clicks+'</p>';
                   	tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
                     tableContent += ' <p><a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-primary btn-sm" role="button"> 查看</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default  btn-sm" role="button">  下载</a></p> ';
                   
@@ -165,23 +165,18 @@
 	</script>
   </head>
   <body bgcolor="#DDDDDD">
-    
-	<div th:include="header :: header"></div> 
-	
+    <div th:include="header :: header"></div> 
 	<div class="container-fluid">
   		<div class="row" style="margin-top: 10px;">
 				<div class="col-md-8  col-xs-12">
-					<nav class="navbar navbar-default" role="navigation">
-					    <div class="container-fluid">
-						    <div>
-						    
-						        <ul class="nav navbar-nav">
-						            <li> <a href="/more?flag=1" class="navbar-brand">韩国女团&nbsp;》</a></li>
-						        </ul>
-						        
+					
+					    
+						    <div style="width: 100%;height: 10vh;">
+							     <div style="display:inline-block;"><a href="/more?flag=1" >测试测试</a></div>
+								 <div style="display:inline-block;margin-left:15vw;"><a href="/more?flag=1">more➡</a></div>
 						    </div>
-					    </div>
-					</nav>
+					   
+				
 					<div class="row" id="part1">
 					
 					</div>
@@ -193,7 +188,7 @@
 						    <div>
 						     
 						        <ul class="nav navbar-nav">
-						            <li> <a href="/more?flag=2" class="navbar-brand">性感车模&nbsp;》</a></li>
+						            <li>。。。。<a href="/more?flag=2" class="navbar-brand">more➡</a></li>
 						        </ul>
 						    </div>
 						   
