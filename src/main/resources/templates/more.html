@@ -362,22 +362,19 @@
                		//alert(baiduyun_address)
                		//alert(coverphotoArr[i].video_name)
                		var tableContent="";
-                     	tableContent += '<div class="col-sm-3 col-md-2 col-xs-6">';
+                       tableContent += '<div class="col-sm-3 col-md-2 col-xs-6">';
                        tableContent += '<div class="thumbnail">';
-                     
                        tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'">';
                        var coverid="/images/"+coverphotoArr[i].coverphotoid.substring(30);
                       // alert(coverid)
                        tableContent += '<img  class="img-responsive"   src="' + coverid+ '" >';
                        tableContent += '</a>';
-                       
                        tableContent += '<div>';
-                     	tableContent += '<p>' + coverphotoArr[i].video_name+ '</p>';
-                     	tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币 &nbsp;<img src="/img/eye.jpg" width="20vw" height="20vh"></p>';
-                        tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
+                       tableContent += '<p>' + coverphotoArr[i].video_name.substring(0, 25)+ '。。。</p>';
+                       tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币 &nbsp;<img src="/img/eye.jpg" width="20vw" height="20vh">'+coverphotoArr[i].clicks+'</p>';
+                       tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
                        tableContent += ' <p><a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-primary" role="button"> 查看</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default" role="button">  下载</a></p> ';
-                        tableContent += '</p>';
-                    
+                       tableContent += '</p>';
                        tableContent += '<div>';
                        tableContent += '</div></div></div></div>';
                        
