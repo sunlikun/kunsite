@@ -121,7 +121,7 @@
             		//alert(baiduyun_address)
             		//alert(coverphotoArr[i].coverphotoid)
             		var tableContent="";
-                  	tableContent += '<div class="col-sm-6 col-md-4">';
+                  	tableContent += '<div class="col-sm-4 col-md-3 col-xs-6">';
                     tableContent += '<div class="thumbnail">';
                   
                     tableContent += '<a href="/WechatController/wechat_details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'">';
@@ -130,9 +130,9 @@
                     tableContent += '<img  class="img-responsive"   src="' + coverid+ '" >';
                     tableContent += '</a>';
                     
-                    tableContent += '<div class="caption">';
+                    tableContent += '<div>';
                   	tableContent += '<p>' + coverphotoArr[i].video_name.substring(0, 25)+ '...</p>';
-                  	tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币&nbsp;&nbsp;人气值:'+coverphotoArr[i].clicks+'</p>';
+                  	tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币&nbsp;<img src="/img/eye.jpg" width="20vw" height="20vh">'+coverphotoArr[i].clicks+'</p>';
                   	tableContent += '<p>视频点播号:'+coverphotoArr[i].serial_number+'</p>';
                     tableContent += ' <p><a href="/WechatController/wechat_details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-primary" role="button"> 查看</a> <a href="/WechatController/wechat_details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default" role="button">  下载</a></p> ';
                   
