@@ -517,7 +517,7 @@ public class WechatController {
                     // 事件KEY值，与创建自定义菜单时指定的KEY值对应  
                     String eventKey = map.get("EventKey");  
                     if (eventKey.equals("11")) {  
-                    	 text.setContent("请输入视频编号！相关视频编号请至官网查看，或关注快手(用户名为摄影诗)，斗鱼tv(用户名新火车)查看");
+                    	 text.setContent("请点击“获取点播号”进入官网查看视频点播号，返回在公众号输入后即可播放");
                     }
                     
                     respMessage = MessageUtil.messageToXml(text);

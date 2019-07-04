@@ -45,7 +45,7 @@ public class MenuManager {
      */  
     private static Menu getMenu() {  
         CommonButton btn11 = new CommonButton();  
-        btn11.setName("在线点播");  
+        btn11.setName("点播方法");  
         btn11.setType("click");  
         btn11.setKey("11");  
   
@@ -65,7 +65,7 @@ public class MenuManager {
 //        btn14.setKey("14");  
 //  
         CommonButton btn21 = new CommonButton();  
-        btn21.setName("官方网址"); 
+        btn21.setName("获取点播号"); 
         btn21.setType("view");  
         btn21.setKey("21");
         btn21.setUrl("http://www.pergirls.com/WechatController/index_auth");
