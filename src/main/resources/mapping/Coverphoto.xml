@@ -2,6 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.kuncms.coverphoto.dao.CoverphotoDao" >
 
+	<update id="upCurrenPlayNum"  parameterType="com.kuncms.coverphoto.model.Play_num_record">
+       update Play_num_record a set 
+ 	    <if test="play_num_cureent != null and play_num_cureent != ''">
+				a.play_num_cureent=#{play_num_cureent}
+		</if>
+		
+     </update>
+
+
+ 	<select id="queryCurrenPlayNum"  parameterType="com.kuncms.coverphoto.model.Play_num_record"  resultType="com.kuncms.coverphoto.model.Play_num_record">
+        SELECT*FROM play_num_record c  
+     </select>
+
 	 <select id="queryCovPhoBySer_num"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
         SELECT*FROM coverphoto c
          <where>

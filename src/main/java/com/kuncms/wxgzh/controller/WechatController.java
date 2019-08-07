@@ -68,18 +68,6 @@ public class WechatController {
 	private final String token = "1144954876";
 	
 	/**
-	 * 跳转到点播方法
-	 * @param map
-	 * @return
-	 */
-	@RequestMapping("/dianbo")
-    public String dianbo(Map<String,Object> map,Model model,HttpServletRequest request){
-		HttpSession session=request.getSession();
-		User user=(User) session.getAttribute("user");
-		return "dianbo";
-    }
-	
-	/**
 	 * @param map
 	 * @param id
 	 * @param baiduyun_pass
@@ -491,7 +479,7 @@ public class WechatController {
                 
                 // 订阅  
                 if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {  
-                	text.setContent("请点击“获取点播号”进入查看视频点播号，返回在公众号输入后即可播放，我的账户中可以进行金币充值");
+                	text.setContent("感谢关注！相关视频编号请至官网查看，或关注快手(用户名为摄影诗)，斗鱼tv(用户名新火车)查看，输入编号可在线观看精彩视频！");
                 	//用户完成订阅后自动在普格娱乐官网进行注册
                 	User user=new User();
     		        user.setOpenid(weiXinUserInfo.getOpenid());
@@ -528,31 +516,11 @@ public class WechatController {
                 if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK)) {  
                     // 事件KEY值，与创建自定义菜单时指定的KEY值对应  
                     String eventKey = map.get("EventKey");  
-                    NewsMessage newsMessage = new NewsMessage();
-                    newsMessage.setToUserName(fromUserName);
-                    newsMessage.setFromUserName(toUserName);
-                    newsMessage.setCreateTime(new Date().getTime());
-                    newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
                     if (eventKey.equals("11")) {  
-                    	 // 创建图文消息  
-                       
-                        List<Article> articleList = new ArrayList<Article>();
-                        Article article = new Article();
-	                    article.setTitle("点播及金币充值方法");
-	                    article.setDescription("详情");
-	                    article.setPicUrl("/img/wechat/FullSizeRender(4).jpg");
-	                    article.setUrl("http://www.pergirls.com/WechatController/dianbo");
-	                    articleList.add(article);
-//                      // 设置图文消息个数 
-                        newsMessage.setArticleCount(articleList.size());
-//                      // 设置图文消息包含的图文集合 
-                        newsMessage.setArticles(articleList);
-//                     
-                    	 //text.setContent("请点击“获取点播号”进入官网查看视频点播号，返回在公众号输入后即可播放，我的账户中可以进行金币充值");
+                    	 text.setContent("请点击“获取点播号”进入官网查看视频点播号，返回在公众号输入后即可播放");
                     }
-                    // 将图文消息对象转换成xml字符串 
-                    respMessage = MessageUtil.messageToXml(newsMessage);
-                    //respMessage = MessageUtil.messageToXml(text);
+                    
+                    respMessage = MessageUtil.messageToXml(text);
                  }
                 
                 
@@ -562,9 +530,14 @@ public class WechatController {
             // 文本消息
             if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
                  
-               
+                // 创建图文消息  
+//                NewsMessage newsMessage = new NewsMessage();
+//                newsMessage.setToUserName(fromUserName);
+//                newsMessage.setFromUserName(toUserName);
+//                newsMessage.setCreateTime(new Date().getTime());
+//                newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
 //                
-
+//                List<Article> articleList = new ArrayList<Article>();
             	Coverphoto coverphoto=new Coverphoto();
         		String serial_number=content;
         		coverphoto.setSerial_number(serial_number);
@@ -608,7 +581,7 @@ public class WechatController {
              	    customer.setFromUserName(toUserName);
              	    customer.setCreateTime(new Date().getTime());
              	    customer.setMsgType("transfer_customer_service");
-        			text.setContent("请点击“获取点播号”进入官网查看视频点播号，返回在公众号输入后即可播放，我的账户中可以进行金币充值");
+        			text.setContent("已经收到您的反馈信息,客服将在24小时内对您的发送的信息进行处理并给您回复,如果您想点播视频，请输入正确的点播编号");
         			respMessage = MessageUtil.messageToXml(text);
         		}
                 	

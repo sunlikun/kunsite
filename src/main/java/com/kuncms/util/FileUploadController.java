@@ -22,6 +22,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import com.alibaba.fastjson.JSONObject;
 import com.kuncms.coverphoto.dao.CoverphotoDao;
 import com.kuncms.coverphoto.model.Coverphoto;
+import com.kuncms.coverphoto.model.Play_num_record;
 import com.kuncms.coverphoto.service.CoverphotoService;
 import com.kuncms.thumbnail.model.Thumbnail;
 import com.kuncms.thumbnail.service.ThumbnailService;
@@ -248,7 +249,7 @@ public class FileUploadController {
 	 * @param request
 	 * @param coverphoto
 	 * @return
-	 * centos系统下使用的图片上传
+	 * centos系统封面上传
 	 */
 	@RequestMapping("fileUpload")
     
@@ -271,8 +272,17 @@ public class FileUploadController {
         try {
             file.transferTo(dest); //保存文件
             //保存文件进入数据库
-            String serial_number=Common_util.getRandomNum4();
+           Play_num_record play_num_record=coverphotoService.queryCurrenPlayNum();//查询当前点播序列号
+           //String serial_number=Common_util.getRandomNum4();
+           	int now_num=play_num_record.getPlay_num_cureent()+1;
+           	String serial_number="";
+           	if(now_num<100){
+           		serial_number="00"+now_num;
+           	}else if(now_num>=100){
+           		serial_number="0"+now_num;
+           	}
             coverphoto.setSerial_number(serial_number);
+            coverphotoService.upCurrenPlayNum(now_num);
             coverphotoService.insert(path+"/"+fileName,fileName,coverphoto, request);
             return "VideoManage";
         } catch (IllegalStateException e) {
