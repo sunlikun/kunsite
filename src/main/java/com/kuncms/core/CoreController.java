@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 import com.kuncms.coverphoto.model.Coverphoto;
+import com.kuncms.login.model.LoginRecord;
+import com.kuncms.login.service.LoginRecordService;
 import com.kuncms.user.model.User;
 import com.kuncms.user.service.UserService;
 import com.kuncms.util.HttpClientUtils;
@@ -41,6 +43,10 @@ public class CoreController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	LoginRecordService loginRecordService;
+	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	
@@ -211,10 +217,20 @@ public class CoreController {
 		        user.setUser_name((String) userobj.get("nickname"));
 		        user.setHeadimgurl((String) userobj.get("headimgurl"));
 		        user.setUnionid((String) userobj.get("unionid"));
+		        
+		        
+		       
+		        
 		        ArrayList<User> userlis=userService.isRegister(user);
 		        if(userlis.size()>0){//已经注册
 		        	  session.setAttribute("user",userlis.get(0));
 		        	  session.setAttribute("gold_coin",userlis.get(0).getGold_coin());
+		        	  
+		        	  //保存登录信息
+				        LoginRecord loginRecord=new LoginRecord();
+				        loginRecord.setUser_id(userlis.get(0).getId());
+				        loginRecord.setUser_name(userlis.get(0).getUser_name());
+				        loginRecordService.insertNewLogrec(loginRecord);
 		        	 
 		        }else{//尚未注册
 		        	userService.newsignup(user);
@@ -393,7 +409,7 @@ public class CoreController {
     }
 	
 	/**
-	 * 跳转到更多饭拍
+	 * 微信公众号跳转到更多饭拍
 	 * @param map
 	 * @return
 	 */
@@ -471,6 +487,14 @@ public class CoreController {
     }
 	
 	
+	/**
+	 * 网站用户登录
+	 * @param map
+	 * @param user
+	 * @param model
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/login_operate")
     public String login_operate(Map<String,Object> map,User user,Model model,HttpServletRequest request){
 		//日志级别从低到高分为TRACE < DEBUG < INFO < WARN < ERROR < FATAL，如果设置为WARN，则低于WARN的信息都不会输出。
@@ -487,6 +511,13 @@ public class CoreController {
 	        session.setAttribute("loginName",loginuser.getUser_name());
 	        session.setAttribute("gold_coin",loginuser.getGold_coin());
 	        session.setAttribute("user",loginuser);
+	        
+	        //保存登录信息
+	        LoginRecord loginRecord=new LoginRecord();
+	        loginRecord.setUser_id(loginuser.getId());
+	        loginRecord.setUser_name(loginuser.getUser_name());
+	        loginRecordService.insertNewLogrec(loginRecord);
+	        
 	    }else{
 			flag=false;
 		}
@@ -536,6 +567,14 @@ public class CoreController {
 	    return resultj.toJSONString();
     }
 	
+	/**
+	 * 用户注册时检查用户名称是否重复
+	 * @param map
+	 * @param user
+	 * @param model
+	 * @param request
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/check_username")
     public String check_username(Map<String,Object> map,User user,Model model,HttpServletRequest request){
