@@ -20,8 +20,28 @@ private String category;
 private String serial_number;
 private String baiduyun_pass;
 private String MediaId;
+private String screen_class;
+private String isvip;
+private String play_goin;
 
-
+public String getIsvip() {
+	return isvip;
+}
+public void setIsvip(String isvip) {
+	this.isvip = isvip;
+}
+public String getPlay_goin() {
+	return play_goin;
+}
+public void setPlay_goin(String play_goin) {
+	this.play_goin = play_goin;
+}
+public String getScreen_class() {
+	return screen_class;
+}
+public void setScreen_class(String screen_class) {
+	this.screen_class = screen_class;
+}
 
 public String getMediaId() {
 	return MediaId;

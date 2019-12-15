@@ -128,6 +128,34 @@ public class CoverphotoService {
 
 
 
+	public ArrayList<Coverphoto> queryPlayNumInfo(Coverphoto coverphoto) {
+		// TODO Auto-generated method stub
+		return coverphotoDao.queryPlayNumInfo();
+	}
+
+
+
+	public ArrayList<Coverphoto> queryVipPlayNumInfo(Coverphoto coverphoto) {
+		// TODO Auto-generated method stub
+		return coverphotoDao.queryVipPlayNumInfo();
+	}
+
+
+
+	public ArrayList<Coverphoto> queryPlayNumInfoCount(Coverphoto coverphoto) {
+		// TODO Auto-generated method stub
+		return coverphotoDao.queryPlayNumInfoCount(coverphoto);
+	}
+
+
+
+	public ArrayList<Coverphoto> queryVipPlayNumInfoCount(Coverphoto coverphoto) {
+		// TODO Auto-generated method stub
+		return coverphotoDao.queryVipPlayNumInfoCount(coverphoto);
+	}
+
+
+
 	
 	
 	

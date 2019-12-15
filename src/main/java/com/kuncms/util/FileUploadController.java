@@ -281,8 +281,8 @@ public class FileUploadController {
            	}else if(now_num>=100){
            		serial_number="0"+now_num;
            	}
-            coverphoto.setSerial_number(serial_number);
-            coverphotoService.upCurrenPlayNum(now_num);
+            //coverphoto.setSerial_number(serial_number);
+            //coverphotoService.upCurrenPlayNum(now_num);
             coverphotoService.insert(path+"/"+fileName,fileName,coverphoto, request);
             return "VideoManage";
         } catch (IllegalStateException e) {

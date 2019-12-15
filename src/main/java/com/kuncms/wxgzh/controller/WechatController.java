@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONException;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.util.StringUtil;
 import com.kuncms.coverphoto.model.Coverphoto;
 import com.kuncms.coverphoto.service.CoverphotoService;
@@ -66,6 +68,59 @@ public class WechatController {
 	CoverphotoService coverphotoService;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	private final String token = "1144954876";
+	
+	
+	/**
+	 * @param response
+	 * @param currentPage
+	 * @param pageSize
+	 * @throws IOException
+	 * 点播信息获取页信息查询
+	 */
+	@RequestMapping("/queryVipPlayNumInfo")
+	
+	public void queryPlayNumInfo(HttpServletResponse response,int currentPage, int pageSize,Coverphoto coverphoto) throws IOException {
+		//System.out.println(currentPage+"   "+pageSize);
+			PageHelper.startPage(currentPage , pageSize);
+		 	ArrayList<Coverphoto> list=coverphotoService.queryVipPlayNumInfo(coverphoto);
+	        //得到分页的结果对象
+	        PageInfo<Coverphoto> personPageInfo = new PageInfo<>(list);
+	        //得到分页中的person条目对象
+	        List<Coverphoto> pageList = personPageInfo.getList();
+	       
+	        JSONArray listArray=JSONArray.fromObject(pageList);     
+	        response.setContentType("application/json");
+	        response.setHeader("Pragma", "No-cache");
+	        response.setHeader("Cache-Control", "no-cache");
+	        response.setCharacterEncoding("UTF-8");
+	        PrintWriter out= null;
+	        out = response.getWriter();
+	        out.print(listArray.toString());
+	        System.out.println(listArray.toString());
+	        out.flush();
+	        out.close();
+	}
+	
+	
+	
+	
+	/**
+	 * @param map
+	 * @param request
+	 * @return
+	 * 跳转到vip点播码查看页（微信使用）
+	 */
+	@RequestMapping("/toVipPlayNumInfo")
+    public String toPlayNumInfo(Map<String,Object> map,HttpServletRequest request){
+   
+    
+		return "VipPlay";
+    }
+	
+	
+	
+	
+	
 	
 	/**
 	 * @param map
@@ -462,6 +517,7 @@ public class WechatController {
             String fromUserName = map.get("FromUserName");
             String msgType = map.get("MsgType");
             String content = map.get("Content");
+         //   boolean orderFlag=false;
             
             TextMeaasge text = new TextMeaasge();
             // 发送和回复是反向的
@@ -472,6 +528,7 @@ public class WechatController {
             WeiXinUserInfo weiXinUserInfo = WeixinUtil.getUserInfo(WeixinUtil.getAccessToken(WeChatConfig.APP_ID, WeChatConfig.APP_SECRET).getAccessToken(),fromUserName);
             text.setContent("没找到您需要的信息！！！请重新输入！！！");
             String respMessage = MessageUtil.messageToXml(text);
+           // String respMessage1 = "";
            
             if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_EVENT)) {  
                 // 事件类型  
@@ -479,7 +536,24 @@ public class WechatController {
                 
                 // 订阅  
                 if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {  
-                	text.setContent("感谢关注！相关视频编号请至官网查看，或关注快手(用户名为摄影诗)，斗鱼tv(用户名新火车)查看，输入编号可在线观看精彩视频！");
+                	text.setContent("欢迎,首次关注赠送您20金币!输入点播号如“0011”即可观看视频集预览视频,更多点播号请点击下方点播号查找查看,获取视频全集内容请点击官网进行下载保存,也可登录www.pergirls.com进行下载!");
+//                	orderFlag=true;
+//                	Coverphoto coverphoto=new Coverphoto();
+//            		String serial_number=content;
+//            		coverphoto.setSerial_number("0011");
+//            		ArrayList<Coverphoto> list=coverphotoService.queryCovPhoBySer_num(coverphoto);
+//            		Coverphoto c=list.get(0);
+//        			VideoMessage  video=new VideoMessage();
+//                    video.setToUserName(fromUserName);
+//	              	video.setFromUserName(toUserName);
+//	              	video.setCreateTime(new Date().getTime());
+//	              	video.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_VIDEO);
+//	              	Video vi=new Video();
+//	              	vi.setMediaId(c.getMediaId());
+//	              	vi.setTitle(c.getVideo_name());
+//	              	vi.setDescription(c.getSerial_number());
+//	              	video.setVideo(vi);
+//	                respMessage1 = MessageUtil.messageToXml(video);
                 	//用户完成订阅后自动在普格娱乐官网进行注册
                 	User user=new User();
     		        user.setOpenid(weiXinUserInfo.getOpenid());
@@ -488,6 +562,7 @@ public class WechatController {
     		        user.setUser_name(weiXinUserInfo.getNickname());
     		        user.setUnionid(weiXinUserInfo.getUnionid());
     		        user.setOfficial_account("1");
+    		        
     		        System.out.println(weiXinUserInfo.getUnionid()+"=======");
     		        ArrayList<User> userlis=userService.isRegister(user);
     		        if(userlis.size()>0){//已经注册
@@ -501,7 +576,7 @@ public class WechatController {
                 
                 // 取消订阅  
                 if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {  
-                	text.setContent("感谢关注！相关视频编号请至官网查看，或关注快手(用户名为摄影诗)，斗鱼tv(用户名新火车)查看，输入编号可在线观看精彩视频！");
+                	text.setContent("再见!");
                 	//用户完成订阅后自动在普格娱乐官网进行注册
                 	User user=new User();
     		        user.setOpenid(weiXinUserInfo.getOpenid());
@@ -560,18 +635,90 @@ public class WechatController {
                  	    
                   }else if(list.size()>0) {
         			Coverphoto c=list.get(0);
-        			VideoMessage  video=new VideoMessage();
-                    video.setToUserName(fromUserName);
-	              	video.setFromUserName(toUserName);
-	              	video.setCreateTime(new Date().getTime());
-	              	video.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_VIDEO);
-	              	Video vi=new Video();
-	              	vi.setMediaId(c.getMediaId());
-	              	vi.setTitle(c.getVideo_name());
-	              	vi.setDescription(c.getSerial_number());
-	              	video.setVideo(vi);
-	              
-	              	respMessage = MessageUtil.messageToXml(video);
+        			//判断该视频是金币点播还是普通点播
+        			String isvip=c.getIsvip();
+        			if (!"".equals(isvip) && isvip != null) {
+        				if(isvip.equals("1")){//是vip点播
+            				//查询点播所需金币
+            				String play_goin=c.getPlay_goin();
+            				//查询当前用户所需的金币数
+            				User user=new User();
+            				user.setUnionid(weiXinUserInfo.getUnionid());
+            				ArrayList<User> userlis=userService.isRegister(user);
+              		        if(userlis.size()>0){//已经注册
+              		        	User existUser=userlis.get(0);
+              		        	int gold_coin=existUser.getGold_coin();
+              		        	System.out.println("vip点播"+gold_coin+" Integer.parseInt(play_goin) "+Integer.parseInt(play_goin));
+              		        	if(gold_coin>=Integer.parseInt(play_goin)){//金币充足可以点播
+              		        		//existUser.setGold_coin(gold_coin-Integer.parseInt(play_goin));
+              		        		int goin= gold_coin-Integer.parseInt(play_goin);
+              		        		userService.addUserGoldCoin(existUser.getId(),goin);
+              		        		VideoMessage  video=new VideoMessage();
+                                    video.setToUserName(fromUserName);
+                	              	video.setFromUserName(toUserName);
+                	              	video.setCreateTime(new Date().getTime());
+                	              	video.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_VIDEO);
+                	              	Video vi=new Video();
+                	              	vi.setMediaId(c.getMediaId());
+                	              	vi.setTitle(c.getVideo_name());
+                	              	vi.setDescription(c.getSerial_number());
+                	              	video.setVideo(vi);
+                	              	respMessage = MessageUtil.messageToXml(video);
+              		        	}else{//金币不足无法点播
+              		        		String openid=map.get("FromUserName"); //用户openid
+              	                 	String mpid=map.get("ToUserName"); //公众号原始ID
+              	             	    CustomerMessage customer=new CustomerMessage();
+              	             	    customer.setToUserName(fromUserName);
+              	             	    customer.setFromUserName(toUserName);
+              	             	    customer.setCreateTime(new Date().getTime());
+              	             	    customer.setMsgType("transfer_customer_service");
+              	        			text.setContent("点播此视频需要"+Integer.parseInt(play_goin)+"金币抱歉您的金币数不足，请至我的账户中进行金币充值后操作");
+              	        			respMessage = MessageUtil.messageToXml(text);
+              		        	}
+              		        	
+
+              		        }else{//尚未注册
+              		        	String openid=map.get("FromUserName"); //用户openid
+          	                 	String mpid=map.get("ToUserName"); //公众号原始ID
+          	             	    CustomerMessage customer=new CustomerMessage();
+          	             	    customer.setToUserName(fromUserName);
+          	             	    customer.setFromUserName(toUserName);
+          	             	    customer.setCreateTime(new Date().getTime());
+          	             	    customer.setMsgType("transfer_customer_service");
+          	        			text.setContent("抱歉，你的账号可能有问题，暂不能进行点播");
+          	        			respMessage = MessageUtil.messageToXml(text);
+              		        } 
+            				
+            			}else{//不是vip点播
+            				System.out.println("非vip点播");
+            				VideoMessage  video=new VideoMessage();
+                            video.setToUserName(fromUserName);
+        	              	video.setFromUserName(toUserName);
+        	              	video.setCreateTime(new Date().getTime());
+        	              	video.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_VIDEO);
+        	              	Video vi=new Video();
+        	              	vi.setMediaId(c.getMediaId());
+        	              	vi.setTitle(c.getVideo_name());
+        	              	vi.setDescription(c.getSerial_number());
+        	              	video.setVideo(vi);
+        	              	respMessage = MessageUtil.messageToXml(video);
+            			}
+        			}else{
+        				System.out.println("非vip点播");
+        				VideoMessage  video=new VideoMessage();
+                        video.setToUserName(fromUserName);
+    	              	video.setFromUserName(toUserName);
+    	              	video.setCreateTime(new Date().getTime());
+    	              	video.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_VIDEO);
+    	              	Video vi=new Video();
+    	              	vi.setMediaId(c.getMediaId());
+    	              	vi.setTitle(c.getVideo_name());
+    	              	vi.setDescription(c.getSerial_number());
+    	              	video.setVideo(vi);
+    	              	respMessage = MessageUtil.messageToXml(video);
+        			}
+        			
+        			
         		}else {
         			System.out.println("转发");
                  	String openid=map.get("FromUserName"); //用户openid
@@ -637,7 +784,8 @@ public class WechatController {
 	        response.setHeader("Pragma", "No-cache");
 	        response.setHeader("Cache-Control", "no-cache");
 	        response.setCharacterEncoding("UTF-8");
-	        response.getWriter().write(respMessage);// 将回应发送给微信服务器  
+	        response.getWriter().write(respMessage);// 将回应发送给微信服务器 
+	        //response.getWriter().write(respMessage1);// 将回应发送给微信服务器  
             
         } catch (Exception e) {
             e.printStackTrace();

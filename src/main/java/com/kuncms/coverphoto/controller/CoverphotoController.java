@@ -36,6 +36,7 @@ import com.kuncms.videoinfo.model.Videoinfo;
 import com.kuncms.videoinfo.service.VideoInfoService;
 
 import net.sf.json.JSONArray;
+import sun.rmi.runtime.Log;
 @Controller
 public class CoverphotoController {
 	@Autowired
@@ -44,6 +45,114 @@ public class CoverphotoController {
 	CoverphotoService coverphotoService;
 	@Autowired
 	DownloadRecordService downloadRecordService;
+	
+	
+	/**
+	 * @param map
+	 * @param request
+	 * @return
+	 * 跳转到vip点播码查看页（微信使用）
+	 */
+	@RequestMapping("/toVipPlayNumInfo")
+    public String toVipPlayNumInfo(Map<String,Object> map,HttpServletRequest request){
+   
+    
+		return "VipPlay";
+    }
+	
+	
+	
+	
+	/**
+	 * @param map
+	 * @param request
+	 * @return
+	 * 跳转到点播码查看页（微信使用）
+	 */
+	@RequestMapping("/toPlayNumInfo")
+    public String toPlayNumInfo(Map<String,Object> map,HttpServletRequest request){
+   
+    
+		return "PlayNum";
+    }
+	
+	@RequestMapping("queryVipPlayNumInfoCount")
+	public void queryVipPlayNumInfoCount(HttpServletResponse response,Coverphoto coverphoto) throws IOException {
+		    //查询微信支付记录
+			ArrayList<Coverphoto> list=coverphotoService.queryVipPlayNumInfoCount(coverphoto);
+		
+		 	response.setContentType("application/json");
+	        response.setHeader("Pragma", "No-cache");
+	        response.setHeader("Cache-Control", "no-cache");
+	        response.setCharacterEncoding("UTF-8");
+	        
+	        JSONArray listArray=JSONArray.fromObject(list);     
+	        PrintWriter out= null;
+	        out = response.getWriter();
+	        out.print(listArray.toString());
+	        System.out.println(listArray.toString());
+	        out.flush();
+	        out.close();
+	
+		
+		
+	}
+	
+	@RequestMapping("queryPlayNumInfoCount")
+	public void queryPlayNumInfoCount(HttpServletResponse response,Coverphoto coverphoto) throws IOException {
+		    //查询微信支付记录
+			ArrayList<Coverphoto> list=coverphotoService.queryPlayNumInfoCount(coverphoto);
+		
+		 	response.setContentType("application/json");
+	        response.setHeader("Pragma", "No-cache");
+	        response.setHeader("Cache-Control", "no-cache");
+	        response.setCharacterEncoding("UTF-8");
+	        
+	        JSONArray listArray=JSONArray.fromObject(list);     
+	        PrintWriter out= null;
+	        out = response.getWriter();
+	        out.print(listArray.toString());
+	        System.out.println(listArray.toString());
+	        out.flush();
+	        out.close();
+	
+		
+		
+	}
+	
+	/**
+	 * @param response
+	 * @param currentPage
+	 * @param pageSize
+	 * @throws IOException
+	 * 点播信息获取页信息查询
+	 */
+	@RequestMapping("queryPlayNumInfo")
+	
+	public void queryPlayNumInfo(HttpServletResponse response,int currentPage, int pageSize,Coverphoto coverphoto) throws IOException {
+		//System.out.println(currentPage+"   "+pageSize);
+			PageHelper.startPage(currentPage , pageSize);
+		 	ArrayList<Coverphoto> list=coverphotoService.queryPlayNumInfo(coverphoto);
+	        //得到分页的结果对象
+	        PageInfo<Coverphoto> personPageInfo = new PageInfo<>(list);
+	        //得到分页中的person条目对象
+	        List<Coverphoto> pageList = personPageInfo.getList();
+	       
+	        JSONArray listArray=JSONArray.fromObject(pageList);     
+	        response.setContentType("application/json");
+	        response.setHeader("Pragma", "No-cache");
+	        response.setHeader("Cache-Control", "no-cache");
+	        response.setCharacterEncoding("UTF-8");
+	        PrintWriter out= null;
+	        out = response.getWriter();
+	        out.print(listArray.toString());
+	        System.out.println(listArray.toString());
+	        out.flush();
+	        out.close();
+	}
+	
+	
+	
 	
 	/**
 	 * @param response

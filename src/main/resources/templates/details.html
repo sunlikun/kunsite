@@ -196,6 +196,51 @@
 				             },
 				             success:function(data,textStatus,jqXHR){
 				            	 gold_coin=data.gold_coin;
+				            	 var id=$("#id").val();
+						    	 if(user_name!=''&&user_name!=null){
+					                		
+					                if(parseInt(gold_coin)>=parseInt(t_gold_coin)&&parseInt(gold_coin)>0){//用户金币数足够
+					    	 						var btn = document.getElementById('d');
+													var clipboard = new ClipboardJS(btn,{
+												        target: function() {
+												            return document.querySelector('#baiduyun_pass');
+												        }
+												    });
+											    	clipboard.on('success', function(e) {
+				    								        console.log(e);
+				    								        //layer.msg("提取码已复制成功" + e.text);
+				    								      	//询问框
+															layer.confirm("提取码已复制，当前拥有"+gold_coin+"金币，下载需要"+t_gold_coin+"金币 ", {
+				    								          btn: ['继续','取消'] //按钮
+				    								        }, function(){
+				    								          //layer.msg('的确很重要', {icon: 1});
+				    								       // 重定向到目标页面  
+										        				var newWin=window.open();
+								                                newWin.location.href = "/todown?t_gold_coin="+t_gold_coin+"&id="+id;  
+								                                layer.closeAll();
+								                                clipboard.destroy();
+						                                    }, function(){
+						                                    	 clipboard.destroy();
+				    								        });
+				    								        
+				    								     	
+				    								});
+				
+				    								clipboard.on('error', function(e) {
+				    								        console.log(e);
+				    								        layer.open({
+				    						                    title: '提示',
+				    						                    content: '您的浏览器可能不支持自动复制提取码，请手动复制~'
+				    						                });
+				    								        clipboard.destroy();
+				    								});
+							    		}else{//用户金币数不足
+					 					    alert("当前拥有"+gold_coin+"金币，下载需要"+t_gold_coin+"金币，金币不足请前往充值！");
+					 					}	
+								}else{
+										  				
+								        alert("请先登陆");
+					            }; 
 					    	    
 				             },
 				             error:function(xhr,textStatus){
@@ -206,51 +251,7 @@
 				        })
 				
 						    	
-				        var id=$("#id").val();
-				    	if(user_name!=''&&user_name!=null){
-			                		
-			                if(parseInt(gold_coin)>=parseInt(t_gold_coin)){//用户金币数足够
-			    	 						var btn = document.getElementById('d');
-											var clipboard = new ClipboardJS(btn,{
-										        target: function() {
-										            return document.querySelector('#baiduyun_pass');
-										        }
-										    });
-									    	clipboard.on('success', function(e) {
-		    								        console.log(e);
-		    								        //layer.msg("提取码已复制成功" + e.text);
-		    								      	//询问框
-													layer.confirm("提取码已复制，当前拥有"+gold_coin+"金币，下载需要"+t_gold_coin+"金币 ", {
-		    								          btn: ['继续','取消'] //按钮
-		    								        }, function(){
-		    								          //layer.msg('的确很重要', {icon: 1});
-		    								       // 重定向到目标页面  
-								        				var newWin=window.open();
-						                                newWin.location.href = "/todown?t_gold_coin="+t_gold_coin+"&id="+id;  
-						                                layer.closeAll();
-						                                clipboard.destroy();
-				                                    }, function(){
-				                                    	 clipboard.destroy();
-		    								        });
-		    								        
-		    								     	
-		    								});
-		
-		    								clipboard.on('error', function(e) {
-		    								        console.log(e);
-		    								        layer.open({
-		    						                    title: '提示',
-		    						                    content: '您的浏览器可能不支持自动复制提取码，请手动复制~'
-		    						                });
-		    								        clipboard.destroy();
-		    								});
-					    		}else{//用户金币数不足
-			 					    alert("当前拥有"+gold_coin+"金币，下载需要"+t_gold_coin+"金币，金币不足请前往充值！");
-			 					}	
-						}else{
-								  				
-						        alert("请先登陆");
-			            };    
+				          
 				              
 				   },
 				   getUser: function () {

@@ -2,8 +2,67 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.kuncms.coverphoto.dao.CoverphotoDao" >
 
+ 	<select id="queryVipPlayNumInfoCount"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
+         SELECT*FROM coverphoto c
+         <where>
+         c.flag="1"
+        	<if test="category != null and category != ''">
+				and c.category=#{category}
+			</if>
+			and c.serial_number is not null
+			and c.isvip="1"
+		 </where>
+		 	ORDER BY c.create_time desc
+   </select>
+  <select id="queryPlayNumInfoCount"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
+         SELECT*FROM coverphoto c
+         <where>
+        
+         and c.flag="1"
+        	<if test="category != null and category != ''">
+				and c.category=#{category}
+			</if>
+			and (c.isvip="0" or c.isvip="" or c.isvip is null)
+			and c.serial_number is not null
+			
+		 </where>
+		 	ORDER BY c.create_time desc
+     </select>
+
+	<!--金币点播信息查询  -->
+ 	<select id="queryVipPlayNumInfo"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
+        SELECT*FROM coverphoto c
+         <where>
+         c.flag="1"
+        	<if test="category != null and category != ''">
+				and c.category=#{category}
+			</if>
+			and c.serial_number is not null
+			and c.isvip="1"
+		 </where>
+		 	ORDER BY c.create_time desc
+     </select>
+	
+	<!--普通点播信息查询  -->
+ 	<select id="queryPlayNumInfo"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
+        SELECT*FROM coverphoto c
+         <where>
+        
+         and c.flag="1"
+        	<if test="category != null and category != ''">
+				and c.category=#{category}
+			</if>
+			and (c.isvip="0" or c.isvip="" or c.isvip is null)
+			and c.serial_number is not null
+			
+		 </where>
+		 	ORDER BY c.create_time desc
+     </select>
+
+
+
 	<update id="upCurrenPlayNum"  parameterType="com.kuncms.coverphoto.model.Play_num_record">
-       update Play_num_record a set 
+       update play_num_record a set 
  	    <if test="play_num_cureent != null and play_num_cureent != ''">
 				a.play_num_cureent=#{play_num_cureent}
 		</if>
@@ -79,14 +138,14 @@
 				and c.category=#{category}
 			</if>
 		</where>
-		ORDER BY c.create_time desc limit 0,9;
+		ORDER BY c.create_time desc limit 0,12;
      </select>
     
     
     <insert id="insert"  parameterType="com.kuncms.coverphoto.model.Coverphoto">
 
-		insert into coverphoto(id,coverphotoid,baiduyun_address,baiduyun_pass,video_name,create_time,createby,update_time,updateby,flag,gold_coin,clicks,downloads,category) 
-		   values(#{id},#{coverphotoid},#{baiduyun_address},#{baiduyun_pass},#{video_name},#{create_time},#{createby},#{update_time},#{updateby},#{flag},#{gold_coin},#{clicks},#{downloads},#{category})
+		insert into coverphoto(id,coverphotoid,baiduyun_address,baiduyun_pass,video_name,create_time,createby,update_time,updateby,flag,gold_coin,clicks,downloads,category,screen_class) 
+		   values(#{id},#{coverphotoid},#{baiduyun_address},#{baiduyun_pass},#{video_name},#{create_time},#{createby},#{update_time},#{updateby},#{flag},#{gold_coin},#{clicks},#{downloads},#{category},#{screen_class})
 	</insert>
  	
  	<update id="updateCoverPhotoById" parameterType="com.kuncms.coverphoto.model.Coverphoto">
@@ -137,6 +196,18 @@
 		</if>
 		<if test="MediaId != null and MediaId != ''">
 				,a.MediaId = #{MediaId}
+		</if>
+		 <if test="serial_number != null and serial_number != ''">
+				,a.serial_number=#{serial_number}
+		</if>
+		<if test="MediaId != null and MediaId != ''">
+				,a.MediaId = #{MediaId}
+		</if>
+		 <if test="isvip != null and isvip != ''">
+				,a.isvip=#{isvip}
+		</if>
+		<if test="play_goin != null and play_goin != ''">
+				,a.play_goin = #{play_goin}
 		</if>
         <where>
 			<if test="id != null and id != ''">

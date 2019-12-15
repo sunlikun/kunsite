@@ -196,7 +196,7 @@
                     });
                     // initialize the popup window and buttons.
                     $("#popupWindow").jqxWindow({
-                        width: 280, height:250,resizable: false,  isModal: true, autoOpen: false, cancelButton: $("#Cancel"), modalOpacity: 0.01           
+                        width: 300, height:350,resizable: false,  isModal: true, autoOpen: false, cancelButton: $("#Cancel"), modalOpacity: 0.01           
                     });
                     $("#popupWindow").on('open', function () {
                         $("#id1").jqxInput('selectAll');
@@ -210,6 +210,7 @@
                             var row = { id: $("#id1").val(), video_name: $("#video_name1").val(), baiduyun_address: $("#baiduyun_address1").val(),
                             			baiduyun_pass: $("#baiduyun_pass1").val(), coverphotoid: $("#coverphotoid1").val(), id: $("#id1").val(),
                             			gold_coin: $("#gold_coin1").val(),serial_number: $("#serial_number1").val(),category: $("#category1").val()
+                            			,isvip: $("#isvip1").val(),play_goin: $("#play_goin1").val()
                            };
                             var rowID = $('#grid').jqxGrid('getrowid', editrow);
                             //更新视频信息
@@ -224,7 +225,7 @@
                                   data: {id: $("#id1").val(), video_name: $("#video_name1").val(), baiduyun_address: $("#baiduyun_address1").val(),
 		                          			baiduyun_pass: $("#baiduyun_pass1").val(), coverphotoid: $("#coverphotoid1").val(), id: $("#id1").val(),
 		                        			gold_coin: $("#gold_coin1").val(),serial_number: $("#serial_number1").val(),category: $("#category1").val()
-                       			  			,flag: 1
+                       			  			,flag: 1,isvip: $("#isvip1").val(),play_goin: $("#play_goin1").val()
                                   },
                                   dataType: "json",
                                   success: function(data){
@@ -294,6 +295,16 @@
         											<option value="2">车模</option>
         											<option value="3">模特</option>
         									</select></p>
+        					<p>请选择屏幕类别: <select id="screen_class" name="screen_class">
+        											<option value="0">竖屏</option>
+        											<option value="1">横屏</option>
+        											<option value="2">横竖混合</option>
+        									</select></p>
+        					<p>是否可进行vip点播: <select id="isvip" name="isvip">
+        											<option value="0">否</option>
+        											<option value="1">是</option>
+        									</select></p>
+        					<p>点播金币数: <input type="text" name="play_goin" id="play_goin"/></p>					
         					<p><button type="submit">提交</button></p>
     				</form>
                 </div>
@@ -324,15 +335,15 @@
                     </tr>
                     <tr>
                         <td align="right">视频分享码:</td>
-                        <td align="left"><input id="baiduyun_pass1"></div></td>
+                        <td align="left"><input id="baiduyun_pass1"></td>
                     </tr>
                     <tr>
                         <td align="right">视频金币数:</td>
-                        <td align="left"><input id="gold_coin1"></div></td>
+                        <td align="left"><input id="gold_coin1"></td>
                     </tr>
                     <tr>
                         <td align="right">视频编号:</td>
-                        <td align="left"><input id="serial_number1"></div></td>
+                        <td align="left"><input id="serial_number1"></td>
                     </tr>
                      <tr>
                         <td align="right">视频类别:</td>
@@ -346,6 +357,22 @@
                         	</div>
                         </td>
                     </tr>
+                    <tr>
+                        <td align="right">是否是vip点播:</td>
+                        <td align="left">
+                        <div>
+                        					<select id="isvip1" >
+        											<option value="0">否</option>
+        											<option value="1">是</option>
+        									</select>
+        									</div>
+        				</td>
+        				</tr>
+        				<tr>
+        				<td align="right">金币点播数:</td>
+                        <td align="left"><input type="text"  id="play_goin1"/></td>
+                    </tr>
+                   
                     <tr>
                         <td align="right"></td>
                         <td style="padding-top: 10px;" align="right"><input style="margin-right: 5px;" type="button" id="Save" value="Save" /><input id="Cancel" type="button" value="Cancel" /></td>

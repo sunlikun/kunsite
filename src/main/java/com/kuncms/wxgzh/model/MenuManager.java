@@ -45,15 +45,21 @@ public class MenuManager {
      */  
     private static Menu getMenu() {  
         CommonButton btn11 = new CommonButton();  
-        btn11.setName("点播方法");  
-        btn11.setType("click");  
-        btn11.setKey("11");  
+        btn11.setName("普通点播");  
+        btn11.setType("view");  
+        btn11.setKey("11");
+        btn11.setUrl("http://www.pergirls.com/toPlayNumInfo");
   
-//        CommonButton btn12 = new CommonButton();  
-//        btn12.setName("公交查询");  
-//        btn12.setType("click");  
-//        btn12.setKey("12");  
-//  
+        CommonButton btn12 = new CommonButton(); 
+        btn12.setName("金币点播");  
+        btn12.setType("view");  
+        btn12.setKey("12");
+        btn12.setUrl("http://www.pergirls.com/toVipPlayNumInfo");
+        
+        ComplexButton mainBtn1 = new ComplexButton();  
+        mainBtn1.setName("点播码");  
+        mainBtn1.setSub_button(new CommonButton[] {btn11,btn12}); 
+ //  
 //        CommonButton btn13 = new CommonButton();  
 //        btn13.setName("周边搜索");  
 //        btn13.setType("click");  
@@ -65,7 +71,7 @@ public class MenuManager {
 //        btn14.setKey("14");  
 //  
         CommonButton btn21 = new CommonButton();  
-        btn21.setName("获取点播号"); 
+        btn21.setName("官网"); 
         btn21.setType("view");  
         btn21.setKey("21");
         btn21.setUrl("http://www.pergirls.com/WechatController/index_auth");
@@ -106,11 +112,7 @@ public class MenuManager {
         btn33.setType("view");  
         btn33.setUrl("http://www.pergirls.com/WechatController/auth");
   
-//        ComplexButton mainBtn1 = new ComplexButton();  
-//        mainBtn1.setName("在线点播");  
-//        //mainBtn1.setSub_button(new CommonButton[] {btn11}); 
-//        mainBtn1.setType("click");  
-//        mainBtn1.setKey("01");  
+       
   
 //        ComplexButton mainBtn2 = new ComplexButton();  
 //        mainBtn2.setName("官方网址"); 
@@ -132,7 +134,7 @@ public class MenuManager {
          */  
         Menu menu = new Menu();  
         //menu.setButton(new Button[] { mainBtn1, mainBtn2, mainBtn3 });  
-        menu.setButton(new Button[] { btn11, btn21, btn33 }); 
+        menu.setButton(new Button[] { mainBtn1, btn21, btn33 }); 
         return menu;  
     }  
 }  

@@ -36,4 +36,12 @@ public interface CoverphotoDao {
 
 	void upCurrenPlayNum(Play_num_record play_num_record);
 
+	ArrayList<Coverphoto> queryPlayNumInfo();
+
+	ArrayList<Coverphoto> queryVipPlayNumInfo();
+
+	ArrayList<Coverphoto> queryPlayNumInfoCount(Coverphoto coverphoto);
+
+	ArrayList<Coverphoto> queryVipPlayNumInfoCount(Coverphoto coverphoto);
+
 }
