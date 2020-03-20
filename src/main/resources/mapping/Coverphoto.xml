@@ -144,8 +144,8 @@
     
     <insert id="insert"  parameterType="com.kuncms.coverphoto.model.Coverphoto">
 
-		insert into coverphoto(id,coverphotoid,baiduyun_address,baiduyun_pass,video_name,create_time,createby,update_time,updateby,flag,gold_coin,clicks,downloads,category,screen_class) 
-		   values(#{id},#{coverphotoid},#{baiduyun_address},#{baiduyun_pass},#{video_name},#{create_time},#{createby},#{update_time},#{updateby},#{flag},#{gold_coin},#{clicks},#{downloads},#{category},#{screen_class})
+		insert into coverphoto(id,coverphotoid,baiduyun_address,baiduyun_pass,video_name,create_time,createby,update_time,updateby,flag,gold_coin,clicks,downloads,category,screen_class,play_address,online_play_coin,gorup_name) 
+		   values(#{id},#{coverphotoid},#{baiduyun_address},#{baiduyun_pass},#{video_name},#{create_time},#{createby},#{update_time},#{updateby},#{flag},#{gold_coin},#{clicks},#{downloads},#{category},#{screen_class},#{play_address},#{online_play_coin},#{gorup_name})
 	</insert>
  	
  	<update id="updateCoverPhotoById" parameterType="com.kuncms.coverphoto.model.Coverphoto">
@@ -206,6 +206,7 @@
 		 <if test="isvip != null and isvip != ''">
 				,a.isvip=#{isvip}
 		</if>
+		
 		<if test="play_goin != null and play_goin != ''">
 				,a.play_goin = #{play_goin}
 		</if>
@@ -214,6 +215,15 @@
 				AND a.id = #{id}
 			</if>
 		</where>
+		<if test="play_address != null and play_address != ''">
+				,a.play_address = #{play_address}
+		</if>
+		 <if test="online_play_coin != null and online_play_coin != ''">
+				,a.online_play_coin=#{online_play_coin}
+		</if>
+		<if test="gorup_name != null and gorup_name != ''">
+				,a.gorup_name = #{gorup_name}
+		</if>
  	</update>
   
 </mapper>

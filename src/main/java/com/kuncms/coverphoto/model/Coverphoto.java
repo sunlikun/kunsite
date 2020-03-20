@@ -8,6 +8,7 @@ private String id;
 private String coverphotoid;
 private String create_time;
 private String createby;
+
 private String update_time;
 private String updateby;
 private String video_name;
@@ -23,7 +24,28 @@ private String MediaId;
 private String screen_class;
 private String isvip;
 private String play_goin;
+private String play_address;
+private int online_play_coin;
+private String gorup_name;
+public String getGorup_name() {
+	return gorup_name;
+}
+public void setGorup_name(String gorup_name) {
+	this.gorup_name = gorup_name;
+}
 
+public String getPlay_address() {
+	return play_address;
+}
+public void setPlay_address(String play_address) {
+	this.play_address = play_address;
+}
+public int getOnline_play_coin() {
+	return online_play_coin;
+}
+public void setOnline_play_coin(int online_play_coin) {
+	this.online_play_coin = online_play_coin;
+}
 public String getIsvip() {
 	return isvip;
 }

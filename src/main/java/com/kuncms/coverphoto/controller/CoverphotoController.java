@@ -51,13 +51,14 @@ public class CoverphotoController {
 	 * @param map
 	 * @param request
 	 * @return
-	 * 跳转到vip点播码查看页（微信使用）
+	 * 在线视频播放页
 	 */
-	@RequestMapping("/toVipPlayNumInfo")
-    public String toVipPlayNumInfo(Map<String,Object> map,HttpServletRequest request){
-   
-    
-		return "VipPlay";
+	@RequestMapping("/toVideoPlay")
+    public String toVipPlayNumInfo(Map<String,Object> map,HttpServletRequest request,Coverphoto coverphoto,Model model){
+		ArrayList<Coverphoto> list=coverphotoService.queryCoverPhotoById(coverphoto);
+		Coverphoto coverphoto1=list.get(0);
+		model.addAttribute("play_address",coverphoto1.getPlay_address());
+		return "onlinePlay";
     }
 	
 	
