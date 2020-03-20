@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+ 	<meta name="baidu-site-verification" content="EuNPeTHGFx" />
+    <title>普格娱乐充值</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/button.css" rel="stylesheet">
+     <link rel="stylesheet" href="../../jqwidgets/styles/jqx.base.css" type="text/css" />
+      <link rel="stylesheet" href="/css/pay.css">
+    <script type="text/javascript" src="/scripts/jquery-1.11.1.min.js"></script>
+    
+    <script type="text/javascript" src="/js/jqthumb.min.js"></script>
+     <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+    
+   
+  
+     
+	<style>
+	body { width:80%; margin:50px auto; }
+	// Extra small devices (portrait phones, less than 576px)
+	@media (max-width: 575.98px) { ... }
+	
+	// Small devices (landscape phones, 576px and up)
+	@media (min-width: 576px) and (max-width: 767.98px) { ... }
+	
+	// Medium devices (tablets, 768px and up)
+	@media (min-width: 768px) and (max-width: 991.98px) { ... }
+	
+	// Large devices (desktops, 992px and up)
+	@media (min-width: 992px) and (max-width: 1199.98px) { ... }
+	
+	// Extra large devices (large desktops, 1200px and up)
+	@media (min-width: 1200px) { ... }
+	ul {
+    display: block;
+    overflow: hidden;
+    white-space:nowrap;
+	}
+	li{
+    list-style: none;
+    display: inline-block;
+    margin-left: 15px;
+    width: 130px;
+	}
+	.cp{
+
+	width: 450px;
+	height: 470px;
+	overflow: hidden;
+	display: table-cell;
+	vertical-align: middle;
+	border:3px solid #000;
+	text-align: center;
+	}
+	.cpimg{
+	
+	max-width: 100%;
+	max-height: 100%;（或者max-height: 100%;）
+	display: block;
+	margin: 0 auto;
+	
+	}
+	.cdiv{ border:3px solid #000} 
+	
+	.point{position:absolute;left:50%; top:50%;}
+        .pop{width:300px; height:380px; position:absolute;left:-250px; top:-250px;background: white; }
+	</style>
+	
+  </head>
+  <body bgcolor="#DDDDDD">
+  	<!--  
+	<div th:include="header :: header"></div>
+	-->
+	<div class="container-fluid">
+  		<div class="row">
+	  		<div style="margin-top: 10%">
+		  		<nav class="navbar navbar-default" role="navigation">
+				    <div class="container-fluid">
+				    
+				    <div>
+				        <ul class="nav navbar-nav">
+				            <li> <a href="" class="navbar-brand">充值中心</a></li>
+				          
+				         </ul>
+				    </div>
+				    </div>
+				</nav>
+			</div>
+		</div>
+	</div>
+		<p></p><p></p>
+		<div class="row">
+				<div class="col-md-12" >
+					 <div class="charge-form-container" style="margin-left: 15%" id="app1">
+
+					    <div class="charge-form" >
+					      <form action="">
+					        <div>
+					          <p>请选择充值金额</p>
+					          <div class="charge-group">
+					            <div class="charge-group__inner">
+					              <label class="charge-item">
+					                <input type="radio" name="amount" value="10">
+					                <div class="charge-item__inner">
+					                  <p>10元</p>
+					                  <span>100金币</span>
+					                </div>
+					              </label>
+					              <label class="charge-item">
+					                <input type="radio" name="amount" value="20">
+					                <div class="charge-item__inner">
+					                  <p>20元</p>
+					                  <span>200金币</span>
+					                </div>
+					              </label>
+					              <label class="charge-item">
+					                <input type="radio" name="amount" value="30">
+					                <div class="charge-item__inner">
+					                  <p>30元</p>
+					                  <span>300金币</span>
+					                </div>
+					              </label>
+					              <label class="charge-item">
+					                <input type="radio" name="amount" value="40">
+					                <div class="charge-item__inner">
+					                  <p>40元</p>
+					                  <span>400金币</span>
+					                </div>
+					              </label>
+					              <label class="charge-item">
+					                <input type="radio" name="amount" value="50">
+					                <div class="charge-item__inner">
+					                  <p>50元</p>
+					                  <span>500金币</span>
+					                </div>
+					              </label>
+					              <label class="charge-item">
+					                <input type="radio" name="amount" value="60">
+					                <div class="charge-item__inner">
+					                  <p>60元</p>
+					                  <span>600金币</span>
+					                </div>
+					              </label>
+					              <label class="charge-item">
+					                <input type="radio" name="amount" value="70">
+					                <div class="charge-item__inner">
+					                  <p>70元</p>
+					                  <span>700金币</span>
+					                </div>
+					              </label>
+					              <label class="charge-item">
+					                <input type="radio" name="amount" value="80">
+					                <div class="charge-item__inner">
+					                  <p>80元</p>
+					                  <span>800金币</span>
+					                </div>
+					              </label>
+					              <label class="charge-item">
+					                <input type="radio" name="amount" value="90">
+					                <div class="charge-item__inner">
+					                  <p>90元</p>
+					                  <span>900金币</span>
+					                </div>
+					              </label>
+					              <label class="charge-item">
+					                <input type="radio" name="amount" value="100">
+					                <div class="charge-item__inner">
+					                  <p>100元</p>
+					                  <span>1000金币</span>
+					                </div>
+					              </label>
+					            </div>
+					          </div>
+					          <p></p>
+					          <div class="charge-group">
+					            <div class="charge-group__inner">
+					              <label class="charge-item">
+					                <input type="radio" name="payType">
+					                <div class="charge-item__inner">
+					                  <div class="wechat-label" v-on:click="paytype('1')">
+					                  </div>
+					                 
+					                </div>
+					              </label>
+					              <!-- 
+					              <label class="charge-item">
+					                <input type="radio" name="payType">
+					                <div class="charge-item__inner">
+					                  <div class="wechat-label1" v-on:click="paytype('2')">
+					                  </div>
+					                </div>
+					              </label>
+					               -->
+					            </div>
+					          </div>
+					          <input id="type"  name="type" v-model="type" style="display: none">
+					          <!-- 
+					          <p>需要支付金额<input id="total_fee"  name="total_fee" v-model="total_fee" ></p>
+					           -->
+					          <div class="charge-group">
+					            <div class="charge-group__inner">
+					            
+					             
+					                  <button type="button" class="btn btn-info btn-lg" @click="pay()">去支付</button>
+					             
+					              
+					            </div>
+					          </div>
+					        </div>
+					      </form>
+					    </div>
+					  </div>
+				</div>
+	  			<!--  
+				<div class="col-md-4">
+					
+						<div align="center"><div id='calendar' style="width: 100%;height: 100%;border:4px solid black">
+								<h2>
+									欢迎访问普格娱乐
+								</h2>
+								<p>
+									内容持续更新中
+								</p>
+						</div>
+					
+				</div>
+				-->
+		</div>
+		
+		
+   </div>
+</div>
+   <!--  
+ 	<div  style="width:100%; height:90%;left:0;top:0; position:fixed;background:rgba(0,0,0,0.3);display: none" id="payimg">
+ 			
+	    	<div class="point">
+	    		<div class="pop">
+	    		
+	    		<center style="margin-top: 15px"><font size="3">请打开微信扫码支付</font></center>
+	    		
+	    		<img src="" alt="" id="img"><br>
+	    		<center>
+	    		<button type="button" class="btn btn-primary" id="done">支付完成</button>
+	    		<button type="button" class="btn btn-default" id="cancel">取消</button>
+	    		</center>
+				</div>
+	      	</div>
+   </div>
+--> 
+   <!--  
+   <div th:include="footer :: footer"></div> 
+   -->
+   <input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none"> 
+   <input id="id" th:value="${id}" name="id" type="text" style="display: none"> 
+    
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/scripts.js"></script>
+    
+    <script type="text/javascript">
+    	
+       	var user_name=$("#user_name").val();
+       	var query=null;
+		var app=new Vue({
+			  el: '#app',
+			  data: {
+				  
+					  content: user_name,
+					  plays:true
+			  },
+			  methods:{
+				  islogin: function () {
+					  
+					  if(user_name!=null&&user_name!=''){
+						  
+						  this.plays=false;
+					  }
+				  }
+			    }
+			
+			})
+		
+		  app.islogin();
+		
+		
+		var app1=new Vue({
+			  el: '#app1',
+			  data: {
+				  
+				  	 type:''
+					  
+			  },
+			  methods:{
+				  
+				  pay: function () {
+					
+					//获取当前选中充值金额
+					var val = $('input[name="amount"]:checked').val();
+					if(val==undefined){
+						alert("请选择充值的金额");
+						return false;
+					}
+				    //获取支付方式,并根据支付方式选取不同的方法处理
+				    var type = "1";
+				    var url="";
+				    if(type==""||type==null){
+				    	alert("请选择支付方式");
+				    	return false;
+				    }else if(type=="1"){//微信支付
+				    	//$("#img").attr("src","");
+				    	url="/wxpay/jsapipay?total_fee"+val;
+				    	//alert(val)
+				    	this.$http.get(url,{params:{total_fee: val}},{emulateJSON:true}).then(function(res){
+				    		 
+				    		//alert(res.body.appId);  
+				    		
+		                	
+		                	 wx.config({
+		         			    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+		         			    appId: res.body.appId, // 必填，公众号的唯一标识
+		         			    timestamp: res.body.timestamp, // 必填，生成签名的时间戳
+		         			    nonceStr: res.body.nonceStr, // 必填，生成签名的随机串
+		         			    signature: res.body.paySign,// 必填，签名
+		         			   	jsApiList: [
+		         			       	'chooseWXPay']// 必填，需要使用的JS接口列表
+		         			});
+		                	 wx.ready(function(){
+		                		    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+		                			wx.checkJsApi({
+									    jsApiList: ['chooseWXPay'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+									    success: function(res) {
+									    // 以键值对的形式返回，可用的api值true，不可用为false
+									    // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+									    //alert(res)
+									    }
+									});
+		                			//alert(res.body.timeStamp)
+		                			//alert(res.body.package)
+		                			//alert(res.body.paySign)
+		                			//alert( res.body.nonceStr)
+		                			 //for(s in res.body){
+		                		    //	alert(res.body.s)
+		                		    //}
+		                		    wx.chooseWXPay({
+		                		      timestamp: res.body.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+			         				  nonceStr: res.body.nonceStr, // 支付签名随机串，不长于 32 位
+			         				  package: res.body.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+			         				  signType:res.body.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+			         				  paySign: res.body.paySign, // 支付签名
+			         				  success: function (res) {
+			         					  //alert()
+				         				  // 支付成功后的回调函数
+				         				 //if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+				         					 
+				         					//支付成功后跳转的页面
+				         					 window.location.href="http://www.pergirls.com/WechatController/auth?timestamp="+ new Date().getTime()+Math.random();
+				         					 
+				         				 //}else if(res.err_msg == "get_brand_wcpay_request:cancel"){
+				         					 
+				         				
+				         					 
+				         				// }else if(res.err_msg == "get_brand_wcpay_request:fail"){
+				         					 
+				         					
+			         				    // }
+			         				  }
+			         			});
+		                	 });
+		                	 
+		                	 
+		                	 wx.error(function(res){
+	                			    // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+	                			    alert("有错误！"+res.errMsg);
+	                		 });
+		         		  	
+		                	
+		                	
+		                	
+		                	
+		                	
+		                	
+		                	
+		                },function(res){
+		                    console.log(res.data);
+		                });
+				    	
+				    	
+				    	
+				    	
+				    	//$("#img").attr("src",url);
+				    	//$("#payimg").show();
+				    	//var newWin=window.open (url, '普格娱乐充值', 'left=410,height=510, width=660, top=200,  toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no')
+				    	//轮询查询微信订单是否成功
+				    	// query=setInterval("orderquery()",500);
+				    //alert("微信支付开通中,请等待");
+				    }else if(type=="2"){//支付宝支付
+				    	url="alipay";
+				    	var form=$("<form>");//定义一个form表单
+	          			form.attr("style","display:none");
+	          			form.attr("target","");
+	          			form.attr("method","get");
+	          			form.attr("action",url);
+	          			var input1=$("<input>");
+	          			input1.attr("type","hidden");
+	          			input1.attr("name","val");
+	          			input1.attr("value",val);
+	          			var input2=$("<input>");
+	          			input2.attr("type","hidden");
+	          			input2.attr("name","openid");
+	          			input2.attr("value","");
+	          			$("body").append(form);//将表单放置在web中
+	          			form.append(input1);  
+	          			form.append(input2);  
+	          			form.submit();//表单提交 
+				    }
+				    
+					
+          			
+          			
+          		 },
+				  paytype: function (message) {
+						
+						this.type=message;
+				  }
+						
+			  }
+			})
+		
+		 	/* function orderquery() {
+	            $.ajax({
+	                url: '/wxpay/orderquery',
+	                async:true,
+	                type: 'get',
+	                success: function (data) {
+	                	alert(data)
+	                    alert(data.result_code);
+	                	if(data.result_code=='ok'){
+	                		window.clearInterval(query);
+	                		alert("支付成功");
+	                		location.href="/membership";
+	                	}
+	               }
+	           })
+       		} */
+       		
+       		
+       		$("#cancel").click(function(){
+       			$("#payimg").hide();
+            });
+       		$("#done").click(function(){
+       			location.reload();
+            });
+	
+	</script>
+  </body>
+</html>

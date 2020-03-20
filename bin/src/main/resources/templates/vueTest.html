@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>根据视频编码进行查找视频</title>
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+  	<input v-model="message" placeholder="">
+  	<button type="button"   onclick="location.href='/serachvideo'">观看 </button>
+	
+</div>
+
+
+
+<script>
+
+new Vue({
+  el: '#app',
+  data: {
+    message: '请输入视频编码'
+	
+  }
+})
+
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>

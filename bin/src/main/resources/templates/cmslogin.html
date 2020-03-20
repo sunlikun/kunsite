@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<title>内容管理系统登录</title>
+		<link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+    	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+		<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+		<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+	 	<script src=" http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+	 	<link href="/css/bootstrap.min.css" rel="stylesheet">
+    	<link href="/css/style.css" rel="stylesheet">
+    	<link href="/css/button.css" rel="stylesheet">
+    	<link rel="stylesheet" href="../../jqwidgets/styles/jqx.base.css" type="text/css" />
+    	<link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+	    <script type="text/javascript" src="/scripts/jquery-1.11.1.min.js"></script>
+	    <script type="text/javascript" src="/js/jqthumb.min.js"></script>
+	    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+		<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+		<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	</head>
+	<body class="text-center">
+		<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-12">
+				<center style="margin-top: 200px">
+					<div id="app">
+						<form role="form" action="/cms_login_operate" id="form">
+							<p v-if="errors.length">
+							   <ul>
+							      <li v-for="error in errors">{{ error }}</li>
+							    </ul>
+					  		</p>
+								<div class="form-group"  >
+									 
+									<label>
+										账户名称
+									</label>
+									<input type="text" class="form-control" id="user_name" name="user_name" style="width: 200px" v-model="user_name"/>
+								</div>
+								<div class="form-group">
+									 
+									<label>
+										密码
+									</label>
+									<input type="password" class="form-control" id="password" name="password" style="width: 200px" v-model="password"/>
+								</div>
+								<a href='' data-toggle="modal" data-target="#myModal1">忘记账号</a><span style="margin-left: 80px"><a href='' data-toggle="modal" data-target="#myModal">找回密码</a></span>
+								<p v-if="logerror">登陆失败:账户名或密码错误! </p>
+								 
+								<div class="checkbox">
+									 
+									<label>
+										<input type="checkbox" /> 记住我
+									</label>
+								</div> 
+								<div id="box">
+									<input type="button" @click="login_check()" value="确定">
+								</div>
+							</form>
+							<!-- 忘记账号 -->
+							<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 15%;">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+												&times;
+											</button>
+											<h4 class="modal-title" id="myModalLabel">
+												找回账号
+											</h4>
+										</div>
+										<div class="modal-body" align="center">
+											<table   style="border-collapse:separate; border-spacing:0px 10px;">
+											
+											<tr>
+											<td><label>请输入账号绑定的邮箱地址:</label></td>
+											<td><input type="text" class="form-control"  id="aemail" name="aemail" style="width: 200px" v-model="aemail"/></td>
+											<td><span>{{message}}</span></td>
+											</tr>
+											<tr style="display: none" id="checkcodetr">
+											<td><label>验证码:</label></td>
+											<td align="right"><input type="text" class="form-control"  id="checkcode" name="checkcode" style="width: 80px;" v-model="checkcode"/></td>
+											<td><span>{{message1}}</span></td>
+											</tr>
+											<tr style="display: none" id="backAccount">
+											<td>
+											您的账号:
+											</td>
+											<td align="left">
+											<div v-for = "(item, index) in accountData" :key = "item.id">
+										        {{item.user_name}}
+										    </div>
+											</td>
+											</tr>
+											</table>
+											<br><br>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+											</button>
+											<button type="button" class="btn btn-primary" v-on:click="checkEmail" id="check">
+												验证
+											</button>
+											<button type="button" class="btn btn-primary" v-on:click="getUserAccount" id="submit" style="display: none">
+												提交
+											</button>
+											
+										</div>
+									</div><!-- /.modal-content -->
+								</div><!-- /.modal -->
+							</div>
+							<!-- 忘记密码 -->
+							<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 15%;">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+												&times;
+											</button>
+											<h4 class="modal-title" id="myModalLabel">
+												找回密码
+											</h4>
+										</div>
+										<div class="modal-body" align="center">
+											<table   style="border-collapse:separate; border-spacing:0px 10px;">
+											<tr>
+											<td><label>请输入您的账号:</label></td>
+											<td><input type="text" class="form-control"  id="account" name="account" style="width: 200px" v-model="account"/></td>
+											</tr>
+											<tr>
+											<td><label>请输入账号绑定的邮箱地址:</label></td>
+											<td><input type="text" class="form-control"  id="pemail" name="pnemail" style="width: 200px" v-model="pemail"/></td>
+											<td><span>{{message3}}</span></td>
+											</tr>
+											<tr style="display: none" id="checkcodetr1">
+											<td><label>验证码:</label></td>
+											<td align="right"><input type="text" class="form-control"  id="checkcode1" name="checkcode1" style="width: 80px;" v-model="checkcode1"/></td>
+											<td><span>{{message4}}</span></td>
+											</tr>
+											<tr style="display: none" id="newpass">
+											<td><label>输入新密码:</label></td>
+											<td><input type="password" class="form-control"  id="npass" name="npass" style="width: 200px" v-model="npass" onkeyup="this.value=this.value.replace(/[^a-z0-9_]/g,'');" maxlength="16"/></td>
+											<td><span>{{message6}}</span></td>
+											</tr>
+											<tr style="display: none" id="newpass1">
+											<td><label>再次输入新密码:</label></td>
+											<td><input type="password" class="form-control"  id="npass1" name="npass1" style="width: 200px" v-model="npass1" onkeyup="this.value=this.value.replace(/[^a-z0-9_]/g,'');" maxlength="16"/></td>
+											<td><span>{{message5}}</span></td>
+											</tr>
+											</table>
+											<br><br>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+											</button>
+											<button type="button" class="btn btn-primary" v-on:click="checkEmailandAcc" id="check1">
+												验证
+											</button>
+											<button type="button" class="btn btn-primary" v-on:click="getUserPass" id="submit1" style="display: none">
+												提交
+											</button>
+											
+											
+										</div>
+									</div><!-- /.modal-content -->
+								</div><!-- /.modal -->
+							</div>
+						</div>
+					
+				</center>
+				</div>
+			</div>
+			<div class="jumbotron">
+				<h2>
+					第三方账号登陆
+				</h2>
+				<p>
+					<div id="login_container"><a id="wechat" href="https://open.weixin.qq.com/connect/qrconnect?appid=wx91f183b1c7308950&redirect_uri=http://www.pergirls.com/getcode&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect"><img alt="" src="/img/wechat.jpg" style="width: 5%;height: 5%"/></a></div>
+				</p>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+	<script type="text/javascript">
+    
+        var user_name=$("#user_name").val();
+		var app=new Vue({
+			  el: '#app',
+			  data: {
+				      user_name:"",
+					  password:"",
+					  content: user_name,
+					  errors: [],
+					  plays:true,
+					  logerror: false,
+					  message:"",
+					  message1:"",
+					  checkcode:"",
+					  pemail:"",
+					  aemail:"",
+					  accountData:"",
+					  account:"",
+					  message3:"",
+					  message4:"",
+					  message5:"",
+					  message6:"",
+					  npass1:"",
+					  npass:"",
+					  checkcode1:"",
+					  echeckcode:""
+			  },
+			  methods:{ 
+				 
+			  	login_check: function (event) {
+				       //alert(this.user_name)
+				       if (this.user_name && this.password) {
+				    	   //发送 post 请求
+			                this.$http.post('/login_check',{user_name:this.user_name,password:this.password},{emulateJSON:true}).then(function(res){
+			                	 
+			                	if(res.body.msg=='ok'){
+			                		alert(res.body.result);
+			                		var form=$("form");
+			                		form.submit();
+			                	}else{
+			                		//alert(res.body.result);
+			                		this.logerror=true;
+			                	}
+			                },function(res){
+			                    console.log(res.data);
+			                });
+				      }else{
+				    	  this.errors = [];
+
+					      if (!this.user_name) {
+					        this.errors.push('用户名不能为空');
+					       
+					      }
+					      if (!this.password) {
+					        this.errors.push('密码不能为空');
+					       
+					      }
+					      
+					      event.preventDefault();
+				      }
+
+				  },
+				    checkEmail: function () {//校验邮箱是否已经绑定
+					    $("#check").attr("disabled", true);
+					  	this.$http.post('/MailController/checkEmail',{email:this.aemail},{emulateJSON:true}).then(function(res){
+			               	  
+							  //alert(res.body.email);
+							  if(res.body.email=='0'){
+								  this.message="邮箱不存在";
+								  $("#checkcodetr").hide();
+								  $("#check").attr("disabled", false);
+								  
+							  }else{
+								  
+								  this.message="验证码已经发送,请查收验证邮件";
+								  //显示验证码输入框，并发送邮件，返回验证码的值
+								  this.$http.post('/MailController/getCheckCode',{email:this.aemail},{emulateJSON:true}).then(function(res){
+					               	  //alert(res.data);
+									  //显示验证码输入框，并发送邮件，返回验证码的值
+					               	  $("#checkcodetr").show();
+					               	  $("#check").hide();
+					               	  $("#submit").show();
+					               	  this.message1="输入邮件中的验证码点击提交";
+					               	  this.echeckcode=res.data;
+					               	  
+								  },function(res){
+					                   console.log(res.data);
+					              });
+							  }
+			               	  //this.nemail=null
+			                },function(res){
+			                   console.log(res.data);
+			               });
+						  
+					},
+					getUserAccount: function () {//根据邮箱找回账号
+						 
+						    //对验证码进行校验
+							if(this.checkcode==null||this.checkcode==''){
+						    	this.message1="验证码不能为空";
+						    	return false;
+						    }else if(this.checkcode!=this.echeckcode){
+						    	this.message1="验证码不正确";
+						    	return false;
+						    }else if(this.checkcode==this.echeckcode&&this.checkcode!=null&&this.echeckcode!=null){
+						    	
+						    	this.$http.post('/MailController/getUserAccount',{email:this.aemail},{emulateJSON:true}).then(function(res){
+						    		//alert(res.data[0].user_name)
+						    		this.accountData=res.data;
+						    		$("#backAccount").show();
+						    		//location.reload();
+					                },function(res){
+					                   console.log(res.data);
+					             });
+						    }
+							
+							  
+					},
+					checkEmailandAcc: function () {//校验账号与邮箱是否匹配
+					    $("#check1").attr("disabled", true);
+					  	this.$http.post('/MailController/checkEmailandAcc',{email:this.pemail,user_name:this.account},{emulateJSON:true}).then(function(res){
+			               	  
+							  //alert(res.body.email);
+							  if(res.body.email=='0'){
+								  this.message3="账户和邮箱不一致";
+								  $("#checkcodetr1").hide();
+								  $("#check1").attr("disabled", false);
+								  
+							  }else{
+								  
+								  this.message="验证码已经发送,请查收验证邮件";
+								  //显示验证码输入框，并发送邮件，返回验证码的值
+								  this.$http.post('/MailController/getCheckCode',{email:this.pemail},{emulateJSON:true}).then(function(res){
+					               	  //alert(res.data);
+									  //显示验证码输入框，并发送邮件，返回验证码的值
+					               	  $("#checkcodetr1").show();
+					               	  $("#newpass").show();
+					               	  $("#newpass1").show();
+					               	  $("#check1").hide();
+					               	  $("#submit1").show();
+					               	  this.message3="";
+					               	  this.message4="输入邮件中的验证码点击提交";
+					               	  this.echeckcode=res.data;
+					               	  
+								  },function(res){
+					                   console.log(res.data);
+					              });
+							  }
+			               	  //this.nemail=null
+			                },function(res){
+			                   console.log(res.data);
+			               });
+						  
+					},
+					getUserPass: function () {//重新设置密码
+						 
+						    //对验证码进行校验
+							if(this.checkcode1==null||this.checkcode1==''){
+						    	this.message4="验证码不能为空";
+						    	return false;
+						    }else if(this.checkcode1!=this.echeckcode){
+						    	this.message4="验证码不正确";
+						    	return false;
+						    }else if(this.npass==null||this.npass==''||this.npass1==null||this.npass1==''){
+							    	if(this.npass==null||this.npass==''){
+							    		this.message6="密码不能为空";
+							    	}else{
+							    		this.message5="确认密码不能为空";
+							    	}
+						    		
+							    	return false;
+							    }else if(this.npass1!=this.npass){
+							    	this.message5="两次输入的密码不一致";
+							    	return false;
+							    }else {
+							    	
+							    	this.$http.post('/MailController/resetPass',{password:this.npass,user_name:this.account},{emulateJSON:true}).then(function(res){
+							    		alert(res.data.result)
+							    		location.reload();
+						                },function(res){
+						                   console.log(res.data);
+						             });
+							    }
+						   }
+				}
+			
+			})
+		
+		
+	
+	</script>
+
+	</body>
+
+</html>

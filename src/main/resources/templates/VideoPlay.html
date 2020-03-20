@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Video.js | HTML5 Video Player</title>
+        <link href="https://vjs.zencdn.net/7.6.6/video-js.css" rel="stylesheet" />
+		<!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
+  		<script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
+  		
+        <script>
+            videojs.options.flash.swf = "video-js.swf";
+        </script>
+    </head>
+    <body>
+    <input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none"> 
+        <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none"
+                width="100%" height="100%" cposter="http://video-js.zencoder.com/oceans-clip.png"
+                data-setup="{}">
+            <source src="https://ewr1.vultrobjects.com/pergirls/3D%EF%BC%862D%20%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B3%E3%83%83%E3%83%88LOVE%20%E6%9D%89%E5%8E%9F%E6%9D%8F%E7%92%83part1.mp4" type='video/mp4' />
+            <!-- Tracks need an ending tag thanks to IE9 -->
+            <track kind="captions" src="demo.captions.vtt" srclang="en" label="English"></track>
+            <!-- Tracks need an ending tag thanks to IE9 -->
+            <track kind="subtitles" src="demo.captions.vtt" srclang="en" label="English"></track>
+            <p class="vjs-no-js">
+                To view this video please enable JavaScript, and consider upgrading to a web browser that
+                <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+            </p>
+        </video>
+    </body>
+</html>

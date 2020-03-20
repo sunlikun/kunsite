@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>内容详情</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+ 	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js"></script>   
+    <script type="text/javascript" src="/js/jquery-3.4.1.js"></script> 
+	<script src="/js/clipboard.min.js"></script>
+    <script src="/js/layer-v3.1.1/layer/layer.js"></script>  
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<style>
+	body { width:90%; margin:40px auto; }
+	ul {
+    display: block;
+    overflow: hidden;
+    white-space:nowrap;
+	}
+	li{
+    list-style: none;
+    display: inline-block;
+    margin-left: 15px;
+    width: 130px;
+	}
+	.cp{
+
+	width: 1050px;
+	height: 870px;
+	overflow: hidden;
+	display: table-cell;
+	vertical-align: middle;
+	border:3px solid #000;
+	text-align: center;
+	
+	
+	}
+	.cpimg{
+	
+	max-width: 100%;
+	max-height: 100%;（或者max-height: 100%;）
+	display: block;
+	margin: 0 auto;
+	
+	}
+	
+	</style>
+	
+  </head>
+  <body>
+	<!-- 
+    <div th:include="header :: header"></div> 
+     -->
+    <nav class="navbar navbar-default" role="navigation">
+					    <div class="container-fluid">
+						    <div>
+						        <ul class="nav navbar-nav">
+						            <li> <a href="/more?flag=2" class="navbar-brand">下载中心</a></li>
+						        </ul>
+						    </div>
+						   
+					    </div>
+	</nav>
+    <p>
+	<div  style="margin-top: 30px">
+	 	<div id="app1">
+				<input id="id" th:value="${id}" name="id" type="text" style="display: none">
+				<input id="baiduyun_address"  name="baiduyun_address" type="text" style="display: none" v-model="baiduyun_address" >
+				提取码:<input id="baiduyun_pass" th:value="${baiduyun_pass}" name="baiduyun_pass" type="text" style="width: 5rem;border: none;" readonly="readonly">
+				<!--  <input type="button" @click="download()" value="点我下载 ">-->
+				<button class="btn btn-default" id="d" >点击下载</button>
+				</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人气:<input id="clicks"  name="clicks" type="text"  th:value="${clicks}" style="border: none;width: 5rem">
+		 </div>
+		
+			
+   </div>
+	
+	<div class="row">
+		<div class="col-md-8" id="thumbnail" style="margin-top: 10px">
+					
+		</div>
+		<div class="col-md-4">
+		</div>
+	</div>
+<div th:include="footer :: footer"></div> 
+	<input id="coverid" th:value="${id}" name="coverid" type="text" style="display: none"> 
+	<input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none">
+	<input id="user_id" th:value="${user_id}" name="user_id" type="text" style="display: none">  
+	<input id="gold_coin" th:value="${gold_coin}" name="gold_coin" type="text" style="display: none">
+	<input id="t_gold_coin"  th:value="${t_gold_coin}"  name="t_gold_coin" type="text" style="display: none">  
+	
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+    
+    <script type="text/javascript">
+    
+   
+    
+    
+    $(document).ready(function () {
+		  var user_name=$("#user_name").val();
+		  var baiduyun_address=$("#baiduyun_address").val();
+		  //$('#download').attr('href',baiduyun_address);
+        //alert(user_name)
+        if(user_name!=null&&user_name!==''){
+      	  $("#login").html("你好   "+user_name);
+        }
+        
+        // prepare the data
+        var data=null
+        $.ajaxSetup({
+
+        	async:false
+
+        });
+        //根据coverid查询详情图
+        var id=$("#coverid").val();
+        $.ajax({
+            type: "post",
+            url: "/queryThumbnail",
+            data: {id,id},
+            dataType: "json",
+            success: function(data){
+          	var thumbnailArr = data;
+          	var thumbnailGroup="";
+          	for(var i=0;i<thumbnailArr.length;i++){
+          		　　//alert(coverphotoArr[i].coverphotoid);
+          		var tableContent="";
+          		var thumbnailid="/images/"+thumbnailArr[i].thumbnailid.substring(24);
+               	//tableContent += '<div id="img" class="cp"><img class="img-responsive"  src="' + thumbnailArr[i].thumbnailid+ '"/><div>';
+               	
+               	tableContent += '<img src="'+thumbnailid+'" class="img-responsive"  width="95%" height="100%"><br>';
+               	thumbnailGroup+=tableContent;
+               	
+          	}
+            	
+              
+              $("#thumbnail").append(thumbnailGroup);
+             
+            	
+           }
+            
+            
+        });
+        
+        
+        var user_name=$("#user_name").val();
+        
+		var app=new Vue({
+			  el: '#app',
+			  data: {
+				  
+					  content: user_name,
+					  plays:true
+			  },
+			  methods:{
+				  islogin: function () {
+					  
+					  if(user_name!=null&&user_name!=''){
+						  
+						  this.plays=false;
+					  }
+				  }
+			    }
+			
+			})
+		  
+		app.islogin();
+		
+		
+		var app1=new Vue({
+			  el: '#app1',
+			  data: {
+				  
+				  baiduyun_address:""
+			  },
+			  methods:{
+				 
+				  download: function (event) {
+					 
+					     //验证当前用户的金币数是否足够
+					     var gold_coin=0;//用户金币数
+				    	 var t_gold_coin=$("#t_gold_coin").val();//下载所需金币
+				    	 $.ajaxSetup({
+
+				           	async:false
+
+				         });
+				    	 $.ajax({
+				             url:'/get_user',//url路径
+				             type:'POST', //GET
+				             async:false, //或false,是否异步
+				             data:{//参数
+				            	 user_name:user_name
+				             },
+				             timeout:5000, //超时时间
+				             dataType:'json', //返回的数据格式：
+				             beforeSend:function(xhr){
+				             },
+				             success:function(data,textStatus,jqXHR){
+				            	 gold_coin=data.gold_coin;
+					    	    
+				             },
+				             error:function(xhr,textStatus){
+				                 console.log(textStatus);
+				             },
+				             complete:function(){
+				             }
+				        })
+				
+						    	
+				        var id=$("#id").val();
+				    	if(user_name!=''&&user_name!=null){
+			                		
+			                if(parseInt(gold_coin)>=parseInt(t_gold_coin)){//用户金币数足够
+			    	 						var btn = document.getElementById('d');
+											var clipboard = new ClipboardJS(btn,{
+										        target: function() {
+										            return document.querySelector('#baiduyun_pass');
+										        }
+										    });
+									    	clipboard.on('success', function(e) {
+		    								        console.log(e);
+		    								        //layer.msg("提取码已复制成功" + e.text);
+		    								      	//询问框
+													layer.confirm("提取码已复制，当前拥有"+gold_coin+"金币，下载需要"+t_gold_coin+"金币 ", {
+		    								          btn: ['继续','取消'] //按钮
+		    								        }, function(){
+		    								          //layer.msg('的确很重要', {icon: 1});
+		    								       // 重定向到目标页面  
+								        				var newWin=window.open();
+						                                newWin.location.href = "/todown?t_gold_coin="+t_gold_coin+"&id="+id;  
+						                                layer.closeAll();
+						                                clipboard.destroy();
+				                                    }, function(){
+				                                    	 clipboard.destroy();
+		    								        });
+		    								        
+		    								     	
+		    								});
+		
+		    								clipboard.on('error', function(e) {
+		    								        console.log(e);
+		    								        layer.open({
+		    						                    title: '提示',
+		    						                    content: '您的浏览器可能不支持自动复制提取码，请手动复制~'
+		    						                });
+		    								        clipboard.destroy();
+		    								});
+					    		}else{//用户金币数不足
+			 					    alert("当前拥有"+gold_coin+"金币，下载需要"+t_gold_coin+"金币，金币不足请前往充值！");
+			 					}	
+						}else{
+								  				
+						        alert("请先登陆");
+			            };    
+				              
+				   },
+				   getUser: function () {
+				       
+					 
+					     this.$http.post('/get_user',{user_name:user_name},{emulateJSON:true}).then(function(res){//查询当前用户的金币数
+					    	        var gold_coin=res.body.gold_coin;
+					    	        $("#gold_coin").val(gold_coin);
+					                	
+					     },function(res){
+					                    console.log(res.data);
+					     }); 
+				   }
+			    }
+			
+			})
+		 //app1.getUser();
+        
+        
+    });
+      
+	function getlogin_info(){
+		  $.ajax({
+	            type : "get",
+	            url : "/getlogin_info",
+	            dataType : "text",
+	            success : function(result) {
+	               alert()
+	            },
+	            error : function() {
+	                alert("請求登陆信息失败");
+	            }
+	            });
+	 }
+	 
+	 var clipboard = new ClipboardJS('#d', {
+	        target: function() {
+	            return document.querySelector('#baiduyun_pass');
+	        }
+	    });
+
+	    clipboard.on('success', function(e) {
+	    	console.log(e);
+	    	 var user_name=$("#user_name").val();
+	    	 //验证当前用户的金币数是否足够
+		     var gold_coin=0;//用户金币数
+	   	 	 var t_gold_coin=$("#t_gold_coin").val();//下载所需金币
+	   		 var user_id=$("#user_id").val();
+	   	 	 $.ajaxSetup({
+	   	 		 async:false
+			 });
+	   	 	 $.ajax({
+	            url:'/get_user',//url路径
+	            type:'POST', //GET
+	            async:false, //或false,是否异步
+	            data:{//参数
+	           	 user_name:user_name,
+	           	 id:user_id
+	            },
+	            timeout:5000, //超时时间
+	            dataType:'json', //返回的数据格式：
+	            beforeSend:function(xhr){
+	            },
+	            success:function(data,textStatus,jqXHR){
+	           	 gold_coin=data.gold_coin;
+		    	    
+	            },
+	            error:function(xhr,textStatus){
+	                console.log(textStatus);
+	            },
+	            complete:function(){
+	            }
+	       })
+		   var id=$("#id").val();
+	   	   if(user_name!=''&&user_name!=null){
+	           		
+	           if(parseInt(gold_coin)>=parseInt(t_gold_coin)){//用户金币数足够
+		 						
+					    layer.confirm("提取码已复制，当前拥有"+gold_coin+"金币，下载需要"+t_gold_coin+"金币 ", {
+							          btn: ['继续','取消'] //按钮
+							       }, function(){
+							         // 重定向到目标页面  
+				        				 window.location.href = "/todown?t_gold_coin="+t_gold_coin+"&id="+id;  
+		                                //clipboard.destroy();
+	                                  }, function(){
+	                                  	//clipboard.destroy();
+						});
+			   }else{//用户金币数不足
+					    alert("当前拥有"+gold_coin+"金币，下载需要"+t_gold_coin+"金币，金币不足请前往充值！");
+						
+			   }	
+			}else{
+					  				
+			        alert("请先登陆");
+	       }; 
+	    });
+
+	    clipboard.on('error', function(e) {
+	        console.log(e);
+	        layer.open({
+	            title: '提示',
+	            content: '您的浏览器可能不支持自动复制提取码，请手动复制~'
+	        });
+	        //clipboard.destroy();
+	    });
+        
+	
+  </script>
+  </body>
+</html>

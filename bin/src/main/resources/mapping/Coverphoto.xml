@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kuncms.coverphoto.dao.CoverphotoDao" >
+
+ 	<select id="queryVipPlayNumInfoCount"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
+         SELECT*FROM coverphoto c
+         <where>
+         c.flag="1"
+        	<if test="category != null and category != ''">
+				and c.category=#{category}
+			</if>
+			and c.serial_number is not null
+			and c.isvip="1"
+		 </where>
+		 	ORDER BY c.create_time desc
+   </select>
+  <select id="queryPlayNumInfoCount"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
+         SELECT*FROM coverphoto c
+         <where>
+        
+         and c.flag="1"
+        	<if test="category != null and category != ''">
+				and c.category=#{category}
+			</if>
+			and (c.isvip="0" or c.isvip="" or c.isvip is null)
+			and c.serial_number is not null
+			
+		 </where>
+		 	ORDER BY c.create_time desc
+     </select>
+
+	<!--金币点播信息查询  -->
+ 	<select id="queryVipPlayNumInfo"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
+        SELECT*FROM coverphoto c
+         <where>
+         c.flag="1"
+        	<if test="category != null and category != ''">
+				and c.category=#{category}
+			</if>
+			and c.serial_number is not null
+			and c.isvip="1"
+		 </where>
+		 	ORDER BY c.create_time desc
+     </select>
+	
+	<!--普通点播信息查询  -->
+ 	<select id="queryPlayNumInfo"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
+        SELECT*FROM coverphoto c
+         <where>
+        
+         and c.flag="1"
+        	<if test="category != null and category != ''">
+				and c.category=#{category}
+			</if>
+			and (c.isvip="0" or c.isvip="" or c.isvip is null)
+			and c.serial_number is not null
+			
+		 </where>
+		 	ORDER BY c.create_time desc
+     </select>
+
+
+
+	<update id="upCurrenPlayNum"  parameterType="com.kuncms.coverphoto.model.Play_num_record">
+       update play_num_record a set 
+ 	    <if test="play_num_cureent != null and play_num_cureent != ''">
+				a.play_num_cureent=#{play_num_cureent}
+		</if>
+		
+     </update>
+
+
+ 	<select id="queryCurrenPlayNum"  parameterType="com.kuncms.coverphoto.model.Play_num_record"  resultType="com.kuncms.coverphoto.model.Play_num_record">
+        SELECT*FROM play_num_record c  
+     </select>
+
+	 <select id="queryCovPhoBySer_num"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
+        SELECT*FROM coverphoto c
+         <where>
+         c.flag="1"
+        	<if test="serial_number != null and serial_number != ''">
+				and c.serial_number=#{serial_number}
+			</if>
+		 </where>
+		 	ORDER BY c.create_time desc
+     </select>
+
+
+	<select id="queryVideoWithnoMediaId"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
+        SELECT*FROM coverphoto c
+         <where>
+         c.flag="1" and c.MediaId is null
+        </where>
+		 	ORDER BY c.create_time desc
+     </select>
+
+
+ 	 <select id="queryVideo"    resultType="com.kuncms.coverphoto.model.Coverphoto">
+        SELECT*FROM coverphoto a
+        <where>
+			a.flag="1" and	 a.id in
+				 <foreach collection="array" index="index" item="idArr" open="(" separator="," close=")">
+         				#{idArr}
+    			</foreach>
+			
+		</where>
+				
+     </select>
+
+	 <select id="queryCoverPhotoById"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
+        SELECT*FROM coverphoto a
+        <where>
+        a.flag="1"
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+		</where>
+				
+     </select>
+
+
+     <select id="queryCoverPhoto"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
+        SELECT*FROM coverphoto c
+         <where>
+         c.flag="1"
+        	<if test="category != null and category != ''">
+				and c.category=#{category}
+			</if>
+		 </where>
+		 	ORDER BY c.create_time desc
+     </select>
+     
+     <select id="queryIndexCoverPhoto"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
+        SELECT*FROM coverphoto c  
+        <where>
+			c.flag="1"
+			<if test="category != null and category != ''">
+				and c.category=#{category}
+			</if>
+		</where>
+		ORDER BY c.create_time desc limit 0,12;
+     </select>
+    
+    
+    <insert id="insert"  parameterType="com.kuncms.coverphoto.model.Coverphoto">
+
+		insert into coverphoto(id,coverphotoid,baiduyun_address,baiduyun_pass,video_name,create_time,createby,update_time,updateby,flag,gold_coin,clicks,downloads,category,screen_class) 
+		   values(#{id},#{coverphotoid},#{baiduyun_address},#{baiduyun_pass},#{video_name},#{create_time},#{createby},#{update_time},#{updateby},#{flag},#{gold_coin},#{clicks},#{downloads},#{category},#{screen_class})
+	</insert>
+ 	
+ 	<update id="updateCoverPhotoById" parameterType="com.kuncms.coverphoto.model.Coverphoto">
+ 	
+ 	    update coverphoto a set 
+ 	    <if test="clicks != null and clicks != ''">
+				a.clicks=#{clicks}
+		</if>
+		<if test="downloads != null and downloads != ''">
+				,a.downloads=#{downloads}
+		</if>
+		<if test="flag != null and flag != ''">
+				,a.flag=#{flag}
+		</if>
+        <where>
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+		</where>
+ 	</update>
+ 	
+ 	<update id="upVideo" parameterType="com.kuncms.coverphoto.model.Coverphoto">
+ 	
+ 	    update coverphoto a set 
+ 	    <if test="flag != null and flag != ''">
+				a.flag=#{flag}
+		</if>
+		 <if test="coverphotoid != null and coverphotoid != ''">
+				,a.coverphotoid=#{coverphotoid}
+		</if>
+		 <if test="video_name != null and video_name != ''">
+				,a.video_name=#{video_name}
+		</if>
+		 <if test="baiduyun_address != null and baiduyun_address != ''">
+				,a.baiduyun_address=#{baiduyun_address}
+		</if>
+		<if test="baiduyun_pass != null and baiduyun_pass != ''">
+				,a.baiduyun_pass=#{baiduyun_pass}
+		</if>
+		 <if test="gold_coin != null and gold_coin != ''">
+				,a.gold_coin=#{gold_coin}
+		</if>
+		 <if test="category != null and category != ''">
+				,a.category=#{category}
+		</if>
+		 <if test="serial_number != null and serial_number != ''">
+				,a.serial_number=#{serial_number}
+		</if>
+		<if test="MediaId != null and MediaId != ''">
+				,a.MediaId = #{MediaId}
+		</if>
+		 <if test="serial_number != null and serial_number != ''">
+				,a.serial_number=#{serial_number}
+		</if>
+		<if test="MediaId != null and MediaId != ''">
+				,a.MediaId = #{MediaId}
+		</if>
+		 <if test="isvip != null and isvip != ''">
+				,a.isvip=#{isvip}
+		</if>
+		<if test="play_goin != null and play_goin != ''">
+				,a.play_goin = #{play_goin}
+		</if>
+        <where>
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+		</where>
+ 	</update>
+  
+</mapper>

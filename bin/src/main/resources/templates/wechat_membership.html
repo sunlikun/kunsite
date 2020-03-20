@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>普格娱乐会员中心</title>
+
+	<link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/button.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../jqwidgets/styles/jqx.base.css" type="text/css" />
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+    <script type="text/javascript" src="/scripts/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/js/jqthumb.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<style>
+body { width:100%; margin:50px auto;font-size: 5rem; }
+
+</style>
+<body>
+<!--  
+<div th:include="header :: header"></div> 
+-->
+
+<div class="container-fluid" style="margin-top: 30%">
+	<div class="row">
+		<div class="col-md-12" align="center">
+						<img  src="" id="headimgurl"/> 
+		</div>
+		<div class="col-md-12">
+		
+			<div id="app1" style="margin-left: 10%">
+				<div style="color:#828282 ">
+					基本信息
+				</div>
+				
+					<p>账户名称：{{user_name }}</p>
+					<!--  
+				  	<p>账户状态：{{ user_status }}</p>
+				  	<p>账户类型：{{ user_class }}</p>
+				  	-->
+				  	<p>注册日期：{{create_time}}</p>
+				
+				<div style="color:#828282 ">
+					我的资产
+					
+				</div>
+				<p>我的金币：{{ gold_coin }}个                     <a href="/WechatController/we_recharge">金币充值</a></p>
+				<div style="color:#828282 ">
+					成长经验
+					
+				</div>
+				<p>我的经验：{{ empirical_value }}(每消耗1金币经验值加1)</p>
+				<!--  
+					<div style="color:#828282 ">
+						安全中心
+					</div>
+					<p>电子邮箱：{{ email }}&nbsp;&nbsp;<a href='' data-toggle="modal" data-target="#myModal" v-show="b">绑定邮箱</a><a href='' data-toggle="modal" data-target="#myModal" v-show="u">修改邮箱</a></p>
+					<p>账户密码：{{ password }}&nbsp;&nbsp;<a href='' data-toggle="modal" data-target="#myModal1">修改密码</a></p>
+					-->
+					<!--  
+					<p v-if="user_name === 'admin'"><a href='/SysManagementController/toSysManagement'>网站监控</a>&nbsp;&nbsp;<a href='/frame'>网站管理</a></p>
+					-->
+					<!-- 邮箱 -->
+					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 15%;">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+										&times;
+									</button>
+									<h4 class="modal-title" id="myModalLabel">
+										绑定邮箱/修改邮箱
+									</h4>
+								</div>
+								<div class="modal-body" align="center">
+									<table   style="border-collapse:separate; border-spacing:0px 10px;">
+									
+									<tr>
+									<td><label style="font-size: 2rem">请输入邮箱地址:</label></td>
+									<td><input type="text" class="form-control"  id="nemail" name="nemail" style="width: 200px" v-model="nemail"/></td>
+									<td><span>{{message}}</span></td>
+									</tr>
+									<tr style="display: none" id="checkcodetr">
+									<td><label style="font-size: 2rem">验证码:</label></td>
+									<td align="right"><input type="text" class="form-control"  id="checkcode" name="checkcode" style="width: 80px;" v-model="checkcode"/></td>
+									<td><span>{{message1}}</span></td>
+									</tr>
+									</table>
+									<br><br>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+									</button>
+									<button type="button" class="btn btn-primary" v-on:click="checkEmail" id="check">
+										验证
+									</button>
+									<button type="button" class="btn btn-primary" v-on:click="bindEmail" id="submit" style="display: none">
+										提交
+									</button>
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal -->
+					</div>
+					
+					<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 15%;">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+										&times;
+									</button>
+									<h4 class="modal-title" id="myModalLabel">
+										修改密码
+									</h4>
+								</div>
+								<div class="modal-body" align="center">
+									<table   style="border-collapse:separate; border-spacing:0px 10px;">
+									
+									<tr>
+									<td><label style="font-size: 2rem">请输入新的密码:</label></td>
+									<td><input type="text" class="form-control"  id="npass" name="npass" style="width: 200px" v-model="npass" onkeyup="this.value=this.value.replace(/[^a-z0-9_]/g,'');" maxlength="16"/></td>
+									<td><span>{{message2}}</span></td>
+									</tr>
+									</table>
+									<br><br>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+									</button>
+									<button type="button" class="btn btn-primary" v-on:click="upPass" id="submit">
+										提交
+									</button>
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal -->
+					</div>
+				</div>
+					
+				</div>
+				
+	</div>
+	
+</div>
+
+
+<!--  
+ <div th:include="footer :: footer"></div> 
+ -->
+ <input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none">
+ <input id="id" th:value="${id}" name="id" type="text" style="display: none">  
+<script>
+var user_name=$("#user_name").val();
+var id=$("#id").val();
+var app=new Vue({
+	  el: '#app',
+	  data: {
+		  
+			  content: user_name,
+			  plays:true
+			 
+	  },
+	  methods:{
+		  islogin: function () {
+			  
+			  if(user_name!=null&&user_name!=''){
+				  
+				  this.plays=false;
+			  }
+		  }
+	    }
+	
+	})
+
+app.islogin();
+  
+  
+var app1=new Vue({
+	  el: '#app1',
+	  data: {
+		  
+		  	  user_name:"",
+		  	  user_status:"",
+		  	  user_class:"",
+		  	  create_time:"",
+		      gold_coin:"",
+		      empirical_value:"",
+		      email:"",
+		      password:"",
+		      message:"",
+		      nemail:"",
+		      checkcode:"",
+		      message1:"",
+		      echeckcode:"",
+		      b:"",
+		      u:"",
+		      npass:"",
+		      message2:""
+		   
+			  
+	  },
+	  methods:{
+		  membership: function () {
+			  
+			  if(user_name!=null&&user_name!=''){
+				  
+					//发送 post 请求
+	                this.$http.post('/get_user',{id:id},{emulateJSON:true}).then(function(res){
+	                	 
+	                	
+	                		//alert(res.body.user_name);
+	                		
+	                	  this.user_name=res.body.user_name,
+	                	  this.user_status=res.body.user_status,
+	                	  this.user_class=res.body.user_class,
+	                	  this.create_time=res.body.create_time,
+	                	  this.gold_coin=res.body.gold_coin,
+	                	  this.empirical_value=res.body.empirical_value,
+	                	  this.email=res.body.email,
+	                	  this.password=res.body.password,
+	                	  $('#headimgurl').attr("src", res.body.headimgurl);
+	                	  if(this.email!=null&&this.email!=''){
+	                		  this.u=true;
+	                		  this.b=false;
+	                	  }else{
+	                		  this.u=false;
+	                		  this.b=true;
+	                	  }
+	                		
+	                	
+	                },function(res){
+	                    console.log(res.data);
+	                });
+			  }
+		  },
+		  checkEmail: function () {//校验邮箱是否已经绑定(废弃)
+			    $("#check").attr("disabled", true);
+			  	this.$http.post('/MailController/checkEmail',{email:this.nemail},{emulateJSON:true}).then(function(res){
+	               	  
+					  //alert(res.body.email);
+					  if(res.body.email=='0'){
+						  this.message="可以注册,请查收验证邮件";
+						  //显示验证码输入框，并发送邮件，返回验证码的值
+						  this.$http.post('/MailController/getCheckCode',{email:this.nemail},{emulateJSON:true}).then(function(res){
+			               	  //alert(res.data);
+							  //显示验证码输入框，并发送邮件，返回验证码的值
+			               	  $("#checkcodetr").show();
+			               	  $("#check").hide();
+			               	  $("#submit").show();
+			               	  this.message1="输入邮件中的验证码再次提交";
+			               	  this.echeckcode=res.data;
+			               	  
+						  },function(res){
+			                   console.log(res.data);
+			              });
+						  
+					  }else{
+						  this.message="该邮箱已经绑定,请选择其他邮箱";
+						  $("#checkcodetr").hide();
+						  $("#check").attr("disabled", false);
+					  }
+	               	  //this.nemail=null
+	                },function(res){
+	                   console.log(res.data);
+	               });
+				  
+		},
+		 bindEmail: function () {//修改密码
+				 
+			    //对验证码进行校验
+				if(this.checkcode==null||this.checkcode==''){
+			    	this.message1="验证码不能为空";
+			    	return false;
+			    }else if(this.checkcode!=this.echeckcode){
+			    	this.message1="验证码不正确";
+			    	return false;
+			    }else if(this.checkcode==this.echeckcode&&this.checkcode!=null&&this.echeckcode!=null){
+			    	
+			    	this.$http.post('/MailController/bindEmail',{email:this.nemail},{emulateJSON:true}).then(function(res){
+			    		alert(res.data.result)
+			    		location.reload();
+		                },function(res){
+		                   console.log(res.data);
+		             });
+			    }
+				
+				  
+		},
+		upPass: function () {//邮箱绑定
+				 
+			    //对新密码进行校验
+				if(this.npass==null||this.npass==''){
+			    	this.message2="密码不能为空";
+			    	return false;
+			    }else{
+			    	
+			    	this.$http.post('/MailController/upPass',{password:this.npass},{emulateJSON:true}).then(function(res){
+			    		alert(res.data.result)
+			    		location.reload(force);
+		                },function(res){
+		                   console.log(res.data);
+		             });
+			    }
+				
+				  
+		},//   时间格式化
+       	dateFormat:function(time) {
+				    var date=new Date(time);
+				    var year=date.getFullYear();
+				    /* 在日期格式中，月份是从0开始的，因此要加0
+				     * 使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05
+				     * */
+				    var month= date.getMonth()+1<10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
+				    var day=date.getDate()<10 ? "0"+date.getDate() : date.getDate();
+				    var hours=date.getHours()<10 ? "0"+date.getHours() : date.getHours();
+				    var minutes=date.getMinutes()<10 ? "0"+date.getMinutes() : date.getMinutes();
+				    var seconds=date.getSeconds()<10 ? "0"+date.getSeconds() : date.getSeconds();
+				    // 拼接
+				    return year+"-"+month+"-"+day+" "+hours+":"+minutes+":"+seconds;
+				}
+
+	    }
+	   
+	
+})
+	
+app1.membership();
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kuncms.pay.dao.AlipayTradeInfoDao" >
+  
+	<select id="queryRechargeRecord" resultType="com.kuncms.pay.model.AlipayTradeInfo" parameterType="com.kuncms.pay.model.AlipayTradeInfo" >
+	   	select*from alipay_tradeinfo
+	    <if test="user_name != null" >
+	      where user_name = #{user_name,jdbcType=VARCHAR}
+	    </if>
+	   	order by gmt_close;
+	   
+	</select>
+   
+    
+    <insert id="insert"  parameterType="com.kuncms.pay.model.AlipayTradeInfo">
+		insert into alipay_tradeinfo(id,user_name,trade_no,trade_status,notify_time,total_amount,subject,gmt_create,gmt_payment,gmt_close) values(#{id},
+		#{user_name},#{trade_no},#{trade_status},#{notify_time},#{total_amount},#{subject},#{gmt_create},#{gmt_payment},#{gmt_close})
+ 	</insert>
+  
+
+</mapper>

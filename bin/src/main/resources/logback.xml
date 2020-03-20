@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/> 
+	<!-- 文件输出格式 -->
+    <property name="PATTERN" value="%-12(%d{yyyy-MM-dd HH:mm:ss.SSS}) |-%-5level [%thread] %c [%L] -| %msg%n" />
+    <!-- 彩色日志格式 -->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+  
+
+    <!-- test文件路径 -->
+    <property name="TEST_FILE_PATH" value="d:/test.log" />
+    <!-- pro文件路径 -->
+    <property name="PRO_FILE_PATH" value="/opt/test/log" />
+
+    <!-- 开发环境 -->
+    <springProfile name="prod">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${PATTERN}</pattern>
+            </encoder>
+        </appender>
+        <logger name="com.light.springboot" level="debug" />
+        <root level="info">
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+    
+    <!-- 开发环境 -->
+    <springProfile name="dev">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${PATTERN}</pattern>
+            </encoder>
+        </appender>
+        <logger name="com.light.springboot" level="debug" />
+        <root level="info">
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+ 	
+ 	<!-- 生产环境 
+    <springProfile name="dev">
+        <appender name="PROD_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${PRO_FILE_PATH}</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${PRO_FILE_PATH}/warn.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <MaxHistory>100</MaxHistory>
+            </rollingPolicy>
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>${PATTERN}</pattern>
+            </layout>
+        </appender>
+        <root level="warn">
+            <appender-ref ref="PROD_FILE" />
+        </root>
+    </springProfile>
+    -->
+    
+    <!-- 测试环境 -->
+    <springProfile name="test">
+        <!-- 每天产生一个文件 -->
+        <appender name="TEST-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <!-- 文件路径 -->
+            <file>${TEST_FILE_PATH}</file>
+            <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+	        <rollingPolicy
+	                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	            <!-- 归档的日志文件的路径，例如今天是2018-10-26日志，当前写的日志文件路径为file节点指定，可以将此文件与file指定文件路径设置为不同路径，从而将当前日志文件或归档日志文件置不同的目录。 而2018-10-26的日志文件在由fileNamePattern指定。%d{yyyy-MM-dd}指定日期格式，%i指定索引 -->
+	            <fileNamePattern>${LOG_PATH}/sys/debug/sys_log-debug-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+	            <!-- 除按日志记录之外，还配置了日志文件不能超过50M，若超过50M，日志文件会以索引0开始， 命名日志文件，例如log-error-2018-10-26.0.log -->
+	            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+	                <maxFileSize>20MB</maxFileSize>
+	            </timeBasedFileNamingAndTriggeringPolicy>
+	            <!--日志文件保留天数-->
+	            <maxHistory>30</maxHistory>
+	        </rollingPolicy>
+	        <!-- 此日志文件只记录debug级别的 -->
+	        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+	            <level>debug</level>
+	            <onMatch>ACCEPT</onMatch>
+	            <onMismatch>DENY</onMismatch>
+	        </filter>
+			<layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>${PATTERN}</pattern>
+            </layout>
+        </appender>
+        <root level="info">
+            <appender-ref ref="TEST-FILE" />
+        </root>
+    </springProfile>
+
+   
+</configuration>

@@ -1,0 +1,116 @@
+<html>
+ 	<head>
+		<meta charset="UTF-8"/>
+		<title>网站管理</title>
+		<link rel="stylesheet" href="/css/system.css" />
+		<script src="/js/jquery-1.7.min.js"></script>
+		<script type="text/javascript">
+			
+			
+		</script>
+		<style type="text/css">
+			a:link {
+			text-decoration: none;
+			}
+			a:visited {
+			text-decoration: none;
+			}
+			a:hover {
+			text-decoration: none;
+			}
+			a:active {
+			text-decoration: none;
+			}
+			
+			aside ul li:hover{
+				background: #101d32;
+				cursor: pointer;
+			}
+			aside ul{
+				display: none;
+			}
+			aside p{
+				cursor: pointer;
+			}
+		</style>
+			
+
+		
+	</head>
+	<body style="overflow-x:hidden">
+		<header>
+			<img src="/img/login.png"/>
+			<div class="head_right">
+				<ul>
+					<li class="tou">
+						<a href=""><img src="/img/tou.png" alt="" /></a>
+					</li>
+					<li style="width:auto">
+						<a href=""><font color=" #FFFFFF"><span th:text="${loginfo}"></span></font></a>
+					</li>
+					<li class="ring">
+						<a href=""><font color=" #FFFFFF">注销</font></a></li>
+				</ul>
+			</div>
+		</header>
+		<div class="container" style="width:185px;height:468px;float:left">
+			<aside>
+				<p class="navtit" id="a">用户中心</p>
+				<ul tit="a">
+					<li><a href="/CmsController/to_UserManage" target="content" style="color:white;text-decoration:none;">用户列表</a></li>
+					<li><a href="/CmsController/RechargeRecord" target="content" style="color:white;text-decoration:none;">充值记录</a></li>
+				</ul>
+				<p class="navtit" id="c">内容管理</p>
+				<ul tit="c">
+					<li><a href="/videomanage" target="content" style="color:white;text-decoration:none;">视频管理</a></li>
+				</ul>
+				<!--  
+					<p class="navtit" id="b">用户管理</p>
+					<ul tit="b">
+						
+					</ul>
+				-->
+			</aside>
+			
+			
+		</div>
+		<div style="width:calc(100% - 185px);margin-left:185px;height:668px;float:right;margin-top: -400px"><iframe name="content" src="/CmsController/to_UserManage" width="100%" height="848"></iframe></div>
+	</body>
+	<script>
+		$(function(){
+			
+			var attr ="a";
+			$("aside ul").each(function(index,ele){
+				if($(this).attr("tit")==attr){
+					$(this).slideToggle();
+					$(this).siblings('ul').slideUp();
+				}
+			})
+			
+			
+			$("aside ul li").click(function(){
+				$(this).addClass("active")
+				$(this).siblings().removeClass('active');
+				console.log($(this).parent().siblings().find('ul').children('li'));
+				$(this).parent().siblings().children('li').removeClass('active');
+			});
+			
+			//左侧导航点击事件
+			$(".navtit").click(function(){
+				var attr = $(this).attr("id");
+				$("aside ul").each(function(index,ele){
+					if($(this).attr("tit")==attr){
+						$(this).slideToggle();
+						$(this).siblings('ul').slideUp();
+					}
+				})
+			});
+			
+			 //var url = window.location.host;
+			 //var ben = url.substring(0, url.indexOf(':'))+"3000/iwatchUserPlatform/login/TwoStagePlatform";
+			 //$("#secondPlatform").attr("href",ben); 
+			 
+
+		})
+	</script>
+</html>

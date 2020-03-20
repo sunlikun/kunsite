@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kuncms.user.dao.UserDao" >
+	<update id="update_offi_acc"  parameterType="com.kuncms.user.model.User">
+		update user_info u set u.official_account=#{official_account} where flag='1'
+		<!-- 
+		<if test="user_name != null and user_name !=''">
+        		and u.user_name=#{user_name} 
+      	</if>
+      	<if test="id != null and id !=''">
+        		and u.id=#{id} 
+      	</if>
+      	<if test="openid != null and openid !=''">
+        		and u.openid=#{openid}
+      	</if>
+      	 -->
+      	 <if test="unionid != null and unionid !=''">
+        		and u.unionid=#{unionid}
+      	</if>
+ 	</update>
+
+	<update id="updateAll"  parameterType="com.kuncms.user.model.User">
+		update user_info u set
+		<if test="password != null and password !=''">
+        		 u.password=#{password} 
+      	</if>
+		 where flag='1'
+		<if test="user_name != null and user_name !=''">
+        		and u.user_name=#{user_name} 
+      	</if>
+      	<if test="id != null and id !=''">
+        		and u.id=#{id} 
+      	</if>
+ 	</update>
+	
+	<update id="bindEmail"  parameterType="com.kuncms.user.model.User">
+		update user_info u set u.email=#{email} where flag='1'
+		
+		<if test="user_name != null and user_name !=''">
+        		and u.user_name=#{user_name} 
+      	</if>
+      	<if test="id != null and id !=''">
+        		and u.id=#{id} 
+      	</if>
+ 	</update>
+
+
+	<update id="deluser"  parameterType="com.kuncms.user.model.User">
+		update user_info u set flag=#{flag} where  flag='1'
+
+				<if test="user_name != null and user_name !=''">
+		        		and u.user_name=#{user_name} 
+		      	</if>
+		      	<if test="id != null and id !=''">
+		        		and u.id=#{id} 
+      			</if>
+ 	</update>
+
+
+	<select id="query_userlis"  parameterType="com.kuncms.user.model.User"  resultType="com.kuncms.user.model.User">
+        SELECT*FROM user_info u where flag='1'
+     </select>
+	
+	<select id="getStatistics"   resultType="string">
+        SELECT count(*) as signnum FROM user_info  u where u.flag='1';
+    </select>
+
+	
+ 	<update id="addUserGoldCoin"  parameterType="com.kuncms.user.model.User">
+		update user_info u set gold_coin=#{gold_coin} where  flag='1'
+
+				<if test="user_name != null and user_name !=''">
+		        		and u.user_name=#{user_name} 
+		      	</if>
+		      	<if test="id != null and id !=''">
+		        		and u.id=#{id} 
+      			</if>
+ 	</update>
+
+
+ 	<select id="isRegister"  parameterType="com.kuncms.user.model.User"  resultType="com.kuncms.user.model.User">
+        SELECT*FROM user_info u where flag='1'
+         <!--  
+         <if test="openid != null and openid !=''">
+        		and u.openid=#{openid} 
+      	</if>
+      	-->
+      	 <if test="unionid != null and unionid !=''">
+        		and u.unionid=#{unionid} 
+      	</if>
+     </select>
+
+
+ 	<update id="update"  parameterType="com.kuncms.user.model.User">
+		update user_info u set u.gold_coin=#{gold_coin},u.empirical_value=#{empirical_value} where flag='1'
+		
+		<if test="user_name != null and user_name !=''">
+        		and u.user_name=#{user_name} 
+      	</if>
+      	<if test="id != null and id !=''">
+        		and u.id=#{id} 
+      	</if>
+ 	</update>
+
+ 	<select id="check_username"  parameterType="com.kuncms.user.model.User"  resultType="com.kuncms.user.model.User">
+        SELECT*FROM user_info u where flag='1'
+         <if test="user_name != null and user_name !=''">
+        		and u.user_name=#{user_name} 
+      	</if>
+      	<if test="id != null and id !=''">
+        		and u.id=#{id} 
+      	</if>
+      	<if test="email != null and email !=''">
+        		and u.email=#{email} 
+      	</if>
+      	<if test="openid != null and openid !=''">
+        		and u.openid=#{openid} 
+      	</if>
+      	<if test="unionid != null and unionid !=''">
+        		and u.unionid=#{unionid} 
+      	</if>
+     </select>
+
+
+    <select id="queryCoverPhoto"  parameterType="com.kuncms.user.model.User"  resultType="com.kuncms.user.model.User">
+        SELECT*FROM coverphoto;
+    </select>
+     
+     <select id="login_operate"  parameterType="com.kuncms.user.model.User"  resultType="com.kuncms.user.model.User">
+        SELECT*FROM user_info u where flag='1'
+         <if test="user_name != null and user_name !='' and password != null and password !=''" >
+        		and u.user_name=#{user_name} and u.password=#{password}
+      	</if>
+     </select>
+    
+    
+    <insert id="newsignup"  parameterType="com.kuncms.user.model.User">
+		insert into user_info(id,user_name,password,create_time,update_time,flag,gold_coin,user_status,user_class,empirical_value,openid,is_wechat,headimgurl,official_account,unionid) 
+		   values(#{id},#{user_name},#{password},#{create_time},#{update_time},#{flag},#{gold_coin},#{user_status},#{user_class},#{empirical_value},#{openid},#{is_wechat},#{headimgurl},#{official_account},#{unionid})
+ 	</insert>
+  
+
+</mapper>

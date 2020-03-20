@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+    	<link href="css/style.css" rel="stylesheet">
+    	<link href="css/button.css" rel="stylesheet">
+		<title>微信登陆</title>
+		<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+		<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+	 	<script type="text/javascript" src="/js/jquery.js"></script>
+	 	<script src=" http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+		
+	</head>
+	<body class="text-center">
+		<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			
+			<div class="jumbotron">
+				<h2>
+					请扫码
+				</h2>
+				<p>
+					<div id="login_container"></div>
+				</p>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+	<script type="text/javascript">
+    
+        var user_name=$("#user_name").val();
+		var app=new Vue({
+			  el: '#app',
+			  data: {
+				      user_name:"",
+					  password:"",
+					  content: user_name,
+					  errors: [],
+					  plays:true,
+					  logerror: false
+			  },
+			  methods:{ 
+				 
+			  	login_check: function (event) {
+				       //alert(this.user_name)
+				       if (this.user_name && this.password) {
+				    	   //发送 post 请求
+			                this.$http.post('/login_check',{user_name:this.user_name,password:this.password},{emulateJSON:true}).then(function(res){
+			                	 
+			                	if(res.body.msg=='ok'){
+			                		alert(res.body.result);
+			                		var form=$("form");
+			                		form.submit();
+			                	}else{
+			                		//alert(res.body.result);
+			                		this.logerror=true;
+			                	}
+			                },function(res){
+			                    console.log(res.data);
+			                });
+				      }else{
+				    	  this.errors = [];
+
+					      if (!this.user_name) {
+					        this.errors.push('用户名不能为空');
+					       
+					      }
+					      if (!this.password) {
+					        this.errors.push('密码不能为空');
+					       
+					      }
+					      
+					      event.preventDefault();
+				      }
+
+				   }
+			    }
+			
+			})
+		
+		var obj = new WxLogin({
+			 self_redirect:true,
+			 id:"login_container", 
+			 appid: "wx91f183b1c7308950", 
+			 scope: "snsapi_login", 
+			 redirect_uri: "http://www.pergirls.com/getcode",
+			  state: "",
+			 style: "",
+			 href: ""
+			 });
+	
+	</script>
+
+	</body>
+
+</html>
