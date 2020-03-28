@@ -238,11 +238,63 @@ public class CoverphotoController {
 		
 		
 	}
+	/**
+	 * @param response
+	 * @param coverphoto
+	 * @throws IOException
+	 *查询所有可在线播放的视频
+	 */
+	@RequestMapping("queryAllOnlineVideo")
+	public void queryAllOnlineVideo(HttpServletResponse response,Coverphoto coverphoto) throws IOException {
+		    ArrayList<Coverphoto> list=coverphotoService.queryAllOnlineVideo(coverphoto);
+			response.setContentType("application/json");
+	        response.setHeader("Pragma", "No-cache");
+	        response.setHeader("Cache-Control", "no-cache");
+	        response.setCharacterEncoding("UTF-8");
+	        JSONArray listArray=JSONArray.fromObject(list);     
+	        PrintWriter out= null;
+	        out = response.getWriter();
+	        out.print(listArray.toString());
+	        System.out.println(listArray.toString());
+	        out.flush();
+	        out.close();
+	}
+	
+	
+	/**
+	 * @param response
+	 * @param currentPage
+	 * @param pageSize
+	 * @throws IOException
+	 * 更多页面在线进行分页
+	 */
+	@RequestMapping("/queryMoreOnlineVideo")
+	public void queryMoreOnlineVideo(HttpServletResponse response,int currentPage, int pageSize,Coverphoto coverphoto) throws IOException {
+		//System.out.println(currentPage+"   "+pageSize);
+			PageHelper.startPage(currentPage , pageSize);
+		 	ArrayList<Coverphoto> list=coverphotoService.queryAllOnlineVideo(coverphoto);
+	        //得到分页的结果对象
+	        PageInfo<Coverphoto> personPageInfo = new PageInfo<>(list);
+	        //得到分页中的person条目对象
+	        List<Coverphoto> pageList = personPageInfo.getList();
+	       
+	        JSONArray listArray=JSONArray.fromObject(pageList);     
+	        response.setContentType("application/json");
+	        response.setHeader("Pragma", "No-cache");
+	        response.setHeader("Cache-Control", "no-cache");
+	        response.setCharacterEncoding("UTF-8");
+	        PrintWriter out= null;
+	        out = response.getWriter();
+	        out.print(listArray.toString());
+	        System.out.println(listArray.toString());
+	        out.flush();
+	        out.close();
+	}
 	
 	
 	@RequestMapping("queryAllCoverPhoto")
 	public void queryAllCoverPhoto(HttpServletResponse response,Coverphoto coverphoto) throws IOException {
-		    //查询微信支付记录
+		    
 			ArrayList<Coverphoto> list=coverphotoService.queryCoverPhoto(coverphoto);
 		
 		 	response.setContentType("application/json");
@@ -257,9 +309,6 @@ public class CoverphotoController {
 	        System.out.println(listArray.toString());
 	        out.flush();
 	        out.close();
-	
-		
-		
 	}
 	
 	
@@ -342,9 +391,35 @@ public class CoverphotoController {
 		
 		
 	}
+	/**
+	 * 首页使用视频在线播放查询，限定查前6条
+	 * @param response
+	 */
+	@RequestMapping("/queryOnlineData")
+	
+	public void queryOnlineData(HttpServletResponse response,Coverphoto coverphoto) throws IOException {
+		
+		ArrayList<Coverphoto> list=coverphotoService.queryOnlineData(coverphoto);
+		
+		 response.setContentType("application/json");
+	        response.setHeader("Pragma", "No-cache");
+	        response.setHeader("Cache-Control", "no-cache");
+	        response.setCharacterEncoding("UTF-8");
+	        
+	        JSONArray listArray=JSONArray.fromObject(list);     
+	        PrintWriter out= null;
+	        out = response.getWriter();
+	        out.print(listArray.toString());
+	        System.out.println(listArray.toString());
+	        out.flush();
+	        out.close();
+		
+		
+	}
+
 	
 	/**
-	 * 首页使用视频查询，限定查前9条
+	 * 首页使用视频下载查询，限定查前9条
 	 * @param response
 	 */
 	@RequestMapping("/queryIndexCoverPhoto")

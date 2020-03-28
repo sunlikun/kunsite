@@ -210,7 +210,7 @@ public class ThumbnailController {
 	 * 跳转到详情页
 	 */
 	@RequestMapping("/details")
-    public String details(Map<String,Object> map,String id,String baiduyun_pass,String baiduyun_address,String t_gold_coin,Model model,HttpServletRequest request){
+    public String details(Map<String,Object> map,String id,String baiduyun_pass,String baiduyun_address,String t_gold_coin,String online_play_coin,Model model,HttpServletRequest request){
 	  
 		//取出当前作品的点击率并加1
 		Coverphoto coverphoto=new Coverphoto();
@@ -239,8 +239,8 @@ public class ThumbnailController {
 		
 		System.out.println("t_gold_coin"+t_gold_coin);
 		model.addAttribute("baiduyun_pass",baiduyun_pass);
-		
 		model.addAttribute("baiduyun_address",baiduyun_address);
+		model.addAttribute("baiduyun_address",online_play_coin);
        return "details";
     }
 	

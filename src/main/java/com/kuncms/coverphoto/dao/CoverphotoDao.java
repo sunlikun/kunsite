@@ -44,4 +44,8 @@ public interface CoverphotoDao {
 
 	ArrayList<Coverphoto> queryVipPlayNumInfoCount(Coverphoto coverphoto);
 
+	ArrayList<Coverphoto> queryOnlineData(Coverphoto coverphoto);
+
+	ArrayList<Coverphoto> queryAllOnlineVideo(Coverphoto coverphoto);
+
 }

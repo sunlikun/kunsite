@@ -156,9 +156,16 @@ public class CoverphotoService {
 
 
 
-	
-	
-	
-	
+	public ArrayList<Coverphoto> queryOnlineData(Coverphoto coverphoto) {
+		// TODO Auto-generated method stub
+		return coverphotoDao.queryOnlineData(coverphoto);
+	}
+
+
+
+	public ArrayList<Coverphoto> queryAllOnlineVideo(Coverphoto coverphoto) {
+		// TODO Auto-generated method stub
+		return coverphotoDao.queryAllOnlineVideo(coverphoto);
+	}
 
 }

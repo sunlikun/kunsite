@@ -27,6 +27,15 @@ private String play_goin;
 private String play_address;
 private int online_play_coin;
 private String gorup_name;
+private String online_play_flag;
+
+
+public String getOnline_play_flag() {
+	return online_play_flag;
+}
+public void setOnline_play_flag(String online_play_flag) {
+	this.online_play_flag = online_play_flag;
+}
 public String getGorup_name() {
 	return gorup_name;
 }

@@ -246,6 +246,7 @@
  	<div th:include="footer :: footer"></div> 
     <input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none"> 
     <input id="flag" th:value="${flag}" name="flag" type="text" style="display: none">
+    <input id="online_play_flag" th:value="${online_play_flag}" name="flag" type="text" style="display: none">
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/scripts.js"></script>
@@ -309,6 +310,7 @@
 	    // prepare the data
 	    var user_name=$("#user_name").val();
 	    var flag=$("#flag").val();
+	    var online_play_flag=$("#online_play_flag").val();
 	    //alert(user_name)
 	    if(user_name!=null&&user_name!==''){
 	  	  $("#login").html("你好   "+user_name);
@@ -322,75 +324,139 @@
 	    });
 	    var totalCount=0;
         var  totalPage=0;
-	    $.ajax({
-	        type: "post",
-	        url: "queryAllCoverPhoto",
-	        data: {"category":flag},
-	        dataType: "json",
-	        success: function(data){
-	      	var coverphotoArr = data;
-	      	totalCount=coverphotoArr.length;
-	    	totalPage=Math.ceil(totalCount/12);
-	      	
-	      
-	      	
-	      }
-    });
-  
-    // 调用分页器
-    Pagination({
-        ele: '#ele',
-        totalCount: this.totalCount,
-        totalPage: this.totalPage,
-        currentPage: 1,
-        needTotalCount: true,
-        callback: function(page){
-        	
+        if(online_play_flag=='1'){
+        	 $.ajax({
+      	        type: "post",
+      	        url: "queryAllOnlineVideo",
+      	        data: {"category":flag},
+      	        dataType: "json",
+      	        success: function(data){
+      	      	var coverphotoArr = data;
+      	      	totalCount=coverphotoArr.length;
+      	    	totalPage=Math.ceil(totalCount/12);
+      	      	}
+          	});
+         	 // 调用分页器
+         	    Pagination({
+         	        ele: '#ele',
+         	        totalCount: this.totalCount,
+         	        totalPage: this.totalPage,
+         	        currentPage: 1,
+         	        needTotalCount: true,
+         	        callback: function(page){
+         	        	
+         	        	 $.ajax({
+         	     	        type: "post",
+         	     	        url: "/queryMoreOnlineVideo",
+         	     	        data: {currentPage:page,pageSize:12,"category":flag},
+         	     	        dataType: "json",
+         	     	       	success: function(data){
+         	               	var coverphotoArr = data;
+         	               	var converGroup="";
+         	               	for(var i=0;i<coverphotoArr.length;i++){
+         	               		　　//alert(coverphotoArr[i].coverphotoid);
+         	               		var id=coverphotoArr[i].id;
+         	               		var baiduyun_pass=coverphotoArr[i].baiduyun_pass;
+         	               		var baiduyun_address=coverphotoArr[i].baiduyun_address;
+         	               		//alert(baiduyun_address)
+         	               		//alert(coverphotoArr[i].video_name)
+         	               		var tableContent="";
+         	                       tableContent += '<div class="col-sm-3 col-md-2 col-xs-6">';
+         	                       tableContent += '<div class="thumbnail">';
+         	                       tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'">';
+         	                       var coverid="/images/"+coverphotoArr[i].coverphotoid.substring(30);
+         	                      // alert(coverid)
+         	                       tableContent += '<img  class="img-responsive"   src="' + coverid+ '" >';
+         	                       tableContent += '</a>';
+         	                       tableContent += '<div>';
+         	                       tableContent += '<p>' + coverphotoArr[i].video_name.substring(0, 15)+ '...</p>';
+         	                       tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].online_play_coin+ '金币 &nbsp;<img src="/img/eye.jpg" width="20vw" height="20vh">'+coverphotoArr[i].clicks+'</p>';
+         	                       //tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
+         	                       tableContent += ' <p><a href="/toVideoPlay?id='+id+'" class="btn btn-primary btn-sm" role="button" target="_blank"> 播放</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'&online_play_coin='+coverphotoArr[i].online_play_coin+'" class="btn btn-default  btn-sm" role="button" target="_blank">详情</a></p> ';
+                 				   tableContent += '</p>';
+         	                       tableContent += '<div>';
+         	                       tableContent += '</div></div></div></div>';
+         	                       converGroup+=tableContent;
+         	                       
+         	               	}
+         	     	   		$("#coverphoto").empty();
+         	     	      	$("#coverphoto").append(converGroup);
+         	     	     	   
+         	     	        	
+         	     	       }
+         	         });
+         	        }
+         	    });
+        }else{
         	 $.ajax({
      	        type: "post",
-     	        url: "/queryMoreCoverPhoto",
-     	        data: {currentPage:page,pageSize:12,"category":flag},
+     	        url: "queryAllCoverPhoto",
+     	        data: {"category":flag},
      	        dataType: "json",
-     	       	success: function(data){
-               	var coverphotoArr = data;
-               	var converGroup="";
-               	for(var i=0;i<coverphotoArr.length;i++){
-               		　　//alert(coverphotoArr[i].coverphotoid);
-               		var id=coverphotoArr[i].id;
-               		var baiduyun_pass=coverphotoArr[i].baiduyun_pass;
-               		var baiduyun_address=coverphotoArr[i].baiduyun_address;
-               		//alert(baiduyun_address)
-               		//alert(coverphotoArr[i].video_name)
-               		var tableContent="";
-                       tableContent += '<div class="col-sm-3 col-md-2 col-xs-6">';
-                       tableContent += '<div class="thumbnail">';
-                       tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'">';
-                       var coverid="/images/"+coverphotoArr[i].coverphotoid.substring(30);
-                      // alert(coverid)
-                       tableContent += '<img  class="img-responsive"   src="' + coverid+ '" >';
-                       tableContent += '</a>';
-                       tableContent += '<div>';
-                       tableContent += '<p>' + coverphotoArr[i].video_name.substring(0, 25)+ '...</p>';
-                       tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币 &nbsp;<img src="/img/eye.jpg" width="20vw" height="20vh">'+coverphotoArr[i].clicks+'</p>';
-                       tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
-                       tableContent += ' <p><a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-primary" role="button"> 查看</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default" role="button">  下载</a></p> ';
-                       tableContent += '</p>';
-                       tableContent += '<div>';
-                       tableContent += '</div></div></div></div>';
-                       
-                      
-                     
-                       converGroup+=tableContent;
-                       
-               	}
-     	   		$("#coverphoto").empty();
-     	      	$("#coverphoto").append(converGroup);
-     	     	   
-     	        	
-     	       }
-         });
+     	        success: function(data){
+     	      	var coverphotoArr = data;
+     	      	totalCount=coverphotoArr.length;
+     	    	totalPage=Math.ceil(totalCount/12);
+     	      	}
+         	});
+        	 // 调用分页器
+        	    Pagination({
+        	        ele: '#ele',
+        	        totalCount: this.totalCount,
+        	        totalPage: this.totalPage,
+        	        currentPage: 1,
+        	        needTotalCount: true,
+        	        callback: function(page){
+        	        	
+        	        	 $.ajax({
+        	     	        type: "post",
+        	     	        url: "/queryMoreCoverPhoto",
+        	     	        data: {currentPage:page,pageSize:12,"category":flag},
+        	     	        dataType: "json",
+        	     	       	success: function(data){
+        	               	var coverphotoArr = data;
+        	               	var converGroup="";
+        	               	for(var i=0;i<coverphotoArr.length;i++){
+        	               		　　//alert(coverphotoArr[i].coverphotoid);
+        	               		var id=coverphotoArr[i].id;
+        	               		var baiduyun_pass=coverphotoArr[i].baiduyun_pass;
+        	               		var baiduyun_address=coverphotoArr[i].baiduyun_address;
+        	               		//alert(baiduyun_address)
+        	               		//alert(coverphotoArr[i].video_name)
+        	               		var tableContent="";
+        	                       tableContent += '<div class="col-sm-3 col-md-2 col-xs-6">';
+        	                       tableContent += '<div class="thumbnail">';
+        	                       tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'">';
+        	                       var coverid="/images/"+coverphotoArr[i].coverphotoid.substring(30);
+        	                      // alert(coverid)
+        	                       tableContent += '<img  class="img-responsive"   src="' + coverid+ '" >';
+        	                       tableContent += '</a>';
+        	                       tableContent += '<div>';
+        	                       tableContent += '<p>' + coverphotoArr[i].video_name.substring(0, 15)+ '...</p>';
+        	                       tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币 &nbsp;<img src="/img/eye.jpg" width="20vw" height="20vh">'+coverphotoArr[i].clicks+'</p>';
+        	                       tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
+        	                       tableContent += ' <p><a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-primary" role="button"> 查看</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default" role="button">  下载</a></p> ';
+        	                       tableContent += '</p>';
+        	                       tableContent += '<div>';
+        	                       tableContent += '</div></div></div></div>';
+        	                       
+        	                      
+        	                     
+        	                       converGroup+=tableContent;
+        	                       
+        	               	}
+        	     	   		$("#coverphoto").empty();
+        	     	      	$("#coverphoto").append(converGroup);
+        	     	     	   
+        	     	        	
+        	     	       }
+        	         });
+        	        }
+        	    });
         }
-    });
+	   
+  
+   
 
     // 分页器
     function Pagination (data) {

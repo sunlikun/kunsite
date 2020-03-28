@@ -106,6 +106,9 @@
 		</where>
 				
      </select>
+     
+     
+     
 
 	 <select id="queryCoverPhotoById"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
         SELECT*FROM coverphoto a
@@ -117,12 +120,11 @@
 		</where>
 				
      </select>
-
-
-     <select id="queryCoverPhoto"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
+ 	<select id="queryAllOnlineVideo"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
         SELECT*FROM coverphoto c
          <where>
          c.flag="1"
+         and c.online_play_flag="1"
         	<if test="category != null and category != ''">
 				and c.category=#{category}
 			</if>
@@ -130,10 +132,37 @@
 		 	ORDER BY c.create_time desc
      </select>
      
+     <select id="queryOnlineData"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
+        SELECT*FROM coverphoto c  
+        <where>
+			c.flag="1"
+			and c.online_play_flag="1"
+			<if test="category != null and category != ''">
+				and c.category=#{category}
+			</if>
+		</where>
+		ORDER BY c.create_time desc limit 0,8;
+     </select>
+
+     <select id="queryCoverPhoto"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
+        SELECT*FROM coverphoto c
+         <where>
+         c.flag="1"
+         and (c.online_play_flag is NULL OR c.online_play_flag='0')
+        	<if test="category != null and category != ''">
+				and c.category=#{category}
+			</if>
+		 </where>
+		 	ORDER BY c.create_time desc
+     </select>
+     
+     
+     
      <select id="queryIndexCoverPhoto"  parameterType="com.kuncms.coverphoto.model.Coverphoto"  resultType="com.kuncms.coverphoto.model.Coverphoto">
         SELECT*FROM coverphoto c  
         <where>
 			c.flag="1"
+			and (c.online_play_flag is NULL OR c.online_play_flag='0')
 			<if test="category != null and category != ''">
 				and c.category=#{category}
 			</if>
@@ -144,8 +173,8 @@
     
     <insert id="insert"  parameterType="com.kuncms.coverphoto.model.Coverphoto">
 
-		insert into coverphoto(id,coverphotoid,baiduyun_address,baiduyun_pass,video_name,create_time,createby,update_time,updateby,flag,gold_coin,clicks,downloads,category,screen_class,play_address,online_play_coin,gorup_name) 
-		   values(#{id},#{coverphotoid},#{baiduyun_address},#{baiduyun_pass},#{video_name},#{create_time},#{createby},#{update_time},#{updateby},#{flag},#{gold_coin},#{clicks},#{downloads},#{category},#{screen_class},#{play_address},#{online_play_coin},#{gorup_name})
+		insert into coverphoto(id,coverphotoid,baiduyun_address,baiduyun_pass,video_name,create_time,createby,update_time,updateby,flag,gold_coin,clicks,downloads,category,screen_class,play_address,online_play_coin,gorup_name,online_play_flag) 
+		   values(#{id},#{coverphotoid},#{baiduyun_address},#{baiduyun_pass},#{video_name},#{create_time},#{createby},#{update_time},#{updateby},#{flag},#{gold_coin},#{clicks},#{downloads},#{category},#{screen_class},#{play_address},#{online_play_coin},#{gorup_name},#{online_play_flag})
 	</insert>
  	
  	<update id="updateCoverPhotoById" parameterType="com.kuncms.coverphoto.model.Coverphoto">
@@ -223,6 +252,9 @@
 		</if>
 		<if test="gorup_name != null and gorup_name != ''">
 				,a.gorup_name = #{gorup_name}
+		</if>
+		<if test="online_play_flag != null and online_play_flag != ''">
+				,a.online_play_flag = #{online_play_flag}
 		</if>
  	</update>
   

@@ -425,6 +425,29 @@ public class CoreController {
 	   return "we_more";
     }
 	
+	
+	
+	
+	/**
+	 * 跳转到更多在线播放
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping("/moreOnline")
+    public String moreOnline(Map<String,Object> map,String flag,Model model,HttpServletRequest request){
+	   //ArrayList<Coverphoto> list=thumbnailService.queryCoverPhoto();
+	   //com.alibaba.fastjson.JSONArray array= com.alibaba.fastjson.JSONArray.parseArray(JSON.toJSONString(list));
+	   HttpSession session=request.getSession();
+	   User user=(User) session.getAttribute("user");
+	   model.addAttribute("user_name",user.getUser_name());
+	   model.addAttribute("id",user.getId());
+	   model.addAttribute("flag", flag);
+	   model.addAttribute("online_play_flag", '1');
+	   return "more";
+    }
+	
+	
+	
 	/**
 	 * 跳转到更多饭拍
 	 * @param map

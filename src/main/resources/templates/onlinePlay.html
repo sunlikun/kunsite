@@ -9,22 +9,15 @@ body {
 	background-color: #191919
 }
 .m {
-	width: 960px;
-	height: 400px;
+	width: 960;
+	height: 400;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 100px;
 }
 </style>
 	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <script type="text/javascript">
-        var play_address=$("#play_address").val();
-        if(play_address==""||play_address==null){
-        	alert("哦哦！该视频播暂时不支持播放");
-        }else{
-        	$("#source").apend('<source src="' + play_address+ '" type="video/mp4">');
-        }
-        </script>
+   
 	</head>
 
 	<body>
@@ -32,10 +25,7 @@ body {
     <div class="m">
       <video id="my-video" class="video-js" controls preload="auto" width="960" height="400"
 		   data-setup="{}">
-		  <div id="source"> </div>
-		  
-        
-    	<p class="vjs-no-js"> To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a> </p>
+		<p class="vjs-no-js"> To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a> </p>
       </video>
       <script src="/vide7.4.1/js/video.min.js"></script> 
       <script type="text/javascript">
@@ -125,18 +115,21 @@ body {
 			});
 		  
 		  
+		  	var play_address=$("#play_address").val();
+	        if(play_address==""||play_address==null){
+	        	alert("哦哦！该视频播暂时不支持播放");
+	        }else{
+	        	$("#my-video").append('<source src="' + play_address+ '" type="video/mp4">');
+	        }
 		  
-		  
-		  
-		  
-			var myPlayer = videojs('my-video');
+		  	var myPlayer = videojs('my-video');
 			videojs("my-video").ready(function(){
 				var myPlayer = this;
 				myPlayer.play();
 			});
 			  
 		</script> 
-		
+		 
     </div>
 </body>
 </html>
