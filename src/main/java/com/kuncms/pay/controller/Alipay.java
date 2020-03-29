@@ -244,7 +244,7 @@ public class Alipay {
 				int gold_coin=(int) (Double.parseDouble(total_amount)*10);
 				gold_coin=gold_coin+now_gold_coin;
 				System.out.println("gold_coin"+gold_coin);
-				userService.addUserGoldCoin(passback_params,gold_coin);
+				userService.addUserGoldCoin(loginuser.getId(),gold_coin);
 			}
 			
 			

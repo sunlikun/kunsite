@@ -23,6 +23,15 @@
 	<link rel="icon" type="image/x-icon" href="/img/favicon.ico">
 	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?38d6362f18809b7002eca352b2efe579";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
     
    
   
@@ -95,7 +104,7 @@
           }
           queryData('1');
           queryData('2');
-          queryOnlineData();
+          //queryOnlineData();
           
       });
       //查询展示下载内容 
@@ -135,7 +144,7 @@
                     tableContent += '<div>';
                   	tableContent += '<p>' + coverphotoArr[i].video_name.substring(0, 15)+ '...</p>';
                   	tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币&nbsp;<img src="/img/eye.jpg" width="20vw" height="20vh">'+coverphotoArr[i].clicks+'</p>';
-                  	tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
+                  	//tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
                     tableContent += ' <p><a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-primary btn-sm" role="button"> 查看</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default  btn-sm" role="button">  下载</a></p> ';
                     tableContent += '</p>';
                     tableContent += '<div>';
@@ -200,7 +209,7 @@
                   	tableContent += '<p>' + coverphotoArr[i].video_name.substring(0, 15)+ '...</p>';
                   	tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].online_play_coin+ '金币&nbsp;<img src="/img/eye.jpg" width="20vw" height="20vh">'+coverphotoArr[i].clicks+'</p>';
                   	//tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
-                  	tableContent += ' <p><a href="/toVideoPlay?id='+id+'" class="btn btn-primary btn-sm" role="button" target="_blank"> 播放</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'&online_play_coin='+coverphotoArr[i].online_play_coin+'" class="btn btn-default  btn-sm" role="button" target="_blank">详情</a></p> ';
+                  	tableContent += ' <p><a href="/toVideoPlay?id='+id+'" class="btn btn-primary btn-sm" role="button" target="_blank" > 播放</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'&online_play_coin='+coverphotoArr[i].online_play_coin+'" class="btn btn-default  btn-sm" role="button" target="_blank">详情</a></p> ';
                     tableContent += '</p>';
                     tableContent += '<div>';
                     tableContent += '</div></div></div></div>';
@@ -224,19 +233,17 @@
 	<div class="container-fluid">
   		<div class="row" style="margin-top: 10px;">
 				<div class="col-md-8  col-xs-12">
+				<!-- 
 				<div class="well well-md"><font size="3" color="#414141" style="font-family:微软雅黑 ">超清在线播放</font><a href="/moreOnline" style="text-decoration: none"><font size="3" color="#414141" style="font-family:微软雅黑;margin-right: 5vw;float: right;">更多》》</font></a></div>
-					    <!--  
+					    
 						    <div style="width: 100%;height: 6vh;background:#f8f8f8;">
 							     <div style="display:inline-block;margin-top: 1.2rem;margin-left: 1.5vw"><a href="/more?flag=1" style="text-decoration: none"><font size="3" color="#414141" style="font-family:微软雅黑 ">女团饭拍</font></a></div>
 								 <div style="display:inline-block;margin-left:40vw;margin-top: 1rem"><a href="/more?flag=1" style="text-decoration: none"><font size="3" color="#414141" style="font-family:微软雅黑 ">more》》</font></a></div>
 						    </div>
-					     -->
-					   
-				
-					<div class="row" id="part3" style="margin-top: 2vh">
+					   <div class="row" id="part3" style="margin-top: 2vh"></div>
 					
-					</div>
 					<div align="center"><a href="/moreOnline"><font size="5">点击查看更多</font></a></div>
+					 -->
 					<div class="well well-md"><font size="3" color="#414141" style="font-family:微软雅黑 ">女团饭拍下载</font><a href="/more?flag=1" style="text-decoration: none"><font size="3" color="#414141" style="font-family:微软雅黑;margin-right: 5vw;float: right;">更多》》</font></a></div>
 					    <!--  
 						    <div style="width: 100%;height: 6vh;background:#f8f8f8;">
@@ -285,7 +292,7 @@
 								</h2>
 								<p>
 									扫码关注公众号享更多精彩内容
-									公众号可线播放哦!
+									 比官网更新更快哦!
 									<img  class="img-responsive"   src="/img/wechat/qrcode_for_gh_65045f61e850_258.jpg" >
 								</p>
 								<div align="center">
@@ -376,7 +383,7 @@
 	                   	tableContent += '<img  class="img-responsive"   src="' + coverid+ '" ></div>';
 	                      	tableContent += '</a>';
 	                      	tableContent += '<div style="display:inline-block;margin-left:0px;">' + coverphotoArr[i].video_name.substring(0, 25)+ '</div>';
-	                      	tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
+	                      	//tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
 	                      	tableContent += '</div>';
 	                      converGroup+=tableContent;
 	                      

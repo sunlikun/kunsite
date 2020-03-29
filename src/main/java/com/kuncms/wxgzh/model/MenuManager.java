@@ -45,20 +45,20 @@ public class MenuManager {
      */  
     private static Menu getMenu() {  
         CommonButton btn11 = new CommonButton();  
-        btn11.setName("普通点播");  
+        btn11.setName("在线播放");  
         btn11.setType("view");  
         btn11.setKey("11");
-        btn11.setUrl("http://www.pergirls.com/toPlayNumInfo");
-  
-        CommonButton btn12 = new CommonButton(); 
-        btn12.setName("金币点播");  
-        btn12.setType("view");  
-        btn12.setKey("12");
-        btn12.setUrl("http://www.pergirls.com/toVipPlayNumInfo");
+        btn11.setUrl("http://www.pergirls.com/we_moreOnline");
+//  
+//        CommonButton btn12 = new CommonButton(); 
+//        btn12.setName("金币点播");  
+//        btn12.setType("view");  
+//        btn12.setKey("12");
+//        btn12.setUrl("http://www.pergirls.com/toVipPlayNumInfo");
         
-        ComplexButton mainBtn1 = new ComplexButton();  
-        mainBtn1.setName("点播码");  
-        mainBtn1.setSub_button(new CommonButton[] {btn11,btn12}); 
+//        ComplexButton mainBtn1 = new ComplexButton();  
+//        mainBtn1.setName("点播码");  
+//        mainBtn1.setSub_button(new CommonButton[] {btn11,btn12}); 
  //  
 //        CommonButton btn13 = new CommonButton();  
 //        btn13.setName("周边搜索");  
@@ -71,7 +71,7 @@ public class MenuManager {
 //        btn14.setKey("14");  
 //  
         CommonButton btn21 = new CommonButton();  
-        btn21.setName("官网"); 
+        btn21.setName("官网下载"); 
         btn21.setType("view");  
         btn21.setKey("21");
         btn21.setUrl("http://www.pergirls.com/WechatController/index_auth");
@@ -134,7 +134,7 @@ public class MenuManager {
          */  
         Menu menu = new Menu();  
         //menu.setButton(new Button[] { mainBtn1, mainBtn2, mainBtn3 });  
-        menu.setButton(new Button[] { mainBtn1, btn21, btn33 }); 
+        menu.setButton(new Button[] {btn21, btn33 }); 
         return menu;  
     }  
 }  

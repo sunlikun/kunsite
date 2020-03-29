@@ -13,7 +13,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +32,8 @@ import com.kuncms.coverphoto.model.Coverphoto;
 import com.kuncms.coverphoto.service.CoverphotoService;
 import com.kuncms.downloadrecord.model.DownloadRecord;
 import com.kuncms.downloadrecord.service.DownloadRecordService;
+import com.kuncms.user.model.User;
+import com.kuncms.user.service.UserService;
 import com.kuncms.videoinfo.model.Videoinfo;
 import com.kuncms.videoinfo.service.VideoInfoService;
 
@@ -45,6 +47,55 @@ public class CoverphotoController {
 	CoverphotoService coverphotoService;
 	@Autowired
 	DownloadRecordService downloadRecordService;
+	@Autowired
+	UserService userService;
+	
+	
+	
+	/**
+	 * @param map
+	 * @param request
+	 * @return
+	 * 在线视频播放页
+	 */
+	@RequestMapping("/toWeVideoPlay")
+    public String toWeVideoPlay(Map<String,Object> map,HttpServletRequest request,Coverphoto coverphoto,Model model){
+		//验证该用户是否登录
+		HttpSession session=request.getSession();
+		User user=(User) session.getAttribute("user");
+		ArrayList<Coverphoto> list=coverphotoService.queryCoverPhotoById(coverphoto);
+		String jumpAddress="";
+		Coverphoto coverphoto1=list.get(0);
+		ArrayList<User> userArr=userService.check_username(user);
+		User user1=userArr.get(0);
+		if(user!=null&&!user.getUser_name().equals("")){//登录
+			int playgold=coverphoto1.getOnline_play_coin();
+			int gold=user.getGold_coin();
+			model.addAttribute("user_name",user.getUser_name());
+			model.addAttribute("play_address",coverphoto1.getPlay_address());
+			if(user1.getGold_coin()>0&&user1.getGold_coin()>=playgold){//金币充足可以播放
+				//更新用户金币数
+				int now_gold_coin=user1.getGold_coin();
+				System.out.println("now_gold_coin"+now_gold_coin);
+				int gold_coin=now_gold_coin-playgold;
+				System.out.println("gold_coin"+gold_coin);
+				userService.addUserGoldCoin(user1.getId(),gold_coin);
+				user.setGold_coin(gold_coin);
+				session.setAttribute("user",user1);
+				jumpAddress="onlinePlay";
+			}else{//金币不足无法播放
+				model.addAttribute("url","/WechatController/we_recharge");
+				model.addAttribute("flag","we");
+				jumpAddress="chargealert";
+			}
+		}else{//未登录
+			jumpAddress="login";
+		}
+		
+		
+		return jumpAddress;
+    }
+	
 	
 	
 	/**
@@ -55,10 +106,37 @@ public class CoverphotoController {
 	 */
 	@RequestMapping("/toVideoPlay")
     public String toVipPlayNumInfo(Map<String,Object> map,HttpServletRequest request,Coverphoto coverphoto,Model model){
+		//验证该用户是否登录
+		HttpSession session=request.getSession();
+		User user=(User) session.getAttribute("user");
 		ArrayList<Coverphoto> list=coverphotoService.queryCoverPhotoById(coverphoto);
+		String jumpAddress="";
 		Coverphoto coverphoto1=list.get(0);
-		model.addAttribute("play_address",coverphoto1.getPlay_address());
-		return "onlinePlay";
+		if(user!=null&&!user.getUser_name().equals("")){//登录
+			int playgold=coverphoto1.getOnline_play_coin();
+			int gold=user.getGold_coin();
+			model.addAttribute("user_name",user.getUser_name());
+			model.addAttribute("play_address",coverphoto1.getPlay_address());
+			if(gold>0&&gold>playgold){//金币充足可以播放
+				//更新用户金币数
+				int now_gold_coin=user.getGold_coin();
+				System.out.println("now_gold_coin"+now_gold_coin);
+				int gold_coin=now_gold_coin-playgold;
+				System.out.println("gold_coin"+gold_coin);
+				userService.addUserGoldCoin(user.getId(),gold_coin);
+				user.setGold_coin(gold_coin);
+				session.setAttribute("user",user);
+				jumpAddress="onlinePlay";
+			}else{//金币不足无法播放
+				model.addAttribute("url","recharge");
+				jumpAddress="chargealert";
+			}
+		}else{//未登录
+			jumpAddress="login";
+		}
+		
+		
+		return jumpAddress;
     }
 	
 	

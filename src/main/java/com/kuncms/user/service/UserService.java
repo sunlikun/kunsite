@@ -21,7 +21,7 @@ public class UserService {
 		String id=UUID.randomUUID().toString().replace("-", "").toLowerCase();
 		user.setId(id);
 		user.setFlag("1");
-		user.setGold_coin(3);
+		//user.setGold_coin(0);
 		user.setUser_status("1");
 		user.setUser_class("1");
 		user.setEmpirical_value(0);

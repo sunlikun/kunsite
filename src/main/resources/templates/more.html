@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>更多内容</title>
-
-    <meta name="description" content="Source code generated using layoutit.com">
+	<meta name="description" content="Source code generated using layoutit.com">
     <meta name="author" content="LayoutIt!">
  	<meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -21,6 +20,15 @@
     <script type="text/javascript" src="/js/jqthumb.min.js"></script>
     <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
 	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+   	<script>
+		var _hmt = _hmt || [];
+		(function() {
+		  var hm = document.createElement("script");
+		  hm.src = "https://hm.baidu.com/hm.js?38d6362f18809b7002eca352b2efe579";
+		  var s = document.getElementsByTagName("script")[0]; 
+		  s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
    
   
      
@@ -434,7 +442,7 @@
         	                       tableContent += '<div>';
         	                       tableContent += '<p>' + coverphotoArr[i].video_name.substring(0, 15)+ '...</p>';
         	                       tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币 &nbsp;<img src="/img/eye.jpg" width="20vw" height="20vh">'+coverphotoArr[i].clicks+'</p>';
-        	                       tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
+        	                       //tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
         	                       tableContent += ' <p><a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-primary" role="button"> 查看</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default" role="button">  下载</a></p> ';
         	                       tableContent += '</p>';
         	                       tableContent += '<div>';

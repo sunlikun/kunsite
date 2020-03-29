@@ -536,7 +536,7 @@ public class WechatController {
                 
                 // 订阅  
                 if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {  
-                	text.setContent("欢迎,首次关注赠送您3金币!输入点播号如“0011”即可观看视频集预览视频,更多点播号请点击下方点播号查找查看,获取视频全集内容请点击官网进行下载保存,也可登录www.pergirls.com进行下载!");
+                	text.setContent("欢迎关注pergirls!如遇问题可在公众号内留言,客服将在24小时内解答。您也复制网址www.pergirls.com至手机及电脑浏览器进行相关浏览。");
 //                	orderFlag=true;
 //                	Coverphoto coverphoto=new Coverphoto();
 //            		String serial_number=content;

@@ -27,7 +27,7 @@ import com.kuncms.wxgzh.model.WeChatConfig;
  */
 @Component
 @Configuration        // 相当于配置beans, 
-@EnableScheduling    // <task:*>, 让spring进行任务调度
+//@EnableScheduling    // <task:*>, 让spring进行任务调度
 public class SchedulingConfig {
 	@Autowired
 	CoverphotoService coverphotoService;
