@@ -27,9 +27,9 @@
 
   <insert id="insert" parameterType="com.kuncms.downloadrecord.model.DownloadRecord" >
    
-    insert into download_record (id, video_id, download_time
+    insert into download_record (id, video_id, download_time,user_name,user_id
       )
-    values (#{id,jdbcType=VARCHAR}, #{video_id,jdbcType=VARCHAR}, #{download_time}
+    values (#{id,jdbcType=VARCHAR}, #{video_id,jdbcType=VARCHAR}, #{download_time}, #{user_name,jdbcType=VARCHAR}, #{user_id,jdbcType=VARCHAR}
       )
   </insert>
  

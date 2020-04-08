@@ -82,26 +82,30 @@ public class ThumbnailController {
  		   //增加下载记录
  		   String videoId=list.get(0).getId();
  		   downloadRecord.setVideo_id(videoId); 
- 		   downloadRecord.setUser_name(loginuser.getUser_name());
- 		   downloadRecord.setUser_id(loginuser.getId());
+ 		   downloadRecord.setUser_name(userl.get(0).getUser_name());
+ 		   downloadRecord.setUser_id(userl.get(0).getId());
  		   downloadRecordService.insert(downloadRecord);
  	   };
  	   
  	  //扣除用户对应的金币
-		
+		String returnPage="";
 		if(userl.size()>0){
 			 User loginuser1=userl.get(0);
 			 int  goldCoin=loginuser1.getGold_coin();
+			 if(goldCoin<0){//当账户金币小于0时为异常情况时，跳转到异常页面
+				 returnPage="/error/error";
+			 }
 			 int  rgoldCoin=goldCoin-t_gold_coin;
 			 int  empirical_value=loginuser1.getEmpirical_value();
 			 empirical_value=empirical_value+1;
 			 loginuser1.setGold_coin(rgoldCoin);
 			 loginuser1.setEmpirical_value(empirical_value);
 			 userService.update(loginuser1);
+			 returnPage="download";
 		}
 		
 		
-		return "download";
+		return returnPage;
 	
 	
     }

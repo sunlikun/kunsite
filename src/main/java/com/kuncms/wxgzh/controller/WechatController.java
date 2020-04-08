@@ -728,7 +728,7 @@ public class WechatController {
              	    customer.setFromUserName(toUserName);
              	    customer.setCreateTime(new Date().getTime());
              	    customer.setMsgType("transfer_customer_service");
-        			text.setContent("已经收到您的反馈信息,客服将在24小时内对您的发送的信息进行处理并给您回复,如果您想点播视频，请输入正确的点播编号");
+        			text.setContent("已经收到您的反馈信息,客服将在24小时内对您的发送的信息进行处理并给您回复");
         			respMessage = MessageUtil.messageToXml(text);
         		}
                 	
