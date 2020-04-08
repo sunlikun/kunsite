@@ -310,8 +310,8 @@ public class WxpayController extends PayBaseController {
                 String is_subscribe = (String)packageParams.get("is_subscribe");
                 String out_trade_no = (String)packageParams.get("out_trade_no");
                 String total_fee = (String)packageParams.get("total_fee");
-                String time_end=(String)packageParams.get("time_end");//支付完成时间
-                String attach=(String)packageParams.get("attach");//支付完成时间
+                String time_end=(String)packageParams.get("time_end");
+                String attach=(String)packageParams.get("attach");
  
                 //////////执行自己的业务逻辑////////////////
                 //暂时使用最简单的业务逻辑来处理：只是将业务处理结果保存到session中

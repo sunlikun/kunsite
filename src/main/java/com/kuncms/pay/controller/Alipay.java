@@ -109,13 +109,14 @@ public class Alipay {
 			alipayRequest.setNotifyUrl("http://www.pergirls.com/notify");//在公共参数中设置回跳和通知地址
 			String out_trade_no=UUID.randomUUID().toString();
 			HttpSession session=httpRequest.getSession();
+			User user1=(User) session.getAttribute("user");
 			alipayRequest.setBizContent("{" +
 			"    \"out_trade_no\":\""+out_trade_no+"\"," +
 			"    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
 			"    \"total_amount\":\""+val+"\"," +
 			"    \"subject\":\"普格娱乐金币充值\"," +
 			"    \"body\":\"普格娱乐金币充值\"," +
-			"    \"passback_params\":\""+session.getAttribute("loginName")+"\"," +
+			"    \"passback_params\":\""+user1.getId()+"\"," +
 			"    \"extend_params\":{" +
 			"    \"sys_service_provider_id\":\"2088511833207846\"" +
 			"    }"+
@@ -233,7 +234,7 @@ public class Alipay {
 				CoreController  con=new CoreController();
 				//查询用户现有金币数并增加
 				User user=new User();
-				user.setUser_name(passback_params);
+				user.setId(passback_params);
 				ArrayList<User> userl=(ArrayList<User>) userService.check_username(user);
 				User loginuser=null;
 				if(userl.size()>0){

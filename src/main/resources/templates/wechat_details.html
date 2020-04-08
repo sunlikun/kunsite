@@ -168,6 +168,7 @@
         
         
         var user_name=$("#user_name").val();
+        var user_id=$("#user_id").val();
         
 		var app=new Vue({
 			  el: '#app',
@@ -214,7 +215,8 @@
 				             type:'POST', //GET
 				             async:false, //或false,是否异步
 				             data:{//参数
-				            	 user_name:user_name
+				            	 user_name:user_name,
+				            	 id:user_id
 				             },
 				             timeout:5000, //超时时间
 				             dataType:'json', //返回的数据格式：

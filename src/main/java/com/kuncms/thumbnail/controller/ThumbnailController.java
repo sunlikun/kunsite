@@ -82,8 +82,8 @@ public class ThumbnailController {
  		   //增加下载记录
  		   String videoId=list.get(0).getId();
  		   downloadRecord.setVideo_id(videoId); 
- 		   downloadRecord.setUser_name(user.getUser_name());
- 		   downloadRecord.setUser_id(user.getId());
+ 		   downloadRecord.setUser_name(loginuser.getUser_name());
+ 		   downloadRecord.setUser_id(loginuser.getId());
  		   downloadRecordService.insert(downloadRecord);
  	   };
  	   

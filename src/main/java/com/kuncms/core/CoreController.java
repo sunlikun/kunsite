@@ -170,6 +170,7 @@ public class CoreController {
     public String exit(HttpServletRequest request,Model model,String code){
 		
 	  request.getSession().removeAttribute("loginName");
+	  request.getSession().removeAttribute("user");
 	  request.getSession().invalidate();
     
 	  return "index";
@@ -586,6 +587,8 @@ public class CoreController {
 			model.addAttribute("user_name",loginuser.getUser_name());
 			HttpSession session = request.getSession();
 	        session.setAttribute("loginName",loginuser.getUser_name());
+	        session.setAttribute("user",loginuser);
+	        
 		}else{
 			flag=false;
 		}

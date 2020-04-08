@@ -1,40 +1,27 @@
 server:
-  port: 8083
-logging:
-  level:
-    root: info
-    com.bestvike: debug
-    org.springframework.security: warn
-  # 默认日志文件名
-  # file: log
-  # 默认日志路径
-  # path: d:/test.log
-  # logback.xml路径，默认为classpath:logback.xml
-  # config: ./logback.xml
-
-    
+  port: 8082
 
 spring:
-
-
-  mail:
-       host: smtp.qq.com
-       password:  cvfiwmexrrmrgfjg
-       username: 1144954876@qq.com
-       test-connection: false
-       protocol: smtp
-       default-encoding: UTF-8
-       properties:
-         mail:
-          smtp:
-           auth: true
-           starttls:
-              enable: true
-              required: true
-  datasource:
+    
+    mail:
+           host: smtp.qq.com
+           password:  cvfiwmexrrmrgfjg
+           username: 1144954876@qq.com
+           test-connection: false
+           protocol: smtp
+           default-encoding: UTF-8
+           properties:
+             mail:
+              smtp:
+               auth: true
+               starttls:
+                  enable: true
+                  required: true
+    
+    datasource:
         name: kun_cms
-        #url: jdbc:mysql://localhost:3306/kun_cms?useUnicode=true&characterEncoding=utf8
-        url: jdbc:mysql://39.98.164.226:3306/kun_cms_test?useUnicode=true&characterEncoding=utf8
+        url: jdbc:mysql://localhost:3306/kun_cms?useUnicode=true&characterEncoding=utf8
+        //url: jdbc:mysql://localhost:3306/kun_cms_test?useUnicode=true&characterEncoding=utf8
         username: root
         password: kg123456
         # 使用druid数据源
@@ -54,10 +41,8 @@ spring:
         testOnReturn: false
         poolPreparedStatements: true
         maxOpenPreparedStatements: 20
-
-
-
-thymeleaf:  
+        
+        thymeleaf:  
           cache: true  
           prefix: classpath:/templates/  
           suffix: .html  
@@ -83,7 +68,7 @@ WXPAY:
     MCHID: 1529797251
     KEY: kungedeapimiyaoKg123456789056321
     APPSECRET: 396e3058561fd53fa8120faf57ced10a  
-    NOTIFY_URL: http://39.98.164.226:8082/wxpay/we_notify
+    NOTIFY_URL: http://39.98.164.226:8081/wxpay/we_notify
     CREATE_IP: 39.98.164.226
  
    

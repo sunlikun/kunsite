@@ -526,7 +526,7 @@ public class WechatController {
             text.setCreateTime(new Date().getTime());
             text.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_TEXT);
             WeiXinUserInfo weiXinUserInfo = WeixinUtil.getUserInfo(WeixinUtil.getAccessToken(WeChatConfig.APP_ID, WeChatConfig.APP_SECRET).getAccessToken(),fromUserName);
-            text.setContent("没找到您需要的信息！！！请重新输入！！！");
+            text.setContent("收到了您的留言，客服会在24小时内进行处理");
             String respMessage = MessageUtil.messageToXml(text);
            // String respMessage1 = "";
            
@@ -536,7 +536,7 @@ public class WechatController {
                 
                 // 订阅  
                 if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {  
-                	text.setContent("欢迎关注pergirls!如遇问题可在公众号内留言,客服将在24小时内解答。您也复制网址www.pergirls.com至手机及电脑浏览器进行相关浏览。");
+                	text.setContent("欢迎关注pergirls!如遇问题可在公众号内留言,客服将在24小时内解答。您也可以复制网址www.pergirls.com至手机及电脑浏览器进行相关浏览。");
 //                	orderFlag=true;
 //                	Coverphoto coverphoto=new Coverphoto();
 //            		String serial_number=content;
