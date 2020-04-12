@@ -49,7 +49,21 @@ public class CoverphotoController {
 	DownloadRecordService downloadRecordService;
 	@Autowired
 	UserService userService;
-	
+	/**
+	 * @param map
+	 * @param request
+	 * @return
+	 * 跳转到更多页
+	 */
+	@RequestMapping("/queryBylabel")
+    public String queryBylabel(Map<String,Object> map,HttpServletRequest request,Coverphoto coverphoto,Model model){
+		 HttpSession session=request.getSession();
+		   User user=(User) session.getAttribute("user");
+		   model.addAttribute("user_name",user.getUser_name());
+		   model.addAttribute("id",user.getId());
+		   model.addAttribute("label", coverphoto.getLabel());
+		   return "more";
+    }
 	
 	
 	/**

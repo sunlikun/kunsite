@@ -152,6 +152,9 @@
         	<if test="category != null and category != ''">
 				and c.category=#{category}
 			</if>
+			<if test="label != null and label != ''">
+				and c.label=#{label}
+			</if>
 		 </where>
 		 	ORDER BY c.create_time desc
      </select>
@@ -173,8 +176,8 @@
     
     <insert id="insert"  parameterType="com.kuncms.coverphoto.model.Coverphoto">
 
-		insert into coverphoto(id,coverphotoid,baiduyun_address,baiduyun_pass,video_name,create_time,createby,update_time,updateby,flag,gold_coin,clicks,downloads,category,screen_class,play_address,online_play_coin,gorup_name,online_play_flag) 
-		   values(#{id},#{coverphotoid},#{baiduyun_address},#{baiduyun_pass},#{video_name},#{create_time},#{createby},#{update_time},#{updateby},#{flag},#{gold_coin},#{clicks},#{downloads},#{category},#{screen_class},#{play_address},#{online_play_coin},#{gorup_name},#{online_play_flag})
+		insert into coverphoto(id,coverphotoid,baiduyun_address,baiduyun_pass,video_name,create_time,createby,update_time,updateby,flag,gold_coin,clicks,downloads,category,screen_class,play_address,online_play_coin,label,online_play_flag) 
+		   values(#{id},#{coverphotoid},#{baiduyun_address},#{baiduyun_pass},#{video_name},#{create_time},#{createby},#{update_time},#{updateby},#{flag},#{gold_coin},#{clicks},#{downloads},#{category},#{screen_class},#{play_address},#{online_play_coin},#{label},#{online_play_flag})
 	</insert>
  	
  	<update id="updateCoverPhotoById" parameterType="com.kuncms.coverphoto.model.Coverphoto">
@@ -250,8 +253,8 @@
 		 <if test="online_play_coin != null and online_play_coin != ''">
 				,a.online_play_coin=#{online_play_coin}
 		</if>
-		<if test="gorup_name != null and gorup_name != ''">
-				,a.gorup_name = #{gorup_name}
+		<if test="label != null and label != ''">
+				,a.label = #{label}
 		</if>
 		<if test="online_play_flag != null and online_play_flag != ''">
 				,a.online_play_flag = #{online_play_flag}

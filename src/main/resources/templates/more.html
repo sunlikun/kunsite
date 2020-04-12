@@ -271,6 +271,7 @@
  	<div th:include="footer :: footer"></div> 
     <input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none"> 
     <input id="flag" th:value="${flag}" name="flag" type="text" style="display: none">
+    <input id="label" th:value="${label}" name="label" type="text" style="display: none">
     <input id="online_play_flag" th:value="${online_play_flag}" name="flag" type="text" style="display: none">
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -336,6 +337,7 @@
 	    var user_name=$("#user_name").val();
 	    var flag=$("#flag").val();
 	    var online_play_flag=$("#online_play_flag").val();
+	    var label=$("#label").val();
 	    //alert(user_name)
 	    if(user_name!=null&&user_name!==''){
 	  	  $("#login").html("你好   "+user_name);
@@ -416,7 +418,7 @@
         	 $.ajax({
      	        type: "post",
      	        url: "queryAllCoverPhoto",
-     	        data: {"category":flag},
+     	        data: {"category":flag,"label":label},
      	        dataType: "json",
      	        success: function(data){
      	      	var coverphotoArr = data;
@@ -436,7 +438,7 @@
         	        	 $.ajax({
         	     	        type: "post",
         	     	        url: "/queryMoreCoverPhoto",
-        	     	        data: {currentPage:page,pageSize:12,"category":flag},
+        	     	        data: {currentPage:page,pageSize:12,"category":flag,"label":label},
         	     	        dataType: "json",
         	     	       	success: function(data){
         	               	var coverphotoArr = data;

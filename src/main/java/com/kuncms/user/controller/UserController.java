@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+import org.omg.Messaging.SyncScopeHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -81,23 +82,31 @@ public class UserController {
 	}
 	
 	
+	/**
+	 * @param map
+	 * @param user
+	 * @param model
+	 * @param request
+	 * @return
+	 * 用户下载前进行相关的信息查询
+	 */
 	@ResponseBody
 	@RequestMapping("/get_user")
-    public User get_user(Map<String,Object> map,User user,Model model,HttpServletRequest request){
+    public synchronized  User get_user(Map<String,Object> map,User user,Model model,HttpServletRequest request){
 	   //ArrayList<Coverphoto> list=thumbnailService.queryCoverPhoto();
 	   //com.alibaba.fastjson.JSONArray array= com.alibaba.fastjson.JSONArray.parseArray(JSON.toJSONString(list));
 	   //model.addAttribute("data", array.toJSONString());
-		
-		ArrayList<User> userl=(ArrayList<User>) userService.check_username(user);
 		User loginuser=null;
-		if(userl.size()>0){
-			 loginuser=userl.get(0);
+		if(user.getId()!=null&&!user.getId().equals("")){
+			ArrayList<User> userl=(ArrayList<User>) userService.check_username(user);
+			if(userl.size()>0){
+				 loginuser=userl.get(0);
+				 System.out.println("用户进行下载时进行信息查询"+loginuser.getUser_name()+loginuser.getGold_coin());
+			}
 		}
 		
 		return loginuser;
-	
-	
-    }
+	}
 	
 	
 	@RequestMapping("/insertuserinfo")

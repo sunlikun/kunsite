@@ -309,6 +309,19 @@
 									 比官网更新更快哦!
 									<img  class="img-responsive"   src="/img/wechat/qrcode_for_gh_65045f61e850_258.jpg" >
 								</p>
+								<h5>
+									热门标签
+								</h5>
+								<p>
+									<div class="container-fluid">
+										<div class="row-fluid">
+											<div class="span12" id="label">
+												
+												
+											</div>
+										</div>
+									</div>	
+								</p>
 								<div align="center">
 									<ul id="myTab" class="nav nav-tabs">
 										<li class="active" style="width: 7.5rem">
@@ -327,7 +340,7 @@
 										
 											<div class="container-fluid">
 												<div class="row">
-													<div id="rank" style=" width: 30rem;height: 100%;">
+													<div id="rank" style=" width: 30rem;height: 70%;">
 														<!-- 
 														<div class="col-md-12">
 															<div style="display:inline-block;background:#f00;"><img alt="Bootstrap Image Preview" src="https://www.layoutit.com/img/sports-q-c-140-140-3.jpg" /></div>
@@ -367,8 +380,41 @@
    
     
     <script type="text/javascript">
-    
-    
+      
+      //标签查询
+      function  lableQuery(){
+	   	 //alert(flag)
+	   	 	 $("#label").empty();
+	   		 $.ajax({
+	               type: "post",
+	               url: "/LabelController/query",
+	               data: {},
+	               dataType: "json",
+	               success: function(data){
+	              	var labelArr = data;
+	              	var labelGroup="";
+	              	var rowNum=labelArr.length/4;
+	              	for(var j=0;j<rowNum;j++){
+	              		var tableContent="";
+                    	tableContent += '<p class="badge-important">';
+	              	
+	              		for(var i=0;i<labelArr.length;i++){
+		              		var id=labelArr[i].id;
+		              		var lable_name=labelArr[i].lable_name;
+		              		var class_flag=labelArr[i].class_flag;
+		              		tableContent += '<span class="badge badge-important">';
+		                    tableContent += '<a href="/queryBylabel?label='+id+'">'+lable_name+'</a>';
+		                    tableContent += '</span>';
+		                }
+	              		tableContent += '</p> ';
+                      	labelGroup+=tableContent;
+	              	
+	              	}
+	            	
+	              	$("#label").append(labelGroup);
+	               }
+	            });
+	    }
 	   
 	    function  createrankingList(flag){
 	   	 //alert(flag)
@@ -408,7 +454,7 @@
 	               }
 	            });
 	    }
-    
+	    lableQuery();
 	    createrankingList('1');
         var user_name=$("#user_name").val();
         var code=$("#code").val();

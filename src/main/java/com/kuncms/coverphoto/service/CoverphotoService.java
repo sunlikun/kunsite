@@ -49,6 +49,7 @@ public class CoverphotoService {
 		coverphoto.setFlag("1");
 		coverphoto.setClicks(0);
 		coverphoto.setDownloads(0);
+		coverphoto.setOnline_play_coin(0);
 		coverphotoDao.insert(coverphoto);
 	}
 

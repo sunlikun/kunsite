@@ -26,8 +26,15 @@ private String isvip;
 private String play_goin;
 private String play_address;
 private int online_play_coin;
-private String gorup_name;
+private String label;
 private String online_play_flag;
+public String getLabel() {
+	return label;
+}
+public void setLabel(String label) {
+	this.label = label;
+}
+
 
 
 public String getOnline_play_flag() {
@@ -36,12 +43,7 @@ public String getOnline_play_flag() {
 public void setOnline_play_flag(String online_play_flag) {
 	this.online_play_flag = online_play_flag;
 }
-public String getGorup_name() {
-	return gorup_name;
-}
-public void setGorup_name(String gorup_name) {
-	this.gorup_name = gorup_name;
-}
+
 
 public String getPlay_address() {
 	return play_address;

@@ -92,16 +92,18 @@ public class ThumbnailController {
 		if(userl.size()>0){
 			 User loginuser1=userl.get(0);
 			 int  goldCoin=loginuser1.getGold_coin();
-			 if(goldCoin<0){//当账户金币小于0时为异常情况时，跳转到异常页面
-				 returnPage="/error/error";
-			 }
 			 int  rgoldCoin=goldCoin-t_gold_coin;
-			 int  empirical_value=loginuser1.getEmpirical_value();
-			 empirical_value=empirical_value+1;
-			 loginuser1.setGold_coin(rgoldCoin);
-			 loginuser1.setEmpirical_value(empirical_value);
-			 userService.update(loginuser1);
-			 returnPage="download";
+			 if(goldCoin<0||rgoldCoin<0){//当账户金币小于0时为异常情况时，跳转到异常页面
+				 returnPage="/error/error";
+				 System.out.println("用户金币小于0异常");
+			 }else{
+				 int  empirical_value=loginuser1.getEmpirical_value();
+				 empirical_value=empirical_value+1;
+				 loginuser1.setGold_coin(rgoldCoin);
+				 loginuser1.setEmpirical_value(empirical_value);
+				 userService.update(loginuser1);
+				 returnPage="download";
+			 }
 		}
 		
 		

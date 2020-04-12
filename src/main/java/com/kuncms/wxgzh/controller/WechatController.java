@@ -134,7 +134,7 @@ public class WechatController {
 	 * 跳转到详情页
 	 */
 	@RequestMapping("/wechat_details")
-    public String details(Map<String,Object> map,String id,String baiduyun_pass,String baiduyun_address,String t_gold_coin,Model model,HttpServletRequest request){
+    public synchronized  String details(Map<String,Object> map,String id,String baiduyun_pass,String baiduyun_address,String t_gold_coin,Model model,HttpServletRequest request){
 	  
 		//取出当前作品的点击率并加1
 		Coverphoto coverphoto=new Coverphoto();
@@ -144,7 +144,6 @@ public class WechatController {
 		coverphoto1.setClicks(coverphoto1.getClicks()+1);
 		coverphotoService.updateCoverPhotoById(coverphoto1);
 	   
-		
 		model.addAttribute("id",id);
 		model.addAttribute("t_gold_coin",t_gold_coin);
 		model.addAttribute("clicks",coverphoto1.getClicks());
@@ -158,12 +157,9 @@ public class WechatController {
 			model.addAttribute("user_id",user_id);
 			model.addAttribute("user_name",user_name);
 			model.addAttribute("gold_coin",gold_coin);
+			System.out.println("t_gold_coin"+t_gold_coin+"当前操作用户"+user_name);
 		}
-		
-		
-		System.out.println("t_gold_coin"+t_gold_coin);
 		model.addAttribute("baiduyun_pass",baiduyun_pass);
-		
 		model.addAttribute("baiduyun_address",baiduyun_address);
        return "wechat_details";
     }
@@ -213,7 +209,7 @@ public class WechatController {
 	                // 用户特权信息
 	                snsUserInfo.setPrivilegeList(JSONArray.toList(jsonObject.getJSONArray("privilege"), List.class));
 	                User user1=new User();
-	                //user1.setOpenid(jsonObject.getString("openid"));
+	                user1.setOpenid(jsonObject.getString("openid"));
 	                user1.setUnionid(jsonObject.getString("unionid"));
 	                ArrayList<User> user=userService.check_username(user1);
 	                if(user.size()>0) {
@@ -526,7 +522,7 @@ public class WechatController {
             text.setCreateTime(new Date().getTime());
             text.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_TEXT);
             WeiXinUserInfo weiXinUserInfo = WeixinUtil.getUserInfo(WeixinUtil.getAccessToken(WeChatConfig.APP_ID, WeChatConfig.APP_SECRET).getAccessToken(),fromUserName);
-            text.setContent("收到了您的留言，客服会在24小时内进行处理");
+            text.setContent("未知操作");
             String respMessage = MessageUtil.messageToXml(text);
            // String respMessage1 = "";
            
@@ -576,14 +572,13 @@ public class WechatController {
                 
                 // 取消订阅  
                 if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {  
-                	text.setContent("再见!");
-                	//用户完成订阅后自动在普格娱乐官网进行注册
+                	text.setContent("取消订阅!");
+                	System.out.println("取消订阅"+"微信用户的Openid"+weiXinUserInfo.getOpenid()+"微信用户的Unionid"+weiXinUserInfo.getUnionid());
                 	User user=new User();
     		        user.setOpenid(weiXinUserInfo.getOpenid());
     		        user.setOfficial_account("0");
     		        user.setUnionid(weiXinUserInfo.getUnionid());
     		        userService.update_offi_acc(user);
-    		        
     		        respMessage = MessageUtil.messageToXml(text);
                 }
                 

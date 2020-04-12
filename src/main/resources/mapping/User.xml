@@ -10,10 +10,11 @@
       	<if test="id != null and id !=''">
         		and u.id=#{id} 
       	</if>
+      	-->
       	<if test="openid != null and openid !=''">
         		and u.openid=#{openid}
       	</if>
-      	 -->
+      	 
       	 <if test="unionid != null and unionid !=''">
         		and u.unionid=#{unionid}
       	</if>
