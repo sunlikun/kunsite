@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title id='Description'>网站标签管理
+    </title>
+   
+    <link rel="stylesheet" href="/jqwidgets/styles/jqx.base.css" type="text/css" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta http-equiv="Content-Type"  content="multipart/form-data; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1" />
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxcore.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxdata.js"></script> 
+    <script type="text/javascript" src="/jqwidgets/jqxbuttons.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxscrollbar.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxmenu.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxcheckbox.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxlistbox.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxdropdownlist.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxgrid.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxgrid.selection.js"></script> 
+    <script type="text/javascript" src="/scripts/demos.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxwindow.js"></script>
+    <script type="text/javascript" src="/jqwidgets/jqxgrid.columnsresize.js"></script>
+    <script type="text/javascript" src="../../jqwidgets/jqxnumberinput.js"></script>
+    <script type="text/javascript" src="../../jqwidgets/jqxinput.js"></script>
+    <script type="text/javascript">
+   
+        $(document).ready(function () {
+           
+        	
+            
+        });
+     	
+        
+        function save() {
+         	
+             var lable_name = $('#lable_name').val();
+             var class_flag = $('#class_flag').val();
+              $.ajax({
+                 type: "post",
+                 url: "/LabelController/save",
+                 data: {"lable_name":lable_name,"class_flag":class_flag},
+                 dataType: "json",
+                 success: function(data){
+                           alert("信息保存成功");
+              }
+             });
+        
+       
+            
+        };
+        
+      
+    </script>
+</head>
+<body class='default'>
+<div id="jqxWidget">
+    <div id="grid">
+    </div>
+     <div style="width: 80%; height: 450px; margin-top: 50px;" id="mainDemoContainer">
+            <div id="window">
+                <div id="windowHeader">信息填写</div>
+                <div style="overflow: hidden;" id="windowContent">
+                    <form action="" method="post" enctype="multipart/form-data">
+        					<p>标签名: <input type="text" name="lable_name" id="lable_name"/></p>
+        					<p>请选择视频类别: <select id="class_flag" name="class_flag">
+        											<option value="1">一级标签</option>
+        											<option value="2">二级标签</option>
+        									  </select></p>
+        								
+        					<p><button onclick="save()">提交</button></p>
+    				</form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+   
+   
+ </div>   
+</body>
+</html>

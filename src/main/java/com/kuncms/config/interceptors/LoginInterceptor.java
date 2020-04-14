@@ -105,6 +105,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         notLoginPaths.add("/recharge");  
         notLoginPaths.add("/more");
         notLoginPaths.add("/queryBylabel");
+        notLoginPaths.add("/videomanage");
         //notLoginPaths.add("/loginTimeout");  
           
         if(notLoginPaths.contains(path)) return false;  

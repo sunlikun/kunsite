@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kuncms.coverphoto.dao.LabelDao" >
+
+ 	<insert id="save"  parameterType="com.kuncms.coverphoto.model.Label">
+
+		insert into label(id,lable_name,class_flag) 
+		   values(#{id},#{lable_name},#{class_flag})
+	</insert>
+ 	
+ 	
+     <select id="query"  parameterType="com.kuncms.coverphoto.model.Label"  resultType="com.kuncms.coverphoto.model.Label">
+        SELECT*FROM label l
+        <where>
+			<if test="class_flag != null and class_flag != ''">
+				and c.class_flag=#{class_flag}
+			</if>
+		</where>
+		
+     </select>
+ 	
+ 	
+  
+</mapper>
