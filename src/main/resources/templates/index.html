@@ -397,15 +397,17 @@
 	              	for(var j=0;j<rowNum;j++){
 	              		var tableContent="";
                     	tableContent += '<p class="badge-important">';
-	              	
-	              		for(var i=0;i<labelArr.length;i++){
-		              		var id=labelArr[i].id;
-		              		var lable_name=labelArr[i].lable_name;
-		              		var class_flag=labelArr[i].class_flag;
-		              		tableContent += '<span class="badge badge-important">';
-		                    tableContent += '<a href="/queryBylabel?label='+id+'">'+lable_name+'</a>';
-		                    tableContent += '</span>';
-		                }
+	              		for(var h=0;h<4;h++){
+		              		for(var i=j*4;i<labelArr.length;i++){
+			              		var id=labelArr[i].id;
+			              		var lable_name=labelArr[i].lable_name;
+			              		var class_flag=labelArr[i].class_flag;
+			              		tableContent += '<span class="badge badge-important">';
+			                    tableContent += '<a href="/queryBylabel?label='+id+'">'+lable_name+'</a>';
+			                    tableContent += '</span>';
+				                }
+		              	}
+	              		
 	              		tableContent += '</p> ';
                       	labelGroup+=tableContent;
 	              	
