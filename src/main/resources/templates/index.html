@@ -5,12 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
  	<meta name="baidu-site-verification" content="EuNPeTHGFx" />
-    <title>官网首页</title>
-
-    <meta name="description" content="普格娱乐提供优质女团视频,饭拍视频,车模视频,模特视频,写真,高清美女图片,是一个综合性性感美女视频,pergirls">
+    <title>普格娱乐饭拍首页</title>
+	<meta name="description" content="普格娱乐提供优质女团视频,饭拍视频,车模视频,模特视频,写真,高清美女图片,是一个综合性性感美女视频,pergirls">
     <meta name="author" content="普格娱乐,pergirls">
-    <meta name=”keywords” content="饭拍,饭拍秀,韩国女团饭拍视频,普格娱乐,免费饭拍下载,韩国娱乐新闻,韩国女团饭拍,韩国美女,韩国车模饭拍,fancam"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="饭拍,性感美女,fancam,普格娱乐,饭拍秀,女团视频,韩国女团,韩国美女,车模,韩国车模饭拍网,韩国女团饭拍网站,女优"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
     <link href="/css/button.css" rel="stylesheet">
@@ -157,7 +156,7 @@
                     
                     tableContent += '<div>';
                   	tableContent += '<p>' + coverphotoArr[i].video_name.substring(0, 15)+ '...</p>';
-                  	tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].gold_coin+ '金币&nbsp;<img src="/img/eye.jpg" width="20vw" height="20vh">'+coverphotoArr[i].clicks+'</p>';
+                  	tableContent += '<p><img  class="gimg" src="/img/g1.ico" alt="'+ coverphotoArr[i].video_name+'">' + coverphotoArr[i].gold_coin+ '金币&nbsp;<img src="/img/eye.jpg" width="20vw" height="20vh">'+coverphotoArr[i].clicks+'</p>';
                   	//tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
                     tableContent += ' <p><a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-primary btn-sm" role="button"> 查看</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default  btn-sm" role="button">  下载</a></p> ';
                     tableContent += '</p>';
@@ -397,16 +396,16 @@
 	              	for(var j=0;j<rowNum;j++){
 	              		var tableContent="";
                     	tableContent += '<p class="badge-important">';
-	              		for(var h=0;h<4;h++){
-		              		for(var i=j*4;i<labelArr.length;i++){
+	              		
+		              		for(var i=j*4;i<j+4;i++){
 			              		var id=labelArr[i].id;
 			              		var lable_name=labelArr[i].lable_name;
 			              		var class_flag=labelArr[i].class_flag;
-			              		tableContent += '<span class="badge badge-important">';
+			              		tableContent += '<span class="label badge-important" style="font-size:15px;">';
 			                    tableContent += '<a href="/queryBylabel?label='+id+'">'+lable_name+'</a>';
 			                    tableContent += '</span>';
 				                }
-		              	}
+		              	
 	              		
 	              		tableContent += '</p> ';
                       	labelGroup+=tableContent;
@@ -442,7 +441,7 @@
 	                    	tableContent += '<div style="display:inline-block;background:#f00;">';
 	                    	tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'">';
 	                    	var coverid="/images/"+coverphotoArr[i].coverphotoid.substring(30);
-	                   	tableContent += '<img  class="img-responsive"   src="' + coverid+ '" ></div>';
+	                   	tableContent += '<img  class="img-responsive"   src="' + coverid+ '" alt="'+ coverphotoArr[i].video_name+'" ></div>';
 	                      	tableContent += '</a>';
 	                      	tableContent += '<div style="display:inline-block;margin-left:0px;">' + coverphotoArr[i].video_name.substring(0, 25)+ '</div>';
 	                      	//tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
