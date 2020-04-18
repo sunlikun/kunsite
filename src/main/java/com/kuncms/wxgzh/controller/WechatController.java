@@ -143,7 +143,7 @@ public class WechatController {
 		Coverphoto coverphoto1=list.get(0);
 		coverphoto1.setClicks(coverphoto1.getClicks()+1);
 		coverphotoService.updateCoverPhotoById(coverphoto1);
-	   
+		model.addAttribute("video_name",coverphoto1.getVideo_name());
 		model.addAttribute("id",id);
 		model.addAttribute("t_gold_coin",t_gold_coin);
 		model.addAttribute("clicks",coverphoto1.getClicks());

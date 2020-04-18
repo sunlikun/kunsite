@@ -228,6 +228,7 @@ public class ThumbnailController {
 	   
 		
 		model.addAttribute("id",id);
+		model.addAttribute("video_name",coverphoto1.getVideo_name());
 		model.addAttribute("t_gold_coin",t_gold_coin);
 		model.addAttribute("clicks",coverphoto1.getClicks());
 

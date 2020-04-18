@@ -86,7 +86,8 @@
     <p>
 	<div  style="margin-top: 130px">
 	 	<div id="app1">
-	 	
+	 	 		<h3 ><span id="vvname"></span></h3>
+	 			<input id="video_name" th:value="${video_name}" name="video_name" type="text" style="display: none" readonly="readonly"></br></br>
 				<input id="id" th:value="${id}" name="id" type="text" style="display: none">
 				<input id="baiduyun_address"  name="baiduyun_address" type="text" style="display: none" v-model="baiduyun_address" >
 				提取码:<input id="baiduyun_pass" th:value="${baiduyun_pass}" name="baiduyun_pass" type="text" style="width: 5rem;border: none;" readonly="readonly">
@@ -122,6 +123,8 @@
     $(document).ready(function () {
 		  var user_name=$("#user_name").val();
 		  var baiduyun_address=$("#baiduyun_address").val();
+		  var video_name=$("#video_name").val();
+		  $('#vvname').append(video_name);
 		  //$('#download').attr('href',baiduyun_address);
         //alert(user_name)
         if(user_name!=null&&user_name!==''){
