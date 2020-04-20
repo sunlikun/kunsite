@@ -380,10 +380,9 @@
     
     <script type="text/javascript">
       
-      //标签查询
-      function  lableQuery(){
+    function  lableQuery(){
 	   	 //alert(flag)
-	   	 	 $("#label").empty();
+	   	 $("#label").empty();
 	   		 $.ajax({
 	               type: "post",
 	               url: "/LabelController/query",
@@ -393,25 +392,28 @@
 	              	var labelArr = data;
 	              	var labelGroup="";
 	              	var rowNum=labelArr.length/4;
+	              
 	              	for(var j=0;j<rowNum;j++){
-	              		var tableContent="";
-                    	tableContent += '<p class="badge-important">';
 	              		
-		              		for(var i=j*4;i<j*4+4;i++){
-			              		var id=labelArr[i].id;
+	              		var tableContent="";
+                   	tableContent += '<p class="badge-important">';
+                   	var h=4;
+                   	if((labelArr.length-j*4)<4){
+                   		h=labelArr.length-j*4
+                   	}
+	              		for(var i=j*4;i<j*4+h;i++){
+		              			var id=labelArr[i].id;
 			              		var lable_name=labelArr[i].lable_name;
 			              		var class_flag=labelArr[i].class_flag;
 			              		tableContent += '<span class="label badge-important" style="font-size:15px;">';
 			                    tableContent += '<a href="/queryBylabel?label='+id+'">'+lable_name+'</a>';
 			                    tableContent += '</span>';
-				                }
-		              	
+				        }
+		              	tableContent += '</p> ';
+	              		labelGroup+=tableContent;
 	              		
-	              		tableContent += '</p> ';
-                      	labelGroup+=tableContent;
-	              	
 	              	}
-	            	
+	              	
 	              	$("#label").append(labelGroup);
 	               }
 	            });
