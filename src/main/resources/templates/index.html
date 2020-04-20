@@ -103,6 +103,20 @@
 	}
 	.cdiv{ border:3px solid #000} 
 	
+	.wrap {
+      width: 400px;
+      height: 400px;
+      display: table-cell;
+      vertical-align: middle;
+      text-align: center;
+      background: #eee;
+    }
+
+    .wrap img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+	
 	</style>
 	
 	<script type="text/javascript">
@@ -150,8 +164,10 @@
                     tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'">';
                     var coverid="/images/"+coverphotoArr[i].coverphotoid.substring(30);
                    // alert(coverid)
-                    tableContent += '<img  class="img-responsive"   src="' + coverid+ '" >';
-                    //tableContent += '<img  class="img-responsive"   src="/img/test.png" width="300vw" height="450vh">';
+                   	tableContent += '<div class="wrap">';
+                    //tableContent += '<img  class="img-responsive"   src="' + coverid+ '" >';
+                    tableContent += '<img  class="img-responsive"   src="/img/test.jpg">';
+                    tableContent += '</div>';
                     tableContent += '</a>';
                     
                     tableContent += '<div>';
