@@ -532,7 +532,7 @@ public class WechatController {
                 
                 // 订阅  
                 if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {  
-                	text.setContent("欢迎关注pergirls!如遇问题可在公众号内留言,客服将在24小时内解答。您也可以复制网址www.pergirls.com至手机及电脑浏览器进行相关浏览。");
+                	text.setContent("欢迎关注pergirls!如遇问题可在公众号内留言,客服将在24小时内解答。您可在下方视频下载中获取您想要的视频，也可以复制网址www.pergirls.com至手机及电脑浏览器进行视频下载。");
 //                	orderFlag=true;
 //                	Coverphoto coverphoto=new Coverphoto();
 //            		String serial_number=content;

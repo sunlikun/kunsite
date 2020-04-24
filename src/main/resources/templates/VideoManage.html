@@ -29,7 +29,6 @@
         $(document).ready(function () {
         	
         	
-        	
             // prepare the data
             var data=null
             $.ajaxSetup({
@@ -246,7 +245,24 @@
            
             
         });
-     	
+ 
+		function getAfter(string){
+		    var file1 = $("#fileName").val()
+		   
+		    //获取文件名+扩展名
+			fileName1 = file1.split("\\").pop();
+			    //获取带后缀的文件名
+			var suffix = getAfter(fileName1);
+		//获得文件名的后缀
+		    var num=fileName1.lastIndexOf(".");
+		    //lastIndexOf()方法返回从右向左出现某个字符或字符串的首个字符索引值（与indexOf相反）
+		    var string=fileName1.substring(num+1,obj.length);
+		    //substring(start,end)表示从start到end之间的字符串，包前不包后
+		    //substr(start,length)表示从start位置开始，截取length长度的字符串。
+		    alert(string);
+		}
+
+    	
         
         function createWindow() {
             var jqxWidget = $('#jqxWidget');
@@ -322,7 +338,7 @@
                 <div id="windowHeader">基本信息上传</div>
                 <div style="overflow: hidden;" id="windowContent">
                     <form action="fileUpload" method="post" enctype="multipart/form-data">
-        					<p>请选择视频的封面: <input type="file" name="fileName" id="fileName"/></p>
+        					<p>请选择视频的封面: <input type="file" name="fileName" id="fileName" /></p>
         					<p>请输入视频的名称: <input type="text" name="video_name" id="video_name"/></p>
         					<p>请输入视频的地址: <input type="text" name="baiduyun_address" id="baiduyun_address"/></p>
         					<p>请输入视频分享码: <input type="text" name="baiduyun_pass" id="baiduyun_pass"/></p>
