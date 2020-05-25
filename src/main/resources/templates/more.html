@@ -244,8 +244,8 @@
 				<nav class="navbar navbar-default" role="navigation">
 						    <div class="container-fluid">
 							    <div>
-							        <ul class="nav navbar-nav">
-							            <li> <a href="" class="navbar-brand"></a></li>
+							        <ul>
+							            <li> <a href="" class="navbar-brand" ><div id="moreContent"></div></a></li>
 							        </ul>
 							    </div>
 						    </div>
@@ -341,6 +341,12 @@
 	    if(user_name!=null&&user_name!==''){
 	  	  $("#login").html("你好   "+user_name);
 	    }
+	    if(flag=='1'){
+		  	  $("#moreContent").html("韩国女团");
+		}else if(flag=='2'){
+			 $("#moreContent").html("性感车模");
+		}
+	    
 	    
 	    var data=null
 	    $.ajaxSetup({
@@ -387,7 +393,7 @@
          	               		//alert(baiduyun_address)
          	               		//alert(coverphotoArr[i].video_name)
          	               		var tableContent="";
-         	                       tableContent += '<div class="col-sm-3 col-md-2 col-xs-6">';
+         	                       tableContent += '<div class="col-sm-3 col-md-2 col-xs-12">';
          	                       tableContent += '<div class="thumbnail">';
          	                       tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'">';
          	                       var coverid="/images/"+coverphotoArr[i].coverphotoid.substring(30);
@@ -450,7 +456,7 @@
         	               		//alert(baiduyun_address)
         	               		//alert(coverphotoArr[i].video_name)
         	               		var tableContent="";
-        	                       tableContent += '<div class="col-sm-3 col-md-2 col-xs-6">';
+        	                       tableContent += '<div class="col-sm-3 col-md-2 col-xs-12">';
 	        	                   	tableContent += '<div style="overflow:hidden;" class="thumbnail">';
 	        	                  	tableContent += '<div style="overflow:hidden;">';
 	        	                  	tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'">';

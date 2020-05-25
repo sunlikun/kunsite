@@ -352,12 +352,20 @@
                 <div id="windowHeader">基本信息上传</div>
                 <div style="overflow: hidden;" id="windowContent">
                     <form action="fileUpload" method="post" enctype="multipart/form-data">
-        					<p>请选择视频的封面: <input type="file" name="fileName" id="fileName" /></p>
+        					<p>请选择视频的封面: <input type="file" name="fileName" id="fileName" onchange="document.getElementById('video_name').value=this.files[0].name.slice(0,-15)"/></p>
         					<p>请输入视频的名称: <input type="text" name="video_name" id="video_name"/></p>
         					<p>请输入视频的地址: <input type="text" name="baiduyun_address" id="baiduyun_address"/></p>
         					<p>请输入视频分享码: <input type="text" name="baiduyun_pass" id="baiduyun_pass"/></p>
+        					<!--  
         					<p>请输入视频金币数: <input type="text" name="gold_coin" id="gold_coin"/></p>
         					<p>明星姓名: <input type="text" name="gorup_name" id="gorup_name"/></p>
+        					-->
+        					<p>请输入视频金币数:  <select id="gold_coin" name="gold_coin">
+        											<option value="3" selected>3</option>
+        											<option value="5">5</option>
+        											<option value="10">10</option>
+        									</select></p>
+        					
         					<p>请选择视频类别: <select id="category" name="category">
         											<option value="1">女团</option>
         											<option value="2">车模</option>
