@@ -92,7 +92,7 @@ public class CmsController {
 			result="frame";
 		}else{
 			model.addAttribute("flag","登陆失败,用户名或密码错误!");
-			result="/cms/login";
+			result="cms/login";
 		}
         return result;
     }
@@ -105,10 +105,10 @@ public class CmsController {
 	 * @param map
 	 * @return
 	 */
-	@RequestMapping("to_cms_login")
+	@RequestMapping("/to_cms_login")
     public String to_cms_login(Map<String,Object> map,Model model,HttpServletRequest request){
 		
-		return "/cms/login";
+		return "cms/login";
     }
 	
 	

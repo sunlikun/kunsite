@@ -51,7 +51,7 @@ public class CommonController {
     public String contact(Map<String,Object> map,Model model,HttpServletRequest request){
 	
 		
-       return "/error/error";
+       return "error/error";
     }
 	
 }
