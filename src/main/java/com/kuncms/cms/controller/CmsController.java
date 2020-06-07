@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 import com.kuncms.coverphoto.model.Coverphoto;
+import com.kuncms.login.model.LoginRecord;
+import com.kuncms.login.service.LoginRecordService;
 import com.kuncms.pay.controller.WechatPay;
 import com.kuncms.pay.model.AlipayTradeInfo;
 import com.kuncms.pay.model.WechatpayTradeinfo;
@@ -46,6 +48,69 @@ public class CmsController {
 	WechatpayTradeinfoService wechatpayTradeinfoService;
 	@Autowired
 	AlipayTradeInfoService alipayTradeInfoService;
+	@Autowired
+	LoginRecordService loginRecordService;
+	
+	
+	
+	
+	/**
+	 * 用户登录
+	 * @param map
+	 * @param user
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/login_operate")
+    public String login_operate(Map<String,Object> map,User user,Model model,HttpServletRequest request){
+		//日志级别从低到高分为TRACE < DEBUG < INFO < WARN < ERROR < FATAL，如果设置为WARN，则低于WARN的信息都不会输出。
+       
+        String result="";
+		boolean flag;
+		ArrayList<User> userl=(ArrayList<User>) userService.login_operate(user);
+		
+		if(userl.size()>0){
+			User loginuser=userl.get(0);
+			flag=true;
+			model.addAttribute("user_name",loginuser.getUser_name());
+			HttpSession session = request.getSession();
+	        session.setAttribute("loginName",loginuser.getUser_name());
+	        session.setAttribute("gold_coin",loginuser.getGold_coin());
+	        session.setAttribute("user",loginuser);
+	        
+	        //保存登录信息
+	        LoginRecord loginRecord=new LoginRecord();
+	        loginRecord.setUser_id(loginuser.getId());
+	        loginRecord.setUser_name(loginuser.getUser_name());
+	        loginRecordService.insertNewLogrec(loginRecord);
+	        
+	    }else{
+			flag=false;
+		}
+		if(flag==true){
+			result="frame";
+		}else{
+			model.addAttribute("flag","登陆失败,用户名或密码错误!");
+			result="/cms/login";
+		}
+        return result;
+    }
+	
+	
+	
+	
+	/**
+	 * 跳转到cms管理系统登录
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping("to_cms_login")
+    public String to_cms_login(Map<String,Object> map,Model model,HttpServletRequest request){
+		
+		return "/cms/login";
+    }
+	
 	
 	/**
 	 * @param response

@@ -13,7 +13,10 @@
         SELECT*FROM label l
         <where>
 			<if test="class_flag != null and class_flag != ''">
-				and c.class_flag=#{class_flag}
+				and l.class_flag=#{class_flag}
+			</if>
+			<if test="lable_name != null and lable_name != ''">
+				and l.lable_name=#{lable_name}
 			</if>
 		</where>
 		

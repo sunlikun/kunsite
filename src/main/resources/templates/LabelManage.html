@@ -37,17 +37,38 @@
          	
              var lable_name = $('#lable_name').val();
              var class_flag = $('#class_flag').val();
-              $.ajax({
+             
+            
+             //查询当前信息是否在系统中已经存在
+              $.ajaxSetup({
+
+          		async:false
+
+          	});
+             $.ajax({
                  type: "post",
-                 url: "/LabelController/save",
+                 url: "/LabelController/query",
                  data: {"lable_name":lable_name,"class_flag":class_flag},
                  dataType: "json",
                  success: function(data){
-                           alert("信息保存成功");
-              }
+                	 
+                	 if(data.length==0){
+                   	  $.ajax({
+                             type: "post",
+                             url: "/LabelController/save",
+                             data: {"lable_name":lable_name,"class_flag":class_flag},
+                             dataType: "json",
+                             success: function(data){
+                                       alert("信息保存成功");
+                          }
+                         });
+                   	 
+                    }else{
+                   	 alert("标签已存在");
+                    }
+                }
              });
-        
-       
+             
             
         };
         

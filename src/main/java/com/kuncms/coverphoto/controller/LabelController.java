@@ -49,6 +49,12 @@ public class LabelController {
 	@Autowired
 	private LabelService labelService;
 	
+	/**
+	 * 标签查询
+	 * @param response
+	 * @param label
+	 * @throws IOException
+	 */
 	@RequestMapping("/query")
 	public void query(HttpServletResponse response,Label label) throws IOException {
 		
