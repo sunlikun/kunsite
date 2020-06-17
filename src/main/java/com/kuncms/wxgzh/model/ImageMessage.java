@@ -14,9 +14,21 @@ public class ImageMessage extends BaseMessage {
     private String PicUrl;
     //图片消息媒体id
     private String MediaId;
+    
+    private Image Image;
 
     
-    public String getPicUrl() {
+    public Image getImage() {
+		return Image;
+	}
+
+
+	public void setImage(Image image) {
+		this.Image = image;
+	}
+
+
+	public String getPicUrl() {
         return PicUrl;
     }
 

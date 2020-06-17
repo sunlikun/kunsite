@@ -69,7 +69,12 @@ public class MenuManager {
 //        btn14.setName("历史上的今天");  
 //        btn14.setType("click");  
 //        btn14.setKey("14");  
-//  
+        
+        CommonButton btn00 = new CommonButton();  
+        btn00.setName("每日福利"); 
+        btn00.setType("click");  
+        btn00.setKey("00");
+        
         CommonButton btn21 = new CommonButton();  
         btn21.setName("官网下载"); 
         btn21.setType("view");  
@@ -134,7 +139,7 @@ public class MenuManager {
          */  
         Menu menu = new Menu();  
         //menu.setButton(new Button[] { mainBtn1, mainBtn2, mainBtn3 });  
-        menu.setButton(new Button[] {btn21, btn33 }); 
+        menu.setButton(new Button[] {btn00, btn21, btn33 }); 
         return menu;  
     }  
 }  

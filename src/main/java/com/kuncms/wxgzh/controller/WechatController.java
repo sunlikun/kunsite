@@ -43,6 +43,8 @@ import com.kuncms.wxgzh.model.AdvancedUtil;
 import com.kuncms.wxgzh.model.Article;
 import com.kuncms.wxgzh.model.CommonUtil;
 import com.kuncms.wxgzh.model.CustomerMessage;
+import com.kuncms.wxgzh.model.Image;
+import com.kuncms.wxgzh.model.ImageMessage;
 import com.kuncms.wxgzh.model.MessageUtil;
 import com.kuncms.wxgzh.model.NewsMessage;
 import com.kuncms.wxgzh.model.SNSUserInfo;
@@ -586,11 +588,24 @@ public class WechatController {
                 if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK)) {  
                     // 事件KEY值，与创建自定义菜单时指定的KEY值对应  
                     String eventKey = map.get("EventKey");  
-                    if (eventKey.equals("11")) {  
-                    	 text.setContent("请点击“获取点播号”进入官网查看视频点播号，返回在公众号输入后即可播放");
+                    ImageMessage imageMessage=new ImageMessage();
+                    if (eventKey.equals("00")) {  
+                    	String picUrl="http://www.pergirls.com/img/wechat/IMG_2437(20200611-155848f).jpg";
+                    	 //text.setContent("请点击“获取点播号”进入官网查看视频点播号，返回在公众号输入后即可播放");
+                    	
+                    	imageMessage.setToUserName(fromUserName);
+                    	imageMessage.setFromUserName(toUserName);
+                    	imageMessage.setCreateTime(new Date().getTime());
+                    	imageMessage.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_IMAGE);
+                    	Image img=new Image();
+                    	img.setMediaId("VRVwPhHpR4-a9vIyAgt3zR1k4dHhL3Xc_f2oaNsJjak");
+                    	imageMessage.setImage(img);
+                    	System.out.println("图片信息创建完毕");
+                    	
+                    	 
                     }
+                    respMessage = MessageUtil.messageToXml(imageMessage);
                     
-                    respMessage = MessageUtil.messageToXml(text);
                  }
                 
                 
