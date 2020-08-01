@@ -170,7 +170,7 @@
 				and c.category=#{category}
 			</if>
 		</where>
-		ORDER BY c.create_time desc limit 0,12;
+		ORDER BY c.create_time desc limit 0,9;
      </select>
     
     

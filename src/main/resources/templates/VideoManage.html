@@ -198,7 +198,7 @@
                     });
                     // initialize the popup window and buttons.
                     $("#popupWindow").jqxWindow({
-                        width: 300, height:350,resizable: false,  isModal: true, autoOpen: false, cancelButton: $("#Cancel"), modalOpacity: 0.01           
+                        width:200, height:500,resizable: false,  isModal: true, autoOpen: false, cancelButton: $("#Cancel"), modalOpacity: 0.01           
                     });
                     $("#popupWindow").on('open', function () {
                         $("#id1").jqxInput('selectAll');
@@ -227,7 +227,7 @@
                                   data: {id: $("#id1").val(), video_name: $("#video_name1").val(), baiduyun_address: $("#baiduyun_address1").val(),
 		                          			baiduyun_pass: $("#baiduyun_pass1").val(), coverphotoid: $("#coverphotoid1").val(), id: $("#id1").val(),
 		                        			gold_coin: $("#gold_coin1").val(),serial_number: $("#serial_number1").val(),category: $("#category1").val()
-                       			  			,flag: 1,isvip: $("#isvip1").val(),play_goin: $("#play_goin1").val()
+                       			  			,flag: 1,isvip: $("#isvip1").val(),play_goin: $("#play_goin1").val(),label: $("#label").val()
                                   },
                                   dataType: "json",
                                   success: function(data){
@@ -268,8 +268,8 @@
             var jqxWidget = $('#jqxWidget');
             var offset = jqxWidget.offset();
             $('#window').jqxWindow({
-                position: { x: offset.left + 550, y: offset.top + 50} ,
-                showCollapseButton: true,  height: 650, width: 1800,
+                position: { x: offset.left + 50, y: offset.top + 20} ,
+                showCollapseButton: true,  height: 1000, width: 1800,
                 initContent: function () {
                    
                     $('#window').jqxWindow('focus');
@@ -307,19 +307,44 @@
   	              	var labelArr = data;
   	              	var labelGroup="";
   	              	var tableContent="";
-                      	for(var i=0;i<labelArr.length;i++){
-  		              		var id=labelArr[i].id;
-  		              		var lable_name=labelArr[i].lable_name;
-  		              		var class_flag=labelArr[i].class_flag;
-  		              		tableContent += '<option value="'+id+'">'+lable_name+'</option>';
-  		                  
-  		                }
+  	              	var row=Math.ceil(labelArr.length/14);
+  	              	
+  	             
+  	              	for(j=0;j<row;j++){
+  	              		//判断是否是最后一行
+  	              		if(j==row-1){//最后一行
+	  	              		for(var i=j*14;i<labelArr.length.length-j*14;i++){//是最后一行
+			              		var id=labelArr[i].id;
+			              		var lable_name=labelArr[i].lable_name;
+			              		var class_flag=labelArr[i].class_flag;
+			              		
+			              	    tableContent += '<input type="checkbox" name="label" value="'+id+'" />'+lable_name+'&nbsp;&nbsp;&nbsp;';
+			              	  }
+	  	              		
+	  	              	}else{
+		  	              	for(var i=j*14;i<(j+1)*14;i++){//不是最后一行
+			              		var id=labelArr[i].id;
+			              		var lable_name=labelArr[i].lable_name;
+			              		var class_flag=labelArr[i].class_flag;
+			              		
+			              	    tableContent += '<input type="checkbox" name="label" value="'+id+'" />'+lable_name+'&nbsp;&nbsp;&nbsp;';
+		              		 }
+		  	              	}
+	              	
+ 	              		
+  	              		
+  	              		
+	  	              	
+  	              	tableContent += '<p>';
+  	              	}
+  	              
+                      	
   	              		labelGroup+=tableContent;
   	              	
   	              	
   	            	
-  	              	$("#label").append(labelGroup);
-  	          		$("#label1").append(labelGroup);
+  	              	$("#labelgroup").append(labelGroup);
+  	          		$("#labelgroup1").append(labelGroup);
   	               }
   	            });
   	    }
@@ -376,9 +401,12 @@
         											<option value="1">横屏</option>
         											<option value="2">横竖混合</option>
         									</select></p>
-        					<p>视频标签: <select id="label" name="label">
+        					<!-- <p>视频标签: <select id="label" name="label">
         											
-        									</select></p>
+        									</select></p> -->
+        					<p>视频标签: <div id="labelgroup" name="labelgroup">
+        											
+        									</div></p>
         					<!-- 			
         					<p>是否可进行vip点播: <select id="isvip" name="isvip">
         											<option value="0">否</option>
@@ -444,9 +472,9 @@
                         </td>
                     </tr>
                     <tr>
-                    <p>视频标签: <select id="label1" name="label">
+                   <p>视频标签: <div id="labelgroup1" name="labelgroup1">
         											
-        									</select></p>
+        									</div></p>
                     </tr>
                     <!--  
                     <tr>

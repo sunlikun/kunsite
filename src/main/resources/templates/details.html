@@ -19,19 +19,19 @@
 	<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
     <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
     <!-- 自动推送到百度的代码 -->
-    <script>
-	(function(){
-	    var bp = document.createElement('script');
-	    var curProtocol = window.location.protocol.split(':')[0];
-	    if (curProtocol === 'https') {
-	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
-	    }
-	    else {
-	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-	    }
-	    var s = document.getElementsByTagName("script")[0];
-	    s.parentNode.insertBefore(bp, s);
-	})();
+	<script>
+		(function(){
+		    var bp = document.createElement('script');
+		    var curProtocol = window.location.protocol.split(':')[0];
+		    if (curProtocol === 'https'){
+		   bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+		  }
+		  else{
+		  bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+		  }
+		    var s = document.getElementsByTagName("script")[0];
+		    s.parentNode.insertBefore(bp, s);
+		})();
 	</script>
     <script>
 	var _hmt = _hmt || [];
@@ -86,7 +86,8 @@
     <p>
 	<div  style="margin-top: 130px">
 	 	<div id="app1">
-	 	 		<h3 ><span id="vvname"></span></h3>
+	 			<h4><span>下载方式:百度云盘       提示!本资源为饭拍合集,内包括多个饭拍视频</span></h4>
+	 	 		<h3 >专辑名称:<span id="vvname"></span></h3>
 	 			<input id="video_name" th:value="${video_name}" name="video_name" type="text" style="display: none" readonly="readonly"></br></br>
 				<input id="id" th:value="${id}" name="id" type="text" style="display: none">
 				<input id="baiduyun_address"  name="baiduyun_address" type="text" style="display: none" v-model="baiduyun_address" >
