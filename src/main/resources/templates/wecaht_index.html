@@ -118,6 +118,7 @@
           }
           queryData('1');
           queryData('2');
+          queryData('3');
           
       });
       //查询展示内容 
@@ -182,6 +183,9 @@
             		$("#part2").append(converGroup);
             	}
             	
+            	if(category=='3'){
+            		$("#part3").append(converGroup);
+            	}
             	
            	   
               	
@@ -230,6 +234,22 @@
 					
 					</div>
 					<div align="center"><a href="/we_more?flag=2"><font size="5">点击查看更多</font></a></div>
+					
+					<nav class="navbar navbar-default" role="navigation">
+					    <div class="container-fluid">
+						    <div>
+						     
+						        <ul class="nav navbar-nav">
+						            <li> <a href="/we_more?flag=3" class="navbar-brand">性感模特&nbsp;》</a></li>
+						        </ul>
+						    </div>
+						    
+					    </div>
+					</nav>
+					<div class="row" id="part3">
+					
+					</div>
+					<div align="center"><a href="/we_more?flag=3"><font size="5">点击查看更多</font></a></div>
 				</div>
 	  	
 				<div class="col-md-4">
@@ -247,9 +267,22 @@
 									欢迎访问普格娱乐
 								</h2>
 								<p>
-									微信扫码关注普格娱乐公众号
-									    比官网更新更快哦!
+									微信扫码或搜索"pergirls"关注普格娱乐公众号
+									    获取更新内容!
 									<img  class="img-responsive"   src="/img/wechat/qrcode_for_gh_65045f61e850_258.jpg" >
+								</p>
+								<h5>
+									热门标签
+								</h5>
+								<p>
+									<div class="container-fluid">
+										<div class="row-fluid">
+											<div class="span12" id="label">
+												
+												
+											</div>
+										</div>
+									</div>	
 								</p>
 								<center style="margin-top: 10px">
 									<ul id="myTab" class="nav nav-tabs" >
@@ -310,7 +343,44 @@
     
     <script type="text/javascript">
     
-    
+    function  lableQuery(){
+	   	 //alert(flag)
+	   	 $("#label").empty();
+	   		 $.ajax({
+	               type: "post",
+	               url: "/LabelController/query",
+	               data: {},
+	               dataType: "json",
+	               success: function(data){
+	              	var labelArr = data;
+	              	var labelGroup="";
+	              	var rowNum=labelArr.length/4;
+	              
+	              	for(var j=0;j<rowNum;j++){
+	              		
+	              		var tableContent="";
+                  	tableContent += '<p class="badge-important">';
+                  	var h=4;
+                  	if((labelArr.length-j*4)<4){
+                  		h=labelArr.length-j*4
+                  	}
+	              		for(var i=j*4;i<j*4+h;i++){
+		              			var id=labelArr[i].id;
+			              		var lable_name=labelArr[i].lable_name;
+			              		var class_flag=labelArr[i].class_flag;
+			              		tableContent += '<span class="label badge-important" style="font-size:15px;">';
+			                    tableContent += '<a href="/queryBylabel?label='+id+'">'+lable_name+'</a>';
+			                    tableContent += '</span>';
+				        }
+		              	tableContent += '</p> ';
+	              		labelGroup+=tableContent;
+	              		
+	              	}
+	              	
+	              	$("#label").append(labelGroup);
+	               }
+	            });
+	    }
 	   
 	    function  createrankingList(flag){
 	   	 //alert(flag)
@@ -350,7 +420,7 @@
 	               }
 	            });
 	    }
-    
+	    lableQuery();
 	    createrankingList('1');
         var user_name=$("#user_name").val();
         var code=$("#code").val();
