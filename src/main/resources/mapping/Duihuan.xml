@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kuncms.duihuan.dao.DuihuanDao" >
+<!-- 
+ 	<insert id="save"  parameterType="com.kuncms.duihuan.model.Duihuan">
+
+		insert into label(id,lable_name,class_flag) 
+		   values(#{id},#{lable_name},#{class_flag})
+	</insert>
+ 	 -->
+ 	
+     <select id="queryDuihuancode"  parameterType="com.kuncms.duihuan.model.Duihuan"  resultType="com.kuncms.duihuan.model.Duihuan">
+        SELECT*FROM duihuan_code l
+        <where>
+			<if test="duihuan_code != null and duihuan_code != ''">
+				and l.duihuan_code=#{duihuan_code}
+			</if>
+		</where>
+		
+     </select>
+ 	
+ 	
+  
+</mapper>

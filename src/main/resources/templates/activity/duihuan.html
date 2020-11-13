@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>普格娱乐金币兑换</title>
+<script type="text/javascript" src="/scripts/jquery-1.11.1.min.js"></script>
+ <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+<script type="text/javascript">
+	function  duihuan_operate(){
+		 $.ajaxSetup({
+				
+		    	async:false
+		
+		 });
+		 var duihuan_code=$('#duihuan_code').val();
+		 if(duihuan_code!=null&&duihuan_code!=''){
+			 $.ajax({
+		            type: "post",
+		            url: "/DuihuanController/duihuan_operate",
+		            data: {duihuan_code:duihuan_code},
+		            dataType: "json",
+		            success: function(data){
+		           			alert(data.result);
+		           	 }
+		         });
+		 }else{
+			 alert("兑换码不能为空!");
+		 }
+		
+		 
+ 	}
+</script>
+       
+
+</head>
+<body>
+<div class="container-fluid">
+	<div class="row-fluid">
+		
+		<center>
+			<form style="margin-top: 50px">
+				<fieldset>
+					 <legend>金币兑换</legend> <label>兑换码</label>&nbsp;<input type="text" id="duihuan_code" /></br> <button type="button" class="btn btn-info" onclick="duihuan_operate()">提交</button>
+				</fieldset>
+			</form>
+		</center>
+		
+	</div>
+</div>
+</body>
+</html>

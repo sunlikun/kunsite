@@ -117,14 +117,15 @@ public class MenuManager {
         btn33.setType("view");  
         btn33.setUrl("http://www.pergirls.com/WechatController/auth");
   
-       
+        CommonButton duihuan = new CommonButton();  
+        duihuan.setName("金币兑换");  
+        duihuan.setKey("dh"); 
+        duihuan.setType("view");  
+        duihuan.setUrl("http://www.pergirls.com/WechatController/auth_duihuan");
   
-//        ComplexButton mainBtn2 = new ComplexButton();  
-//        mainBtn2.setName("官方网址"); 
-//        mainBtn2.setType("view");  
-//        mainBtn2.setKey("02");
-//        mainBtn2.setUrl("http://www.pergirls.com");
-        //mainBtn2.setSub_button(new CommonButton[] { btn21, btn22, btn23, btn24, btn25 });  
+        ComplexButton mainBtn2 = new ComplexButton();  
+        mainBtn2.setName("个人中心"); 
+        mainBtn2.setSub_button(new CommonButton[] { btn33, duihuan});  
   
 //        ComplexButton mainBtn3 = new ComplexButton();  
 //        mainBtn3.setName("更多体验");  
@@ -139,7 +140,7 @@ public class MenuManager {
          */  
         Menu menu = new Menu();  
         //menu.setButton(new Button[] { mainBtn1, mainBtn2, mainBtn3 });  
-        menu.setButton(new Button[] {btn00, btn21, btn33 }); 
+        menu.setButton(new Button[] {btn00, btn21, mainBtn2 }); 
         return menu;  
     }  
 }  
