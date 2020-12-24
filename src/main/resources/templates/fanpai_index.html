@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+ 	<meta name="baidu-site-verification" content="EuNPeTHGFx" />
+    <title>韩国女团-车模-模特写真-普格娱乐</title>
+	<meta name="description" content="普格娱乐提供4k韩国女团,性感美女,车模,美女模特视频及高清韩国女团,车模,美女模特写真图片,为用户提供全网最新最多最全的独家资源分享平台">
+    <meta name="author" content="普格娱乐">
+    <meta name="keywords" content="韩国女团,车模,模特写真,普格娱乐"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/button.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../jqwidgets/styles/jqx.base.css" type="text/css" />
+    <script type="text/javascript" src="/scripts/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/js/jqthumb.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script data-ad-client="ca-pub-5380480146729483" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "https://hm.baidu.com/hm.js?38d6362f18809b7002eca352b2efe579";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+	<!-- 自动推送到百度的代码 -->
+    <script>
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+	</script>
+   
+  
+     
+	<style>
+	body { width:90%; margin:50px auto; }
+	// Extra small devices (portrait phones, less than 576px)
+	@media (max-width: 575.98px) { ... }
+	
+	// Small devices (landscape phones, 576px and up)
+	@media (min-width: 576px) and (max-width: 767.98px) { ... }
+	
+	// Medium devices (tablets, 768px and up)
+	@media (min-width: 768px) and (max-width: 991.98px) { ... }
+	
+	// Large devices (desktops, 992px and up)
+	@media (min-width: 992px) and (max-width: 1199.98px) { ... }
+	
+	// Extra large devices (large desktops, 1200px and up)
+	@media (min-width: 1200px) { ... }
+	ul {
+    display: block;
+    overflow: hidden;
+    white-space:nowrap;
+	}
+	li{
+    list-style: none;
+    display: inline-block;
+    margin-left: 15px;
+    width: 130px;
+	}
+	.cp{
+
+	width: 450px;
+	height: 470px;
+	overflow: hidden;
+	display: table-cell;
+	vertical-align: middle;
+	border:3px solid #000;
+	text-align: center;
+	}
+	.cpimg{
+	
+	max-width: 100%;
+	max-height: 100%;（或者max-height: 100%;）
+	display: block;
+	margin: 0 auto;
+	
+	}
+	.gimg{
+	
+	max-width: 10%;
+	max-height: 10%;
+	margin: 0 auto;
+	
+	}
+	.cdiv{ border:3px solid #000} 
+	.cvdiv{ height: 55vh;}
+	.wrap {
+      width: 10%;
+      height: 20px;
+      display: table-cell;
+      vertical-align: middle;
+      text-align: center;
+      background: #eee;
+    }
+
+    .wrap img {
+      max-width: 100%;
+      max-height: 50%;
+    }
+	
+	</style>
+	
+	<script type="text/javascript">
+	
+	  $(document).ready(function () {
+		  $('#myTab li:eq(1) a').tab('show');
+          // prepare the data
+          var user_name=$("#user_name").val();
+          //alert(user_name)
+          if(user_name!=null&&user_name!==''){
+        	  $("#login").html("你好   "+user_name);
+          }
+          queryData('1');
+          queryData('2');
+          queryData('3');
+          //queryOnlineData();
+          
+      });
+      //查询展示下载内容 
+	  function queryData(category){
+		  var data=null
+          $.ajaxSetup({
+
+          	async:false
+
+          });
+          $.ajax({
+              type: "post",
+              url: "/queryIndexCoverPhoto",
+              data: {"category":category},
+              dataType: "json",
+              success: function(data){
+            	var coverphotoArr = data;
+            	var converGroup="";
+            	for(var i=0;i<coverphotoArr.length;i++){
+            		　　//alert(coverphotoArr[i].coverphotoid);
+            		var id=coverphotoArr[i].id;
+            		var baiduyun_pass=coverphotoArr[i].baiduyun_pass;
+            		var baiduyun_address=coverphotoArr[i].baiduyun_address;
+            		//alert(baiduyun_address)
+            		//alert(coverphotoArr[i].coverphotoid)
+            		var tableContent="";
+                  	tableContent += '<div class="col-sm-4 col-md-4 col-xs-12">';
+                  	tableContent += '<div class="thumbnail">';
+                  	tableContent += '<div style="overflow:hidden;">';
+                  	tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" target="_blank">';
+                    var coverid="/images/"+coverphotoArr[i].coverphotoid.substring(30);
+                   // alert(coverid)
+                   	//tableContent += '<div class="wrap">';
+                    tableContent += '<img  class="img-thumbnail"  src="' + coverid+ '" alt="'+ coverphotoArr[i].video_name+'">';
+                    //tableContent += '<img  class="img-thumbnail"   src="/img/test.jpg">';
+                    //tableContent += '</div>';
+                    tableContent += '</a>';
+                    tableContent += '</div>'
+                    
+                    tableContent += '<div style="height:3vh;overflow:hidden;white-space: nowrap; text-overflow: ellipsis;">';
+                  	tableContent += '<p>' + coverphotoArr[i].video_name+ '</p>';
+                    tableContent += '</div>';
+                    
+                    tableContent += '<div style="display: table;margin-top:2vh">';
+                    tableContent += '<div style="display: table-cell;">';
+                  	tableContent += '<p><img  class="gimg" src="/img/g1.ico" alt="'+ coverphotoArr[i].video_name+'">' + coverphotoArr[i].gold_coin+ '金币&nbsp;<img src="/img/eye.jpg" width="20vw" height="20vh">'+coverphotoArr[i].clicks+'</p>';
+                  	//tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
+                    tableContent += ' <p><a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&baiduyun_address='+baiduyun_address+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-primary btn-sm" role="button" target="_blank"> 查看</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'" class="btn btn-default  btn-sm" role="button">  下载</a></p> ';
+                    tableContent += '</p>';
+                    tableContent += '</div></div></div></div>';
+                    
+                   
+                  
+                    converGroup+=tableContent;
+                    
+            	}
+            	
+            	if(category=='1'){
+            		$("#part1").append(converGroup);
+            	}
+            	if(category=='2'){
+            		$("#part2").append(converGroup);
+            	}
+            	if(category=='3'){
+            		$("#part3").append(converGroup);
+            	}
+            	
+            	
+            	
+           	   
+              	
+             }
+              
+             
+          });
+      }
+      
+      
+	  //查询在线播放展示内容 
+	  function queryOnlineData(category){
+		  var data=null
+          $.ajaxSetup({
+			async:false
+		  });
+          $.ajax({
+              type: "post",
+              url: "/queryOnlineData",
+              data: {"category":category},
+              dataType: "json",
+              success: function(data){
+            	var coverphotoArr = data;
+            	var converGroup="";
+            	for(var i=0;i<coverphotoArr.length;i++){
+            		　　//alert(coverphotoArr[i].coverphotoid);
+            		var id=coverphotoArr[i].id;
+            		var baiduyun_pass=coverphotoArr[i].baiduyun_pass;
+            		var baiduyun_address=coverphotoArr[i].baiduyun_address;
+            		var online_play_coin=coverphotoArr[i].online_play_coin;
+            		//alert(baiduyun_address)
+            		//alert(coverphotoArr[i].coverphotoid)
+            		var tableContent="";
+                  	tableContent += '<div class="col-sm-4 col-md-3 col-xs-6">';
+                    tableContent += '<div class="thumbnail">';
+                  
+                    tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'">';
+                    var coverid="/images/"+coverphotoArr[i].coverphotoid.substring(30);
+                   // alert(coverid)
+                    tableContent += '<img  class="img-responsive"   src="' + coverid+ '" >';
+                    //tableContent += '<img  class="img-responsive"   src="/img/test.png" width="300vw" height="450vh">';
+                    tableContent += '</a>';
+                    tableContent += '<div>';
+                  	tableContent += '<p>' + coverphotoArr[i].video_name.substring(0, 15)+ '...</p>';
+                  	tableContent += '<p><img  class="gimg" src="/img/g1.ico" >' + coverphotoArr[i].online_play_coin+ '金币&nbsp;<img src="/img/eye.jpg" width="20vw" height="20vh">'+coverphotoArr[i].clicks+'</p>';
+                  	//tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
+                  	tableContent += ' <p><a href="/toVideoPlay?id='+id+'" class="btn btn-primary btn-sm" role="button" target="_blank" > 播放</a> <a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'&online_play_coin='+coverphotoArr[i].online_play_coin+'" class="btn btn-default  btn-sm" role="button" target="_blank">详情</a></p> ';
+                    tableContent += '</p>';
+                    tableContent += '<div>';
+                    tableContent += '</div></div></div></div>';
+                    converGroup+=tableContent;
+                }
+            	
+            	//if(category=='1'){
+            		$("#part3").append(converGroup);
+            	//}
+             }
+             
+          });
+      }
+	
+	</script>
+  </head>
+  <body bgcolor="#DDDDDD">
+  	   
+    <div th:include="header :: header"></div> 
+  
+	<div class="container-fluid">
+  		<div class="row" style="margin-top: 10px;">
+				<div class="col-md-8  col-xs-12">
+				<!-- 
+				<div class="well well-md"><font size="3" color="#414141" style="font-family:微软雅黑 ">超清在线播放</font><a href="/moreOnline" style="text-decoration: none"><font size="3" color="#414141" style="font-family:微软雅黑;margin-right: 5vw;float: right;">更多》》</font></a></div>
+					    
+						    <div style="width: 100%;height: 6vh;background:#f8f8f8;">
+							     <div style="display:inline-block;margin-top: 1.2rem;margin-left: 1.5vw"><a href="/more?flag=1" style="text-decoration: none"><font size="3" color="#414141" style="font-family:微软雅黑 ">女团饭拍</font></a></div>
+								 <div style="display:inline-block;margin-left:40vw;margin-top: 1rem"><a href="/more?flag=1" style="text-decoration: none"><font size="3" color="#414141" style="font-family:微软雅黑 ">more》》</font></a></div>
+						    </div>
+					   <div class="row" id="part3" style="margin-top: 2vh"></div>
+					
+					<div align="center"><a href="/moreOnline"><font size="5">点击查看更多</font></a></div>
+					 -->
+					 
+					<div class="well well-md"><font size="3" color="#414141" style="font-family:微软雅黑 ">韩国女团</font><a href="/more?flag=1" style="text-decoration: none"><font size="3" color="#414141" style="font-family:微软雅黑;margin-right: 5vw;float: right;">韩国女团更多》》</font></a></div>
+					    <!--  
+						    <div style="width: 100%;height: 6vh;background:#f8f8f8;">
+							     <div style="display:inline-block;margin-top: 1.2rem;margin-left: 1.5vw"><a href="/more?flag=1" style="text-decoration: none"><font size="3" color="#414141" style="font-family:微软雅黑 ">女团饭拍</font></a></div>
+								 <div style="display:inline-block;margin-left:40vw;margin-top: 1rem"><a href="/more?flag=1" style="text-decoration: none"><font size="3" color="#414141" style="font-family:微软雅黑 ">more》》</font></a></div>
+						    </div>
+					     -->
+					   
+				
+					<div class="row" id="part1" style="margin-top: 2vh">
+					</div>
+					<div align="center"><a href="/more?flag=1"><font size="5">点击查看更多</font></a></div>
+					
+					<div class="well well-md" ><font size="3" color="#414141" style="font-family:微软雅黑 ">车展车模</font><a href="/more?flag=2"><font size="3" color="#414141" style="font-family:微软雅黑 ;margin-right: 5vw;float: right;">车模更多》》</font></a></div>
+					<!--  
+					<div style="width: 100%;height: 6vh;background:#f8f8f8;">
+							     <div style="display:inline-block;margin-top: 1.2rem;margin-left: 1.5vw"><a href="/more?flag=2" style="text-decoration: none"><font size="3" color="#414141" style="font-family:微软雅黑 ">车模饭拍</font></a></div>
+								 <div style="display:inline-block;margin-left:40vw;margin-top: 1rem"</div>
+					</div>
+					-->
+					<div class="row" id="part2">
+					
+					</div>
+					<div align="center"><a href="/more?flag=2"><font size="5">点击查看更多</font></a></div>
+					
+					
+					 <div class="well well-md" ><font size="3" color="#414141" style="font-family:微软雅黑 ">模特写真视频</font><a href="/more?flag=3"><font size="3" color="#414141" style="font-family:微软雅黑 ;margin-right: 5vw;float: right;">模特写真更多》》</font></a></div>
+					<!--  
+					<div style="width: 100%;height: 6vh;background:#f8f8f8;">
+							     <div style="display:inline-block;margin-top: 1.2rem;margin-left: 1.5vw"><a href="/more?flag=2" style="text-decoration: none"><font size="3" color="#414141" style="font-family:微软雅黑 ">车模饭拍</font></a></div>
+								 <div style="display:inline-block;margin-left:40vw;margin-top: 1rem"</div>
+					</div>
+					-->
+					<div class="row" id="part3">
+					
+					</div>
+					<div align="center"><a href="/more?flag=3"><font size="5">点击查看更多</font></a></div>
+					
+				</div>
+	  	
+				<div class="col-md-4 col-xs-12">
+				   <div class="well well-md"><font size="3" color="#414141" style="font-family:微软雅黑 ">精彩推荐</font></div>
+						<!--  
+						<nav class="navbar navbar-default" role="navigation">
+						    <div class="container-fluid">
+							    <div>
+							
+									 
+							        <ul class="nav navbar-nav">
+							            <li> <a href="" class="navbar-brand">精彩推荐</a></li>
+							        </ul>
+							       
+							    </div>
+						    </div>
+						</nav>
+						-->
+						<div align="center">
+								<h2>
+									欢迎访问普格娱乐
+								</h2>
+								<p>
+									微信扫码或搜索"pergirls"关注普格娱乐公众号
+									    获取更新内容!
+									<img  class="img-responsive"   src="/img/wechat/qrcode_for_gh_65045f61e850_258.jpg" >
+								</p>
+								<h5>
+									热门标签
+								</h5>
+								<p>
+									<div class="container-fluid">
+										<div class="row-fluid">
+											<div class="span12" id="label">
+												
+												
+											</div>
+										</div>
+									</div>	
+								</p>
+								<div align="center">
+									<ul id="myTab" class="nav nav-tabs">
+										<li class="active" style="width: 7.5rem">
+											<a href="#home" data-toggle="tab" onclick="createrankingList(1)">
+												 当天排行
+											</a>
+										</li>
+										<li style="width: 7rem"><a href="#home" data-toggle="tab" onclick="createrankingList(2)">本周排行</a></li>
+										<li style="width: 7.5rem"><a href="#home" data-toggle="tab" onclick="createrankingList(3)">本月排行</a></li>
+										
+									</ul>
+								</div>
+								<div id="myTabContent" class="tab-content">
+									<div class="tab-pane fade in active" id="home">
+										
+										
+											<div class="container-fluid">
+												<div class="row">
+													<div id="rank" style=" width: 30rem;height: 70%;">
+														<!-- 
+														<div class="col-md-12">
+															<div style="display:inline-block;background:#f00;"><img alt="Bootstrap Image Preview" src="https://www.layoutit.com/img/sports-q-c-140-140-3.jpg" /></div>
+															
+															<div style="display:inline-block;margin-left:0px;">div2</div>
+														
+														 -->
+														
+														</div>
+													</div>
+												</div>
+											</div>
+									</div>
+								</div>
+								
+								
+							</div>
+								
+								
+						</div>
+					
+				
+		</div>
+		
+		
+	</div>
+	
+			
+   </div>
+   <div th:include="footer :: footer"></div> 
+   <input id="user_name" th:value="${user_name}" name="user_name" type="text" style="display: none"> 
+   <input id="code" th:value="${code}" name="code" type="text" style="display: none">
+  
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+   
+    
+    <script type="text/javascript">
+      
+    function  lableQuery(){
+	   	 //alert(flag)
+	   	 $("#label").empty();
+	   		 $.ajax({
+	               type: "post",
+	               url: "/LabelController/query",
+	               data: {},
+	               dataType: "json",
+	               success: function(data){
+	              	var labelArr = data;
+	              	var labelGroup="";
+	              	var rowNum=labelArr.length/4;
+	              
+	              	for(var j=0;j<rowNum;j++){
+	              		
+	              		var tableContent="";
+                   	tableContent += '<p class="badge-important">';
+                   	var h=4;
+                   	if((labelArr.length-j*4)<4){
+                   		h=labelArr.length-j*4
+                   	}
+	              		for(var i=j*4;i<j*4+h;i++){
+		              			var id=labelArr[i].id;
+			              		var lable_name=labelArr[i].lable_name;
+			              		var class_flag=labelArr[i].class_flag;
+			              		tableContent += '<span class="label badge-important" style="font-size:15px;">';
+			                    tableContent += '<a href="/queryBylabel?label='+id+'">'+lable_name+'</a>';
+			                    tableContent += '</span>';
+				        }
+		              	tableContent += '</p> ';
+	              		labelGroup+=tableContent;
+	              		
+	              	}
+	              	
+	              	$("#label").append(labelGroup);
+	               }
+	            });
+	    }
+	   
+	    function  createrankingList(flag){
+	   	 //alert(flag)
+	   	 	 $("#rank").empty();
+	   		 $.ajax({
+	               type: "post",
+	               url: "/queryrankingList",
+	               data: {"flag":flag},
+	               dataType: "json",
+	               success: function(data){
+	              	var coverphotoArr = data;
+	              	var converGroup="";
+	            	
+	              	for(var i=0;i<coverphotoArr.length;i++){
+	              		　　//alert(coverphotoArr[i].coverphotoid);
+	              		var id=coverphotoArr[i].id;
+	              		var baiduyun_pass=coverphotoArr[i].baiduyun_pass;
+	              		var baiduyun_address=coverphotoArr[i].baiduyun_address;
+	              		//alert(baiduyun_address)
+	              		//alert(coverphotoArr[i].coverphotoid)
+	              		var tableContent="";
+	                    	tableContent += '<div class="col-md-12">';
+	                    	tableContent += '<div style="display:inline-block;background:#f00;">';
+	                    	tableContent += '<a href="/details?id='+id+'&baiduyun_pass='+baiduyun_pass+'&t_gold_coin='+coverphotoArr[i].gold_coin+'">';
+	                    	var coverid="/images/"+coverphotoArr[i].coverphotoid.substring(30);
+	                   	tableContent += '<img  class="img-responsive"   src="' + coverid+ '" alt="'+ coverphotoArr[i].video_name+'" ></div>';
+	                      	tableContent += '</a>';
+	                      	tableContent += '<div style="display:inline-block;margin-left:0px;">' + coverphotoArr[i].video_name.substring(0, 25)+ '</div>';
+	                      	//tableContent += '<p>公众号点播号:'+coverphotoArr[i].serial_number+'</p>';
+	                      	tableContent += '</div>';
+	                      converGroup+=tableContent;
+	                      
+	              	}
+	              	$("#rank").append(converGroup);
+	             	   
+	                	
+	               }
+	            });
+	    }
+	    lableQuery();
+	    createrankingList('1');
+        var user_name=$("#user_name").val();
+        var code=$("#code").val();
+        //alert(code)
+		var app=new Vue({
+			  el: '#app',
+			  data: {
+				  
+					  content: user_name,
+					  plays:true
+			  },
+			  methods:{
+				  islogin: function () {
+					  
+					  if(user_name!=null&&user_name!=''){
+						  
+						  this.plays=false;
+					  }
+				  },
+				  wechat_login: function () {
+					 
+					  if(code!=null&&code!=''){
+						
+						  this.$http.post("get_access_token",{code:code},{emulateJSON:true}).then(function(res){
+			                	
+			                		var access_token=res.body.access_token;
+			                		var expires_in=res.body.expires_in;
+			                		var refresh_token=res.body.refresh_token;
+			                		var openid=res.body.openid;
+			                		var scope=res.body.scope;
+			                		var unionid=res.body.unionid;
+			                		//alert(openid)
+			                		//alert(access_token)
+			                		//获取用户基本信息并完成登陆操作
+			                		var form=$("<form>");//定义一个form表单
+			            			form.attr("style","display:none");
+			            			form.attr("target","");
+			            			form.attr("method","post");
+			            			form.attr("action","get_user_info");
+			            			var input1=$("<input>");
+			            			input1.attr("type","hidden");
+			            			input1.attr("name","access_token");
+			            			input1.attr("value",access_token);
+			            			var input2=$("<input>");
+			            			input2.attr("type","hidden");
+			            			input2.attr("name","openid");
+			            			input2.attr("value",openid);
+			            			$("body").append(form);//将表单放置在web中
+			            			form.append(input1);  
+			            			form.append(input2);  
+			            			form.submit();//表单提交  
+			            	      
+			                		
+			                	
+			                },function(res){
+			                    console.log(res.data);
+			                });
+						  
+					  }
+				  }
+			    }
+			
+			})
+		
+		  app.islogin();
+          //判断是否已经登陆从而进行判断是否进行微信登陆的相关查询
+          
+          //if(user_name==null||user_name==''){
+        	
+        	  app.wechat_login();
+          //}
+		  
+	
+	</script>
+  </body>
+</html>

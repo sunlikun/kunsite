@@ -47,6 +47,18 @@ spring:
           prefix: classpath:/templates/  
           suffix: .html  
           content-type: text/html 
+          
+        session:
+          store-type: redis # Session store type.
+          redis.namespace: spring:session # Namespace for keys used to store sessions.
+          
+        server:
+          servlet: 
+          session.timeout: # Session timeout. If a duration suffix is not specified, seconds is used.
+        redis:
+          flush-mode: on_save # Sessions flush mode.
+        
+          
 
 ## 该配置节点为独立的节点，有很多同学容易将这个配置放在spring的节点下，导致配置无法被识别
 mybatis:
@@ -70,6 +82,9 @@ WXPAY:
     APPSECRET: 396e3058561fd53fa8120faf57ced10a  
     NOTIFY_URL: http://39.98.164.226:8081/wxpay/we_notify
     CREATE_IP: 39.98.164.226
+    
+    
+    
  
    
     
